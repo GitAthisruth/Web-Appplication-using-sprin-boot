@@ -11,9 +11,9 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/welcome")
+    @GetMapping("/main")
     public String showWelcome() {
-        return "welcome";
+        return "main";
     }
 }
 

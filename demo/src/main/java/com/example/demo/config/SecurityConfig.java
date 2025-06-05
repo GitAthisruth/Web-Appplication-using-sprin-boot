@@ -25,16 +25,16 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/register", "/register-process", "/login").permitAll()
+                .requestMatchers("/images/**","/css/**","/register", "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/welcome", true)
+                .defaultSuccessUrl("/main", true)
                 .and()
                 .logout()
                 .logoutUrl("/logout") // default is "/logout"
-                .logoutSuccessUrl("/logout-success")
+                .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .permitAll();

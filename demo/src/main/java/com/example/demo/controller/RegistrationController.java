@@ -28,9 +28,4 @@ public class RegistrationController {
 
     }
 
-        @GetMapping("/logout-success")
-        public String logoutSuccessPage() {
-            return "logout"; // this should point to logout.html
-        }
-
     }
