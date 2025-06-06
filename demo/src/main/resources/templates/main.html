@@ -84,12 +84,21 @@
     <!-- Main Content -->
     <main th:inline="css" style="" th:style="'background-image: url(' + @{/images/bg-wallpaper.jpg} + '); background-size: cover; background-position: center;'">
         <div class="max-w-[960px] h-screen flex items-center ml-[20px]">
-            <h1 class="text-left text-[64px] font-extrabold leading-tight text-white"
-                style="text-shadow: 2px 2px 4px black; font-family: 'Orbitron', sans-serif;">
-                <span class="block">Embrace</span>
-                <span class="block">the</span>
-                <span class="block">Impossible!</span>
-            </h1>
+            <div class="flex flex-col">
+                <h1 class="text-left text-[64px] font-extrabold leading-tight text-white"
+                    style="text-shadow: 2px 2px 4px black; font-family: 'Orbitron', sans-serif;">
+                    <span class="block">Embrace</span>
+                    <span class="block">the</span>
+                    <span class="block">Impossible!</span>
+                </h1>
+                <!-- Discover the Octa Button -->
+                <div>
+                    <a href="/octa"
+                       class="mt-8 inline-block px-6 py-3 text-lg font-semibold text-white border border-white rounded-md hover:bg-white hover:text-black transition duration-300">
+                        Discover the Octa
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
 </div>
