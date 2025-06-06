@@ -18,7 +18,27 @@ public class LoginController {
 
     @GetMapping("/models")
     public String showModelsPage() {
-        return "sample";
+        return "models";
+    }
+
+    @GetMapping("/models/octa")
+    public String showOctaPage() {
+        return "models/octa";
+    }
+
+    @GetMapping("/models/130")
+    public String show130Page() {
+        return "models/130";
+    }
+
+    @GetMapping("/models/110")
+    public String show110Page() {
+        return "models/110";
+    }
+
+    @GetMapping("/models/90")
+    public String show90Page() {
+        return "models/90";
     }
 
 }

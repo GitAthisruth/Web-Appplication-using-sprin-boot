@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Defender Octa</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts (Optional if used globally) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+
+    <style>
+        header {
+            background-color: black;
+            z-index: 10;
+            position: relative;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo-svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white font-sans">
+
+<!-- Header (Navigation) -->
+<header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
+    <!-- Logo -->
+    <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+        <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+    </div>
+
+    <!-- Centered User Button -->
+    <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div class="relative">
+            <button id="user-button"
+                    class="flex h-10 px-2.5 gap-2 bg-transparent rounded-full items-center font-bold text-white text-sm border border-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     viewBox="0 0 256 256" style="color: white;">
+                    <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
+                </svg>
+            </button>
+            <div id="user-dropdown"
+                 class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-black border border-white rounded shadow-lg z-50 text-white">
+                <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
+                <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="relative z-10">
+        <button id="menu-button"
+                class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+            Menu
+        </button>
+        <div id="menu-dropdown"
+             class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+            <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+            <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Store</a>
+            <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">My Defender</a>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="relative h-[90vh] bg-cover bg-center" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+        <h1 class="text-5xl font-bold">DEFENDER OCTA</h1>
+        <p class="mt-4 text-xl max-w-2xl">Master of extreme performance.</p>
+        <a th:href="@{/build}" class="mt-6 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+            BUILD YOUR OWN
+        </a>
+    </div>
+</section>
+
+<!-- Dropdown Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userBtn = document.getElementById("user-button");
+        const userDropdown = document.getElementById("user-dropdown");
+
+        const menuBtn = document.getElementById("menu-button");
+        const menuDropdown = document.getElementById("menu-dropdown");
+
+        userBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle("hidden");
+            menuDropdown.classList.add("hidden");
+        });
+
+        menuBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            menuDropdown.classList.toggle("hidden");
+            userDropdown.classList.add("hidden");
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+            if (!menuDropdown.contains(e.target) && !menuBtn.contains(e.target)) {
+                menuDropdown.classList.add("hidden");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
