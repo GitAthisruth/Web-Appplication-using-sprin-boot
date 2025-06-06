@@ -71,7 +71,8 @@
             </button>
             <div id="menu-dropdown"
                  class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
@@ -94,7 +95,7 @@
                 <!-- Discover the Octa Button -->
                 <div>
                     <a href="/octa"
-                       class="mt-8 inline-block px-6 py-3 text-lg font-semibold text-white border border-white rounded-md hover:bg-white hover:text-black transition duration-300">
+                       class="mt-8 inline-block px-6 py-3 text-lg font-semibold text-white border border-white rounded-md bg-black bg-opacity-30 hover:bg-white hover:text-black transition duration-300">
                         Discover the Octa
                     </a>
                 </div>

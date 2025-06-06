@@ -15,5 +15,11 @@ public class LoginController {
     public String showWelcome() {
         return "main";
     }
+
+    @GetMapping("/models")
+    public String showModelsPage() {
+        return "sample";
+    }
+
 }
 
