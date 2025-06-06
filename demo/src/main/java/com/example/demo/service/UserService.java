@@ -15,12 +15,23 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // Custom exception class (you need to create this)
+    public static class UsernameAlreadyExistsException extends Exception {
+        public UsernameAlreadyExistsException(String message) {
+            super(message);
+        }
+    }
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void register(User user) {
+    // Updated register method with validation
+    public void register(User user) throws UsernameAlreadyExistsException {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new UsernameAlreadyExistsException("Username already taken");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }

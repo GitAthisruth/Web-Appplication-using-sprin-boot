@@ -47,7 +47,7 @@
 
         <h2 class="text-3xl font-extrabold mb-6 text-white text-center">Register</h2>
 
-        <form th:action="@{/register-process}" th:object="${user}" method="post" class="space-y-6">
+        <form th:action="@{/register}" th:object="${user}" method="post" class="space-y-6">
 
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-200">Username</label>
@@ -67,6 +67,9 @@
             </button>
 
         </form>
+        <div th:if="${registrationError}" class="mb-4 text-red-500 font-semibold text-center">
+            <p th:text="${registrationError}"></p>
+        </div>
 
         <p class="mt-6 text-center text-gray-300">
             Already have an account?

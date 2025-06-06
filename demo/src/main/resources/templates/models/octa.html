@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <!-- Google Fonts (Optional if used globally) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
     <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
 
@@ -78,15 +78,30 @@
 </header>
 
 <!-- Hero Section -->
-<section class="relative h-[90vh] bg-cover bg-center" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
+<section class="relative h-[90vh] bg-cover bg-center mb-0 pb-0" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
     <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
         <h1 class="text-5xl font-bold">DEFENDER OCTA</h1>
         <p class="mt-4 text-xl max-w-2xl">Master of extreme performance.</p>
-        <a th:href="@{/build}" class="mt-6 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+        <a th:href="@{/build}" class="mt-4 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
             BUILD YOUR OWN
         </a>
+
+        <!-- Navigation Bar (inside section) -->
+        <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
+            <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
+                <a href="#overview" class="hover:text-gray-300">Overview</a>
+                <a href="#performance" class="hover:text-gray-300">Performance</a>
+                <a href="#design" class="hover:text-gray-300">Design</a>
+                <a href="#technology" class="hover:text-gray-300">Technology</a>
+                <a href="#specifications" class="hover:text-gray-300">Specifications</a>
+                <a href="#gallery" class="hover:text-gray-300">Gallery</a>
+            </div>
+        </nav>
     </div>
 </section>
+
+<!-- Navigation Bar (Closer to section) -->
+
 
 <!-- Dropdown Script -->
 <script>

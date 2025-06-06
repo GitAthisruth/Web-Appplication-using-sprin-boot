@@ -21,11 +21,16 @@ public class RegistrationController {
         return "register";
     }
 
-    @PostMapping("/register-process")
-    public String registerUser(@ModelAttribute("user") User user) {
-        userService.register(user);
-        return "redirect:/login";
-
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
+        try {
+            userService.register(user);
+            return "redirect:/login";
+        } catch (UserService.UsernameAlreadyExistsException e) {
+            model.addAttribute("user", user);
+            model.addAttribute("registrationError", e.getMessage());
+            return "register";  // Show the register page again with error
+        }
     }
 
     }
