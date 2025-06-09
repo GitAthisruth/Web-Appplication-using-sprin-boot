@@ -14,20 +14,8 @@
 
     <!-- Local Stylesheet -->
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-
-    <style>
-        header {
-            background-color: black;
-            z-index: 10;
-            position: relative;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        .logo-svg {
-            width: 32px;
-            height: 32px;
-            flex-shrink: 0;
-        }
-    </style>
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 </head>
 
 <body class="font-sans text-white" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
@@ -57,7 +45,8 @@
                 Menu
             </button>
             <div id="menu-dropdown" class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
-                <a href="/models" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
@@ -66,79 +55,55 @@
             </div>
         </div>
     </header>
-
     <!-- Main Content -->
-    <main class="flex flex-col items-center gap-8 px-4 py-12 bg-black">
-        <h1 class="text-5xl font-extrabold mb-10">Explore Defender Models</h1>
+    <main class="relative flex flex-col items-center gap-8 px-4 py-12 bg-black">
+        <section class="w-full max-w-6xl flex flex-col items-center gap-8">
+            <div class="self-start ml-4 mt-2">
+                <a href="javascript:history.back()" class="back-button" aria-label="Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="back-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+            </div>
+            <h1 class="text-5xl font-extrabold mb-10">Explore Defender Models</h1>
 
-        <!-- Models Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
-            <!-- Defender Octa -->
-            <a th:href="@{/models/octa}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                <img th:src="@{/images/octa.jpg}" alt="Defender Octa" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span class="text-3xl font-bold">Defender Octa</span>
-                </div>
-            </a>
+            <!-- Models Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                <!-- Defender Octa -->
+                <a th:href="@{/models/octa}" class="relative group overflow-hidden rounded-lg shadow-lg">
+                    <img th:src="@{/images/octa.jpg}" alt="Defender Octa" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <span class="text-3xl font-bold">Defender Octa</span>
+                    </div>
+                </a>
 
-            <!-- Defender 130 -->
-            <a th:href="@{/models/130}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                <img th:src="@{/images/130.avif}" alt="Defender 130" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span class="text-3xl font-bold">Defender 130</span>
-                </div>
-            </a>
+                <!-- Defender 130 -->
+                <a th:href="@{/models/130}" class="relative group overflow-hidden rounded-lg shadow-lg">
+                    <img th:src="@{/images/130.avif}" alt="Defender 130" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <span class="text-3xl font-bold">Defender 130</span>
+                    </div>
+                </a>
 
-            <!-- Defender 110 -->
-            <a th:href="@{/models/110}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                <img th:src="@{/images/110.png}" alt="Defender 110" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span class="text-3xl font-bold">Defender 110</span>
-                </div>
-            </a>
+                <!-- Defender 110 -->
+                <a th:href="@{/models/110}" class="relative group overflow-hidden rounded-lg shadow-lg">
+                    <img th:src="@{/images/110.png}" alt="Defender 110" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <span class="text-3xl font-bold">Defender 110</span>
+                    </div>
+                </a>
 
-            <!-- Defender 90 -->
-            <a th:href="@{/models/90}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                <img th:src="@{/images/defender90.webp}" alt="Defender 90" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                    <span class="text-3xl font-bold">Defender 90</span>
-                </div>
-            </a>
-        </div>
+                <!-- Defender 90 -->
+                <a th:href="@{/models/90}" class="relative group overflow-hidden rounded-lg shadow-lg">
+                    <img th:src="@{/images/defender90.webp}" alt="Defender 90" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <span class="text-3xl font-bold">Defender 90</span>
+                    </div>
+                </a>
+            </div>
+        </section>
     </main>
+
 </div>
-
-<!-- Script for dropdowns -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const userBtn = document.getElementById("user-button");
-        const userDropdown = document.getElementById("user-dropdown");
-
-        const menuBtn = document.getElementById("menu-button");
-        const menuDropdown = document.getElementById("menu-dropdown");
-
-        userBtn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            userDropdown.classList.toggle("hidden");
-            menuDropdown.classList.add("hidden");
-        });
-
-        menuBtn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            menuDropdown.classList.toggle("hidden");
-            userDropdown.classList.add("hidden");
-        });
-
-        document.addEventListener("click", function (e) {
-            if (!userDropdown.contains(e.target) && !userBtn.contains(e.target)) {
-                userDropdown.classList.add("hidden");
-            }
-            if (!menuDropdown.contains(e.target) && !menuBtn.contains(e.target)) {
-                menuDropdown.classList.add("hidden");
-            }
-        });
-    });
-</script>
-
 </body>
 </html>

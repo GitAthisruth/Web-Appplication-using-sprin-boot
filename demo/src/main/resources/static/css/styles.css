@@ -66,3 +66,42 @@ header {
     height: 32px;
     flex-shrink: 0;
 }
+
+.back-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 9999px; /* Full circle */
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.back-icon {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+}
+
+
+.back-button-container a {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px; /* full rounded */
+    border: 1px solid white;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-button-container a:hover {
+    background-color: white;
+    color: black;
+}

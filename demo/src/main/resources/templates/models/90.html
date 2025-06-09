@@ -20,7 +20,16 @@
 </head>
 
 <body class=" defender-body bg-black text-white font-sans">
-
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <div class="back-button-container absolute top-[75px] left-6 z-50">
+        <a href="javascript:history.back()" aria-label="Back"
+           class="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white hover:text-black transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
 <!-- Header -->
 <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
     <!-- Logo -->
@@ -63,9 +72,10 @@
         </div>
     </div>
 </header>
-
 <!-- Hero Section -->
 <section class="relative h-[90vh] bg-cover bg-center" th:style="'background-image: url(' + @{/images/90/90_1.jpg} + ')'">
+    <!-- Back Button -->
+
     <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
         <h1 class="text-5xl font-bold">DEFENDER 90</h1>
         <p class="mt-4 text-xl max-w-2xl">DEFENDER IN ITS PUREST FORM.</p>
@@ -84,5 +94,6 @@
         </nav>
     </div>
 </section>
+</div>
 </body>
 </html>
