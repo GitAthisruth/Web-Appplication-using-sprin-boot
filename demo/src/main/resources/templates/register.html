@@ -11,30 +11,13 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <style>
-        body {
-            font-family: 'Space Grotesk', 'Noto Sans', sans-serif;
-            margin: 0;
-            background-image: url('/images/register_image.jpg');
-            background-size: cover;
-            background-position: center;
-            min-height: 100vh;
-            color: white;
-        }
-        header {
-            background-color: black;
-            border-bottom: 1px solid #e5e7eb;
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body class="register-page flex flex-col min-h-screen">
 
 <!-- Header -->
-<header>
+<header class="register-header">
     <div class="absolute top-[75%%] right-10">
         <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
     </div>

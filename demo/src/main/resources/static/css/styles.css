@@ -15,3 +15,54 @@ header {
     height: 32px;
     flex-shrink: 0;
 }
+
+.register-page {
+    font-family: 'Space Grotesk', 'Noto Sans', sans-serif;
+    margin: 0;
+    background-image: url('/images/register_image.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    color: white;
+}
+
+.register-header {
+    background-color: black;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+    z-index: 10;
+}
+
+.login-body {
+    font-family: 'Space Grotesk', 'Noto Sans', sans-serif;
+    margin: 0;
+    /* Full background image */
+    background-image: url('/images/login_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    color: white;
+}
+.login-header {
+    background-color: transparent; /* No header background */
+    border-bottom: none;
+    position: relative;
+    z-index: 10;
+}
+/* Semi-transparent background for form container */
+.form-container {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.defender-body {
+    background-color: black;
+    z-index: 10;
+    position: relative;
+    border-bottom: 1px solid #e5e7eb;
+}
+.logo-svg {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
