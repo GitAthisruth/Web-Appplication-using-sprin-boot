@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
     // Updated register method with validation
     public void register(User user) throws UsernameAlreadyExistsException {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new UsernameAlreadyExistsException("Username already taken");
+            throw new UsernameAlreadyExistsException("Username already taken.Please choose another.");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
