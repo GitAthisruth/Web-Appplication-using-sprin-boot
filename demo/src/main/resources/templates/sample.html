@@ -1,109 +1,57 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Defender Models</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<section id="overview" class="bg-black text-white py-16 px-4 md:px-16">
+    <h2 class="text-4xl font-bold mb-10 text-left md:text-center">BOLD PRESENCE</h2>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+    <!-- Slider Wrapper -->
+    <div class="relative">
+        <!-- Image Scroll Container -->
+        <div id="image-scroll" class="flex transition-transform duration-500 ease-in-out">
+            <!-- Slide 1 -->
+            <div class="w-full flex-shrink-0" data-id="desc1">
+                <img src="/images/octa/purposeful.jpg" alt="Purposeful Design" class="w-full h-64 object-cover rounded-xl" />
+            </div>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+            <!-- Slide 2 -->
+            <div class="w-full flex-shrink-0" data-id="desc2">
+                <img src="/images/octa/durable.jpg" alt="Durable and Technical" class="w-full h-64 object-cover rounded-xl" />
+            </div>
 
-    <!-- Local Stylesheet -->
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <script th:src="@{/js/dropdown.js}"></script>
-    <script th:src="@{/js/main.js}"></script>
-</head>
-
-<body class="font-sans text-white" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
-<div class="relative flex min-h-screen flex-col overflow-x-hidden">
-
-    <!-- Header -->
-    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
-        <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
-            <img th:src="@{images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
-        </div>
-        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div class="relative">
-                <button id="user-button"
-                        class="flex h-10 px-2.5 gap-2 bg-transparent rounded-full items-center font-bold text-white text-sm border border-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256" style="color: white;">
-                        <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
-                    </svg>
-                </button>
-                <div id="user-dropdown" class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-black border border-white rounded shadow-lg z-50 text-white">
-                    <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
-                    <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">Logout</a>
-                </div>
+            <!-- Slide 3 -->
+            <div class="w-full flex-shrink-0" data-id="desc3">
+                <img src="/images/octa/exclusive.jpg" alt="Exclusive Finishes" class="w-full h-64 object-cover rounded-xl" />
             </div>
         </div>
-        <div class="relative z-10">
-            <button id="menu-button" class="min-w-[84px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
-                Menu
-            </button>
-            <div id="menu-dropdown" class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
-                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
-                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Store</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">My Defender</a>
-            </div>
+
+        <!-- Left Arrow -->
+        <button id="prevBtn" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white text-black rounded-full p-2 hover:bg-gray-300">
+            &larr;
+        </button>
+
+        <!-- Right Arrow -->
+        <button id="nextBtn" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white text-black rounded-full p-2 hover:bg-gray-300">
+            &rarr;
+        </button>
+    </div>
+
+    <!-- Description Section -->
+    <div class="mt-8 text-center">
+        <div id="desc1" class="desc-block">
+            <h3 class="text-2xl font-bold">PURPOSEFUL DESIGN</h3>
+            <p class="text-gray-300 mt-2">Enjoy extreme performance and unmatched capability. Defender OCTA’s raised ride height and wider stance are not just for show.</p>
         </div>
-    </header>
-    <!-- Main Content -->
-    <main class="relative flex flex-col items-center gap-8 px-4 py-12 bg-black">
-        <section class="w-full max-w-6xl flex flex-col items-center gap-8">
-            <div class="self-start ml-4 mt-2">
-                <a href="javascript:history.back()" class="back-button" aria-label="Back">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="back-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </a>
-            </div>
-            <h1 class="text-5xl font-extrabold mb-10">Explore Defender Models</h1>
+        <div id="desc3" class="desc-block hidden">
+            <h3 class="text-2xl font-bold">TOUGHER THAN EVER</h3>
+            <p class="text-gray-300 mt-2">The purposeful new bumper and grille designs amplify Defender’s rugged character and improve cooling for the uprated V8 engine.
+            </p>
+        </div>
 
-            <!-- Models Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                <!-- Defender Octa -->
-                <a th:href="@{/models/octa}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                    <img th:src="@{/images/octa.jpg}" alt="Defender Octa" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <span class="text-3xl font-bold">Defender Octa</span>
-                    </div>
-                </a>
+        <div id="desc2" class="desc-block hidden">
+            <h3 class="text-2xl font-bold">DURABLE AND TECHNICAL</h3>
+            <p class="text-gray-300 mt-2">Tough from every angle - Defender OCTA is fitted with a hard-wearing Graphite Front Undershield, protecting the underside from rugged terrain.</p>
+        </div>
 
-                <!-- Defender 130 -->
-                <a th:href="@{/models/130}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                    <img th:src="@{/images/130.avif}" alt="Defender 130" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <span class="text-3xl font-bold">Defender 130</span>
-                    </div>
-                </a>
-
-                <!-- Defender 110 -->
-                <a th:href="@{/models/110}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                    <img th:src="@{/images/110.png}" alt="Defender 110" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <span class="text-3xl font-bold">Defender 110</span>
-                    </div>
-                </a>
-
-                <!-- Defender 90 -->
-                <a th:href="@{/models/90}" class="relative group overflow-hidden rounded-lg shadow-lg">
-                    <img th:src="@{/images/defender90.webp}" alt="Defender 90" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <span class="text-3xl font-bold">Defender 90</span>
-                    </div>
-                </a>
-            </div>
-        </section>
-    </main>
-
-</div>
-</body>
-</html>
+        <div id="desc3" class="desc-block hidden">
+            <h3 class="text-2xl font-bold">EXCLUSIVE FINISHES</h3>
+            <p class="text-gray-300 mt-2">The exclusive 50.80 cm (20) multi-spoke wheels utilise Diamond Turned Face Dark Tint finish with Satin Black contrast to create a unique visual.</p>
+        </div>
+    </div>
+</section>

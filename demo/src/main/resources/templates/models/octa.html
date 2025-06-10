@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -16,7 +20,121 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <script th:src="@{/js/dropdown.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+   <style>
+       body {
+           font-family: sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #000;
+           color: #fff;
+       }
 
+       h2, h3, p {
+           margin: 0;
+           padding: 0;
+       }
+
+       /* Section and Slider Container */
+       .slider-section {
+           padding: 16px;
+           background-color: #000;
+           color: #fff;
+           position: relative;
+       }
+
+       .section-title {
+           font-size: 2rem;
+           text-align: center;
+           margin-bottom: 20px;
+       }
+
+       .slider-container {
+           position: relative;
+           overflow: hidden;
+       }
+
+       .slider {
+           display: flex;
+           transition: transform 0.5s ease;
+       }
+       .slide {
+           min-width: 100%;
+           box-sizing: border-box;
+       }
+
+       .slide-content {
+           position: relative;
+           width: 100%;
+           aspect-ratio: 16 / 9; /* Enforces same aspect ratio */
+           overflow: hidden;
+       }
+
+       .slide-image {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           border-radius: 10px;
+       }
+
+       .overlay {
+           position: absolute;
+           bottom: 0;
+           background: rgba(0, 0, 0, 0.5);
+           color: white;
+           width: 100%;
+           padding: 20px;
+       }
+
+       .overlay-title {
+           font-size: 1.5rem;
+           font-weight: bold;
+           color: #fff;
+       }
+
+       .overlay-text {
+           font-size: 1rem;
+           color: #ccc;
+           margin-top: 8px;
+       }
+
+       /* Navigation Buttons */
+       .nav-btn {
+           position: absolute;
+           top: 50%;
+           transform: translateY(-50%);
+           background-color: rgba(0, 0, 0, 0.5);
+           color: #fff;
+           border: none;
+           font-size: 2rem;
+           padding: 10px;
+           cursor: pointer;
+           z-index: 10;
+       }
+
+       .prev-btn {
+           left: 10px;
+       }
+
+       .next-btn {
+           right: 10px;
+       }
+
+       /* Responsive Styles */
+       @media (max-width: 768px) {
+           .overlay-title {
+               font-size: 1.25rem;
+           }
+
+           .overlay-text {
+               font-size: 0.875rem;
+           }
+
+           .nav-btn {
+               font-size: 1.5rem;
+               padding: 8px;
+           }
+       }
+   </style>
 </head>
 
 <body class="defender-body bg-black text-white font-sans">
@@ -30,7 +148,7 @@
             </svg>
         </a>
     </div>
-<!-- Header (Navigation) -->
+    <!-- Header (Navigation) -->
     <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
 
         <!-- Logo (top-right) -->
@@ -83,28 +201,112 @@
             </div>
         </div>
     </header>
+    <section class="relative h-[90vh] bg-cover bg-center mb-0 pb-0" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+            <h1 class="text-5xl font-bold">DEFENDER OCTA</h1>
+            <p class="mt-4 text-xl max-w-2xl">Master of extreme performance.</p>
+            <a th:href="@{/build}" class="mt-4 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+                BUILD YOUR OWN
+            </a>
+            <!-- Navigation Bar (inside section) -->
+            <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
+                <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
+                    <a href="#overview" class="hover:text-gray-300">EXTERIOR</a>
+                    <a href="#performance" class="hover:text-gray-300">PERFORMANCE</a>
+                    <a href="#design" class="hover:text-gray-300">DURABILITY AND CAPABILITY</a>
+                    <a href="#technology" class="hover:text-gray-300">INTERIOR</a>
+                    <a href="#specifications" class="hover:text-gray-300">BUILD AND ORDER</a>
+                </div>
+            </nav>
+        </div>
+    </section>
 
-<!-- Hero Section -->
-<section class="relative h-[90vh] bg-cover bg-center mb-0 pb-0" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
-    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
-        <h1 class="text-5xl font-bold">DEFENDER OCTA</h1>
-        <p class="mt-4 text-xl max-w-2xl">Master of extreme performance.</p>
-        <a th:href="@{/build}" class="mt-4 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
-            BUILD YOUR OWN
-        </a>
-        <!-- Navigation Bar (inside section) -->
-        <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
-            <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
-                <a href="#overview" class="hover:text-gray-300">EXTERIOR</a>
-                <a href="#performance" class="hover:text-gray-300">PERFORMANCE</a>
-                <a href="#design" class="hover:text-gray-300">DURABILITY AND CAPABILITY</a>
-                <a href="#technology" class="hover:text-gray-300">INTERIOR</a>
-                <a href="#specifications" class="hover:text-gray-300">BUILD AND ORDER</a>
+    <!-- Hero Section -->
+
+
+    <section id="overview" class="slider-section">
+        <h2 class="section-title">BOLD PRESENCE</h2>
+        <div class="slider-container">
+            <div id="slider" class="slider">
+                <!-- Slide 1 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <img src="/images/octa/octa_0.jpg" alt="Purposeful Design" class="slide-image" />
+                        <div class="overlay">
+                            <h3 class="overlay-title">PURPOSEFUL DESIGN</h3>
+                            <p class="overlay-text">Enjoy extreme performance and unmatched capability. Defender OCTA’s raised ride height and wider stance are not just for show.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <img src="/images/octa/octa_1.jpg" alt="Tougher Than Ever" class="slide-image" />
+                        <div class="overlay">
+                            <h3 class="overlay-title">TOUGHER THAN EVER</h3>
+                            <p class="overlay-text">The purposeful new bumper and grille designs amplify Defender’s rugged character and improve cooling for the uprated V8 engine.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <img src="/images/octa/octa_2.jpg" alt="Durable and Technical" class="slide-image" />
+                        <div class="overlay">
+                            <h3 class="overlay-title">DURABLE AND TECHNICAL</h3>
+                            <p class="overlay-text">Tough from every angle - Defender OCTA is fitted with a hard-wearing Graphite Front Undershield, protecting the underside from rugged terrain.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <img src="/images/octa/octa_tyre.jpg" alt="Exclusive Finishes" class="slide-image" />
+                        <div class="overlay">
+                            <h3 class="overlay-title">EXCLUSIVE FINISHES</h3>
+                            <p class="overlay-text">The exclusive 50.80 cm (20) multi-spoke wheels utilise Diamond Turned Face Dark Tint finish with Satin Black contrast to create a unique visual.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </div>
-</section>
+
+            <button id="prevBtn" class="nav-btn prev-btn">&#10094;</button>
+            <button id="nextBtn" class="nav-btn next-btn">&#10095;</button>
+        </div>
+    </section>
+
+
 
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('slider');
+        const slides = slider.querySelectorAll('.slide');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        let currentIndex = 0;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        updateSlider();
+    });
+</script>
+
 </body>
 </html>
