@@ -130,6 +130,8 @@
        @media (max-width: 768px) {
            .overlay-title {
                font-size: 1.25rem;
+               flex-direction: column;
+               text-align: center;
            }
 
            .overlay-text {
@@ -141,6 +143,58 @@
                padding: 8px;
            }
        }
+
+       .performance-section {
+           padding: 40px 16px;
+           background-color: #000;
+           color: #fff;
+           text-align: center;
+       }
+
+       .performance-block {
+           max-width: 900px;
+           margin: 0 auto;
+       }
+
+       .performance-image {
+           width: 100%;
+           height: auto;
+           object-fit: cover;
+           /*border-radius: 10px;*/
+           /*margin-bottom: 20px;*/
+           display: block;
+       }
+
+       .performance-image-full {
+           width: 100vw; /* Full viewport width */
+           margin-left: calc(-50vw + 50%); /* Centering trick */
+           overflow: hidden;
+       }
+
+
+       /* Flex row for title and text */
+       .performance-text-row {
+           display: flex;
+           align-items: flex-start;
+           gap: 16px;
+           justify-content: center;
+           flex-wrap: wrap;
+           text-align: left;
+           padding: 0 10px;
+       }
+
+       .performance-title {
+           font-size: 1.5rem;
+           font-weight: bold;
+           white-space: nowrap;
+       }
+
+       .performance-description {
+           font-size: 1rem;
+           color: #ccc;
+           max-width: 500px;
+       }
+
    </style>
 </head>
 
@@ -284,6 +338,27 @@
             <button id="nextBtn" class="nav-btn next-btn">&#10095;</button>
         </div>
     </section>
+
+    <section id="performance" class="performance-section">
+        <h2 class="section-title">UNPARALLELED POWER</h2>
+
+        <!-- Full-width image -->
+        <div class="performance-image-full">
+            <img src="/images/octa/performance_0.webp" alt="Purposeful Design" class="performance-image" />
+        </div>
+
+        <div class="performance-block">
+            <div class="performance-text-row">
+                <h3 class="performance-title">DRIVING MODES</h3>
+                <p class="performance-description">
+                    For the most engaging off-road experience select OCTA Mode, with a unique ABS calibration designed for loose gravel surfaces.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
 
 
 
