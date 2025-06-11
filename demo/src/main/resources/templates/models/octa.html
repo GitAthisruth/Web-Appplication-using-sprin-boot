@@ -194,6 +194,41 @@
            color: #ccc;
            max-width: 500px;
        }
+       .performance-triplet {
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           gap: 24px;
+           padding: 40px 16px;
+           background-color: #111;
+           color: #fff;
+           text-align: center;
+       }
+
+       .performance-feature {
+           flex: 1 1 300px;
+           max-width: 320px;
+       }
+
+       .triplet-image {
+           width: 100%;
+           height: 200px;
+           object-fit: cover;
+           border-radius: 8px;
+           margin-bottom: 16px;
+       }
+
+       .triplet-title {
+           font-size: 1.25rem;
+           font-weight: bold;
+           margin-bottom: 8px;
+       }
+
+       .triplet-description {
+           font-size: 1rem;
+           color: #ccc;
+       }
+
 
    </style>
 </head>
@@ -342,7 +377,7 @@
     <section id="performance" class="performance-section">
         <h2 class="section-title">UNPARALLELED POWER</h2>
 
-        <!-- Full-width image -->
+        <!-- Full-width image 1 -->
         <div class="performance-image-full">
             <img src="/images/octa/performance_0.webp" alt="Purposeful Design" class="performance-image" />
         </div>
@@ -355,7 +390,48 @@
                 </p>
             </div>
         </div>
+
+        <!-- Full-width image 2 -->
+        <div class="performance-image-full">
+            <img src="/images/octa/octa_tail_0.jpg" alt="6D Dynamics Air Suspension" class="performance-image" />
+        </div>
+
+        <div class="performance-block">
+            <div class="performance-text-row">
+                <h3 class="performance-title">6D DYNAMICS AIR SUSPENSION</h3>
+                <p class="performance-description">
+                    New 6D Dynamics air suspension intelligently responds to driving styles, with hydraulic interlinked dampers and height-adjustable air springs.
+                    This best-in-class system results in sportscar-like on-road driving and greater control on any terrain.
+                </p>
+            </div>
+        </div>
+        <div class="performance-triplet">
+            <div class="performance-feature">
+                <img src="/images/octa/engine.webp" alt="Twin Turbo V8" class="triplet-image" />
+                <h3 class="triplet-title">TWIN TURBO V8</h3>
+                <p class="triplet-description">
+                    Immediate responses, exceptional driveability, and greater fuel efficiency. The 48 V mild hybrid system enhances the V8 engine with improved torque and sprint performance.
+                </p>
+            </div>
+
+            <div class="performance-feature">
+                <img src="/images/octa/brake.jpg" alt="Integrated Power Brake" class="triplet-image" />
+                <h3 class="triplet-title">INTEGRATED POWER BRAKE</h3>
+                <p class="triplet-description">
+                    Extreme performance demands extreme stopping power. Equipped with Defender OCTA-specific brake pads, calipers and brake discs, the new Integrated Power Brake system reduces brake fade.
+                </p>
+            </div>
+
+            <div class="performance-feature">
+                <img src="/images/octa/exhaust.jpg" alt="Active Exhaust System" class="triplet-image" />
+                <h3 class="triplet-title">ACTIVE EXHAUST SYSTEM</h3>
+                <p class="triplet-description">
+                    Defender OCTA features an active exhaust system that allows for optimum thermal management in OCTA mode and gives the vehicle a distinctive roar.
+                </p>
+            </div>
+        </div>
     </section>
+
 
 
 
