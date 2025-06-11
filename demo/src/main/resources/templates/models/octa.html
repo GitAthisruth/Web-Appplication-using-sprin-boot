@@ -271,6 +271,62 @@
            color: #ccc;
        }
 
+       .bass-slider-section {
+           text-align: center;
+           padding: 60px 16px;
+           background-color: #000;
+           color: #fff;
+       }
+
+       .bass-slider-links {
+           font-size: 1rem;
+           margin-bottom: 24px;
+       }
+
+       .bass-slider-link {
+           color: #ccc;
+           cursor: pointer;
+           margin: 0 10px;
+           text-decoration: none;
+           font-weight: bold;
+           transition: color 0.3s;
+       }
+
+       .bass-slider-link:hover,
+       .bass-slider-link.active {
+           color: #fff;
+       }
+
+       .bass-slide {
+           display: none;
+           max-width: 900px;
+           margin: 0 auto;
+       }
+
+       .bass-slide.active {
+           display: block;
+       }
+
+       .bass-slider-image {
+           width: 100%;
+           height: auto;
+           border-radius: 10px;
+           margin-bottom: 20px;
+       }
+
+       .bass-slider-title {
+           font-size: 1.5rem;
+           font-weight: bold;
+           margin-bottom: 12px;
+       }
+
+       .bass-slider-description {
+           font-size: 1rem;
+           color: #ccc;
+           max-width: 700px;
+           margin: 0 auto;
+       }
+
 
 
    </style>
@@ -489,10 +545,99 @@
         </div>
     </section>
 
+    <section id="design">
+        <h2 class="section-title">
+            MASTER ANY TERRAIN
+        </h2>
+        <p>We challenged our engineers to subject Defender OCTA to the most extreme testing and development programme in Defender History*. More than 13 960 tests later, they replied…</p>
+
+        <div class="performance-image-full">
+            <img src="/images/octa/offroad_0.avif" alt="Purposeful Design" class="performance-image" />
+        </div>
+        <div class="performance-triplet">
+            <div class="performance-feature">
+                <img src="/images/octa/wading.jpg" alt="Twin Turbo V8" class="triplet-image" />
+                <h3 class="triplet-title">WADING</h3>
+                <p class="triplet-description">
+                    Defender OCTA goes deeper than any Defender ever has, with a wading depth of up to a metre, double the capability of the original Defender**.
+                </p>
+            </div>
+
+            <div class="performance-feature">
+                <img src="/images/octa/grip.png" alt="Integrated Power Brake" class="triplet-image" />
+                <h3 class="triplet-title">OPTIMUM TRACTION</h3>
+                <p class="triplet-description">
+                    A range of specially developed 838 mm diameter tyres, the largest ever fitted to a Defender, including all-season tyres or all-terrain tyres.
+                </p>
+            </div>
+
+            <div class="performance-feature">
+                <img src="/images/octa/offroading.webp" alt="Active Exhaust System" class="triplet-image" />
+                <h3 class="triplet-title">OFF-ROADING</h3>
+                <p class="triplet-description">
+                    Defender OCTA promises unparalleled progress over any terrain, with greater ground clearance and wheel articulation.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology">
+        <h2 class="section-title">
+            MODERN DESIGN
+        </h2>
+        <p>We challenged our engineers to subject Defender OCTA to the most extreme testing and development programme in Defender History*. More than 13 960 tests later, they replied…</p>
+        <div class="performance-image-full">
+            <img src="/images/octa/interior.webp" alt="Purposeful Design" class="performance-image" />
+        </div>
+            <div class="bass-slider-section">
+                <!-- Tab-like text options -->
+                <div class="bass-slider-links">
+                    <span class="bass-slider-link active" onclick="switchSeat('bass', this)">BODY AND SOUL SEATS</span>
+                    |
+                    <span class="bass-slider-link" onclick="switchSeat('performance', this)">PERFORMANCE SEATS</span>
+                </div>
+
+                <!-- Slide 1 -->
+                <div class="bass-slide active" id="bass-slide">
+                    <img src="/images/octa/comfortable_seat.jpg" alt="Body and Soul Seats" class="bass-slider-image" />
+                    <h3 class="bass-slider-title">BODY AND SOUL SEATS</h3>
+                    <p class="bass-slider-description">
+                        The next generation of in-car vibro-acoustic technology delivers a multi-sensory audio experience through the industry-leading SUBPAC™ platform.
+                        This cutting-edge Body and Soul Seat (BASS) includes six Wellness programmes. Don’t just hear the sound, feel it.
+                    </p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="bass-slide" id="performance-slide">
+                    <img src="/images/octa/performance_seat.avif" alt="Performance Seats" class="bass-slider-image" />
+                    <h3 class="bass-slider-title">PERFORMANCE SEATS</h3>
+                    <p class="bass-slider-description">
+                        The unique front-row Defender OCTA Performance Seats feature supportive bolsters and integrated headrests.
+                        Matching second-row seats ensure passenger comfort. Create a cohesive, signature look by opting for a Chopped Carbon Fibre seatback to match the exterior.
+                    </p>
+                </div>
+            </div>
+        <div class="performance-triplet">
+            <div class="performance-feature">
+                <img src="/images/octa/seat_details.jpg" alt="Twin Turbo V8" class="triplet-image" />
+                <h3 class="triplet-title">DYNAMIC DETAILS</h3>
+                <p class="triplet-description">
+                    Modern details can be found throughout, such as the Moonlight Chrome switchgear and the optional Chopped Carbon Fibre finisher1. The new steering wheel design features translucent edge-lit gear shift paddles.
+                </p>
+            </div>
+
+            <div class="performance-feature">
+                <img src="/images/octa/seat_1_innovation.jpg" alt="Integrated Power Brake" class="triplet-image" />
+                <h3 class="triplet-title">MATERIAL INNOVATION</h3>
+                <p class="triplet-description">
+                    Choose between four distinct colourways and contemporary materials including UltrafabricsTM PU or Semi-Aniline leather. Each option has unique features, such as graphic embellishments and the KvadratTM Steelcut exclusive to Defender OCTA.
+                </p>
+            </div>
+        </div>
 
 
 
-
+    </section>
 
 
 </div>
@@ -521,6 +666,24 @@
 
         updateSlider();
     });
+
+
+    function switchSeat(type, el) {
+        // Hide all slides
+        document.querySelectorAll('.bass-slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+
+        // Remove 'active' from all links
+        document.querySelectorAll('.bass-slider-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        // Show selected slide
+        document.getElementById(`${type}-slide`).classList.add('active');
+        el.classList.add('active');
+    }
+
 </script>
 
 </body>
