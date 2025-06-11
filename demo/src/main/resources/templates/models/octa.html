@@ -132,6 +132,11 @@
                font-size: 1.25rem;
                flex-direction: column;
                text-align: center;
+               .performance-specs {
+                   flex-direction: column;
+                   align-items: center;
+                   gap: 30px;
+               }
            }
 
            .overlay-text {
@@ -216,6 +221,7 @@
            object-fit: cover;
            border-radius: 8px;
            margin-bottom: 16px;
+           border: 1px solid white;
        }
 
        .triplet-title {
@@ -228,6 +234,43 @@
            font-size: 1rem;
            color: #ccc;
        }
+       .performance-specs {
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           gap: 250px;
+           margin-top: 100px;
+           padding: 20px;
+           background-color: #000;
+           color: #fff;
+           text-align: center;
+       }
+
+       .spec-item {
+           min-width: 150px;
+       }
+
+       .spec-label {
+           font-weight: bold;
+           margin-bottom: 8px;
+           font-size: 1.1rem;
+       }
+
+       .spec-value {
+           font-size: 1.8rem;
+       }
+
+       .spec-value strong {
+           font-weight: bold;
+       }
+
+       .spec-value .unit {
+           font-weight: normal;
+           font-size: 1.2rem;
+           margin-left: 4px;
+           color: #ccc;
+       }
+
 
 
    </style>
@@ -428,6 +471,20 @@
                 <p class="triplet-description">
                     Defender OCTA features an active exhaust system that allows for optimum thermal management in OCTA mode and gives the vehicle a distinctive roar.
                 </p>
+            </div>
+        </div>
+        <div class="performance-specs">
+            <div class="spec-item">
+                <div class="spec-label">MAXIMUM POWER</div>
+                <div class="spec-value"><strong>467</strong> <span class="unit">kW</span></div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">0-100 KM/H</div>
+                <div class="spec-value"><strong>4.0</strong> <span class="unit">S</span></div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-label">MAXIMUM TORQUE</div>
+                <div class="spec-value"><strong>750</strong> <span class="unit">NM</span></div>
             </div>
         </div>
     </section>
