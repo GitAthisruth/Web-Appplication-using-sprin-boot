@@ -137,6 +137,17 @@
                    align-items: center;
                    gap: 30px;
                }
+               .configurator-images {
+                   flex-direction: column;
+               }
+
+               .main-image {
+                   flex: 1 1 100%;
+               }
+
+               .side-images {
+                   display: none;
+               }
            }
 
            .overlay-text {
@@ -327,7 +338,107 @@
            margin: 0 auto;
        }
 
+       .configurator {
+           display: flex;
+           flex-direction: column;
+           gap: 30px;
+           padding: 20px;
+       }
 
+       .configurator-images {
+           display: flex;
+           gap: 20px;
+       }
+
+       /* Main image takes 60% width and defines the height */
+       .main-image {
+           flex: 0 0 60%;
+       }
+
+       .main-image img {
+           width: 100%;
+           height: 100%;
+           max-height: 500px; /* Set a max height as reference */
+           object-fit: cover;
+           border-radius: 8px;
+       }
+
+       /* Side images take 40% width and split the height equally */
+       .side-images {
+           flex: 0 0 40%;
+           display: flex;
+           flex-direction: column;
+           gap: 20px;
+           max-height: 500px; /* Match main image */
+       }
+
+       .side-images .image-container {
+           flex: 1;
+           overflow: hidden;
+       }
+
+       .side-images img {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;}
+
+       .tab-buttons {
+           display: flex;
+           justify-content: center;
+           gap: 24px;
+           margin-bottom: 20px;
+       }
+
+       .tab-btn {
+           cursor: pointer;
+           font-weight: bold;
+           text-transform: uppercase;
+           color: #ccc;
+           padding: 6px 12px;
+           border-bottom: 2px solid transparent;
+       }
+
+       .tab-btn.active {
+           color: #fff;
+           border-color: #fff;
+       }
+
+       .tab-content {
+           display: none;
+           text-align: center;
+       }
+
+       .tab-content.active {
+           display: block;
+       }
+
+       .palette-row {
+           display: flex;
+           justify-content: center;
+           gap: 12px;
+           flex-wrap: wrap;
+           margin-bottom: 10px;
+       }
+
+       /* Rectangle Swatches */
+       .box-swatch {
+           width: 50px;
+           height: 30px;
+           border-radius: 4px;
+           border: 2px solid #fff;
+           cursor: pointer;
+           box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+       }
+
+       /* Wheel images */
+       .wheel-thumb {
+           width: 60px;
+           height: 60px;
+           object-fit: contain;
+           cursor: pointer;
+           border: 2px solid #fff;
+           border-radius: 6px;
+       }
 
    </style>
 </head>
@@ -634,10 +745,78 @@
                 </p>
             </div>
         </div>
-
-
-
     </section>
+    <section id="build-order">
+        <h2 class="section-title">BUILD AND ORDER</h2>
+        <p>Choose from our distinct models to begin your journey</p>
+
+        <div class="configurator">
+            <!-- Left + Right Image Columns -->
+            <div class="configurator-images">
+                <!-- Left: Side View (60%) -->
+                <div class="main-image">
+                    <img id="vehicle-side-view" th:src="@{/images/octa/grey/octa_grey_side_1.jpg}" alt="Side View" class="config-image">
+                </div>
+
+                <!-- Right: Interior & Wheels stacked vertically (40%) -->
+                <div class="side-images">
+                    <div class="image-container">
+                        <img id="vehicle-interior" th:src="@{/images/octa/interior.webp}" alt="Interior" class="config-image">
+                    </div>
+                    <div class="image-container">
+                        <img id="vehicle-wheels" th:src="@{/images/octa/grey/octa_grey_side_1.jpg}" alt="Alloy Wheels" class="config-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Options -->
+            <div class="configurator-options">
+                <!-- Tabs -->
+                <div class="tab-buttons">
+                    <span class="tab-btn active" onclick="switchTab('exterior')">Exterior</span>
+                    <span class="tab-btn" onclick="switchTab('interior')">Interior</span>
+                    <span class="tab-btn" onclick="switchTab('wheels')">Wheels</span>
+                </div>
+
+                <!-- Exterior Options -->
+                <div class="tab-content active" id="tab-exterior">
+                    <div class="palette-row">
+                        <div class="box-swatch" style="background-color: black;" onclick="updateConfig('exterior', 'Black')"></div>
+                        <div class="box-swatch" style="background-color: white;" onclick="updateConfig('exterior', 'White')"></div>
+                        <div class="box-swatch" style="background-color: red;" onclick="updateConfig('exterior', 'Red')"></div>
+                        <div class="box-swatch" style="background-color: blue;" onclick="updateConfig('exterior', 'Blue')"></div>
+                    </div>
+                    <p id="exterior-name">Black</p>
+                </div>
+
+                <!-- Interior Options -->
+                <div class="tab-content" id="tab-interior">
+                    <div class="palette-row">
+                        <div class="box-swatch" style="background-color: #333;" onclick="updateConfig('interior', 'Black Leather')"></div>
+                        <div class="box-swatch" style="background-color: #f5f5dc;" onclick="updateConfig('interior', 'Beige Leather')"></div>
+                        <div class="box-swatch" style="background-color: #808080;" onclick="updateConfig('interior', 'Gray Fabric')"></div>
+                        <div class="box-swatch" style="background-color: #8b0000;" onclick="updateConfig('interior', 'Red Leather')"></div>
+                    </div>
+                    <p id="interior-name">Black Leather</p>
+                </div>
+
+                <!-- Wheels Options -->
+                <div class="tab-content" id="tab-wheels">
+                    <div class="palette-row">
+                        <img th:src="@{/images/octa/wheel/octa_alloy_1.png}" alt="Alloy 1" class="wheel-thumb" onclick="updateConfig('wheels', 'Alloy 1')">
+                        <img th:src="@{/images/octa/wheel/octa_alloy_2.png}" alt="Alloy 2" class="wheel-thumb" onclick="updateConfig('wheels', 'Alloy 2')">
+                        <img th:src="@{/images/octa/wheel/octa_alloy_3.png}" alt="Alloy 3" class="wheel-thumb" onclick="updateConfig('wheels', 'Alloy 3')">
+                    </div>
+                    <p id="wheels-name">Alloy 1</p>
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+
+
 
 
 </div>
@@ -683,6 +862,27 @@
         document.getElementById(`${type}-slide`).classList.add('active');
         el.classList.add('active');
     }
+
+    function switchTab(tab) {
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        // Activate the clicked tab
+        document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    }
+
+    function updateConfig(type, value) {
+        if (type === 'exterior') {
+            document.getElementById('exterior-name').textContent = value;
+        } else if (type === 'interior') {
+            document.getElementById('interior-name').textContent = value;
+        } else if (type === 'wheels') {
+            document.getElementById('wheels-name').textContent = value;
+        }
+    }
+
 
 </script>
 
