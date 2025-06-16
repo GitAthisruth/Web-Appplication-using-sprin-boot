@@ -342,9 +342,8 @@
 
        .configurator {
            display: flex;
-           flex-direction: column;
-           gap: 30px;
-           padding: 20px;
+           gap: 20px;
+           align-items: stretch;
        }
 
        .configurator-images {
@@ -445,6 +444,102 @@
            border: 2px solid #fff;
            border-radius: 6px;
        }
+
+       .vehicle-slider {
+           position: relative;
+           width: 100%;
+           overflow: hidden;
+       }
+
+       .vehicle-slide {
+           display: none;
+           width: 100%;
+       }
+
+       .vehicle-slide.active {
+           display: block;
+       }
+
+       .vehicle-slide-content {
+           width: 100%;
+       }
+
+       .vehicle-slide-image {
+           width: 100%;
+           height: auto;
+           display: block;
+       }
+
+       .vehicle-slider-arrow {
+           position: absolute;
+           top: 50%;
+           transform: translateY(-50%);
+           background: rgba(0, 0, 0, 0.5);
+           color: #fff;
+           border: none;
+           padding: 10px 14px;
+           font-size: 24px;
+           cursor: pointer;
+           z-index: 10;
+           transition: background 0.3s ease;
+       }
+
+       .vehicle-slider-arrow:hover {
+           background: rgba(0, 0, 0, 0.8);
+       }
+
+       .vehicle-slider-arrow.left {
+           left: 10px;
+       }
+
+       .vehicle-slider-arrow.right {
+           right: 10px;
+       }
+
+
+       /* New Main Image Container */
+       .primary-image-container {
+           flex: 0 0 60%; /* Fixed 60% width */
+           height: 500px; /* FIXED HEIGHT */
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           overflow: hidden;
+           background-color: #f5f5f5;
+       }
+
+       .primary-image-container .vehicle-slide-image {
+
+           height: 100%;
+           max-width: 100%;
+           object-fit: cover;
+           display: block;
+       }
+
+       /* New Side Images Container */
+       .secondary-images-container {
+           flex: 0 0 40%; /* Remaining 40% width */
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between;
+           height: 500px; /* MATCH primary-image-container */
+           gap: 10px;
+       }
+
+       .secondary-image {
+           flex: 1;
+           overflow: hidden;
+           background-color: #f5f5f5;
+       }
+
+       .secondary-image img {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           display: block;
+       }
+
+
 
    </style>
 </head>
@@ -758,21 +853,44 @@
 
         <div class="configurator">
             <!-- Left + Right Image Columns -->
-            <div class="configurator-images">
-                <!-- Left: Side View (60%) -->
-                <div class="main-image">
-                    <img id="vehicle-side-view" th:src="@{/images/octa/grey/octa_grey_side_1.jpg}" alt="Side View" class="config-image">
-                </div>
+            <div class="primary-image-container">
+                <div class="vehicle-slider" id="vehicle-slider">
+                    <!-- Slide 1 -->
+                    <div class="vehicle-slide active">
+                        <div class="vehicle-slide-content">
+                            <img src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
+                        </div>
+                    </div>
 
-                <!-- Right: Interior & Wheels stacked vertically (40%) -->
-                <div class="side-images">
-                    <div class="image-container">
-                        <img id="vehicle-interior" th:src="@{/images/octa/interior.webp}" alt="Interior" class="config-image">
+                    <!-- Slide 2 -->
+                    <div class="vehicle-slide">
+                        <div class="vehicle-slide-content">
+                            <img src="/images/octa/grey/octa_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
+                        </div>
                     </div>
-                    <div class="image-container">
-                        <img id="vehicle-wheels" th:src="@{/images/octa/grey/octa_grey_side_1.jpg}" alt="Alloy Wheels" class="config-image">
+
+                    <!-- Slide 3 -->
+                    <div class="vehicle-slide">
+                        <div class="vehicle-slide-content">
+                            <img src="/images/octa/grey/octa_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
+                        </div>
                     </div>
+
+                    <!-- Arrows -->
+                    <button class="vehicle-slider-arrow left" onclick="prevSlide()">❮</button>
+                    <button class="vehicle-slider-arrow right" onclick="nextSlide()">❯</button>
                 </div>
+            </div>
+
+            <!-- Right: Side Images -->
+            <div class="secondary-images-container">
+                <div class="secondary-image">
+                    <img id="vehicle-interior" src="/images/octa/interior.webp" alt="Interior" class="config-image" />
+                </div>
+                <div class="secondary-image">
+                    <img id="vehicle-wheels" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
+                </div>
+            </div>
             </div>
 
             <!-- Right Column: Options -->
@@ -787,12 +905,11 @@
                 <!-- Exterior Options -->
                 <div class="tab-content active" id="tab-exterior">
                     <div class="palette-row">
-                        <div class="box-swatch" style="background-color: black;" onclick="updateConfig('exterior', 'Black')"></div>
-                        <div class="box-swatch" style="background-color: white;" onclick="updateConfig('exterior', 'White')"></div>
-                        <div class="box-swatch" style="background-color: red;" onclick="updateConfig('exterior', 'Red')"></div>
-                        <div class="box-swatch" style="background-color: blue;" onclick="updateConfig('exterior', 'Blue')"></div>
+                        <div class="box-swatch" style="background-color:dimgrey;" onclick="updateConfig('exterior', 'Grey')"></div>
+                        <div class="box-swatch" style="background-color: darkgoldenrod;" onclick="updateConfig('exterior', 'Copper')"></div>
+                        <div class="box-swatch" style="background-color: darkblue;" onclick="updateConfig('exterior', 'Blue')"></div>
                     </div>
-                    <p id="exterior-name">Black</p>
+                    <p id="exterior-name">Grey</p>
                 </div>
 
                 <!-- Interior Options -->
@@ -879,29 +996,67 @@
         document.getElementById('tab-' + tab).classList.add('active');
     }
 
+    let currentExterior = 'Grey';
+    let currentWheels = 'Alloy 1';
+
     function updateConfig(type, value) {
-        console.log(`Selected type: ${type}`);
-        console.log(`New value: ${value}`);
-
         if (type === 'exterior') {
-            const current = document.getElementById('exterior-name').textContent;
-            console.log("Current exterior:", current);
-            document.getElementById('exterior-name').textContent = value;
-
+            currentExterior = value;
+            document.getElementById('exterior-name').innerText = value;
         } else if (type === 'interior') {
-            const current = document.getElementById('interior-name').textContent;
-            console.log("Current interior:", current);
-            document.getElementById('interior-name').textContent = value;
-
+            document.getElementById('interior-name').innerText = value;
+            document.getElementById('vehicle-interior').src = `/images/octa/interior/${value.toLowerCase().replace(/\s/g, '_')}.webp`;
+            return;
         } else if (type === 'wheels') {
-            const current = document.getElementById('wheels-name').textContent;
-            console.log("Current wheels:", current);
-            document.getElementById('wheels-name').textContent = value;
-
-        } else {
-            console.warn("Unknown type passed:", type);
+            currentWheels = value;
+            document.getElementById('wheels-name').innerText = value;
         }
+
+        // Now update main side-view image based on exterior and wheel
+        const color = currentExterior.toLowerCase();
+        const wheel = currentWheels.toLowerCase().replace(/\s/g, '_');
+        const newImagePath = `/images/octa/${color}/octa_${color}_${wheel}.jpg`;
+
+        document.getElementById('vehicle-side-view').src = newImagePath;
+        document.getElementById('vehicle-wheels').src = `/images/octa/wheel/${wheel}.png`;
     }
+
+    function switchTab(tabName) {
+        // Deactivate all tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+        // Activate selected tab
+        document.querySelector(`.tab-btn[onclick*="${tabName}"]`).classList.add('active');
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+        const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+        slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+    });
+    }
+
+        function nextSlide() {
+        const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+        function prevSlide() {
+        const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        showSlide(currentSlide);
+    });
+
 
 
 </script>
