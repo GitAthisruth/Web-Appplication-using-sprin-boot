@@ -858,21 +858,21 @@
                     <!-- Slide 1 -->
                     <div class="vehicle-slide active">
                         <div class="vehicle-slide-content">
-                            <img src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
+                            <img id="slider-img-1" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
                         </div>
                     </div>
 
                     <!-- Slide 2 -->
                     <div class="vehicle-slide">
                         <div class="vehicle-slide-content">
-                            <img src="/images/octa/grey/octa_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
+                            <img id="slider-img-2" src="/images/octa/grey/octa_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
                         </div>
                     </div>
 
                     <!-- Slide 3 -->
                     <div class="vehicle-slide">
                         <div class="vehicle-slide-content">
-                            <img src="/images/octa/grey/octa_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
+                            <img id="slider-img-3" src="/images/octa/grey/octa_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
                         </div>
                     </div>
 
@@ -885,7 +885,7 @@
             <!-- Right: Side Images -->
             <div class="secondary-images-container">
                 <div class="secondary-image">
-                    <img id="vehicle-interior" src="/images/octa/interior.webp" alt="Interior" class="config-image" />
+                    <img id="vehicle-interior" src="/images/octa/interior/interior_black.avif" alt="Interior" class="config-image" />
                 </div>
                 <div class="secondary-image">
                     <img id="vehicle-wheels" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
@@ -916,9 +916,8 @@
                 <div class="tab-content" id="tab-interior">
                     <div class="palette-row">
                         <div class="box-swatch" style="background-color: #333;" onclick="updateConfig('interior', 'Black Leather')"></div>
-                        <div class="box-swatch" style="background-color: #f5f5dc;" onclick="updateConfig('interior', 'Beige Leather')"></div>
-                        <div class="box-swatch" style="background-color: #808080;" onclick="updateConfig('interior', 'Gray Fabric')"></div>
-                        <div class="box-swatch" style="background-color: #8b0000;" onclick="updateConfig('interior', 'Red Leather')"></div>
+                        <div class="box-swatch" style="background-color: beige;" onclick="updateConfig('interior', 'Beige Leather')"></div>
+                        <div class="box-swatch" style="background-color: #808080;" onclick="updateConfig('interior', 'Grey Fabric')"></div>
                     </div>
                     <p id="interior-name">Black Leather</p>
                 </div>
@@ -996,41 +995,59 @@
         document.getElementById('tab-' + tab).classList.add('active');
     }
 
-    let currentExterior = 'Grey';
-    let currentWheels = 'Alloy 1';
-
     function updateConfig(type, value) {
         if (type === 'exterior') {
-            currentExterior = value;
-            document.getElementById('exterior-name').innerText = value;
-        } else if (type === 'interior') {
-            document.getElementById('interior-name').innerText = value;
-            document.getElementById('vehicle-interior').src = `/images/octa/interior/${value.toLowerCase().replace(/\s/g, '_')}.webp`;
-            return;
-        } else if (type === 'wheels') {
-            currentWheels = value;
-            document.getElementById('wheels-name').innerText = value;
+            document.getElementById('exterior-name').textContent = value;
+
+            // Define image paths for each color
+            const imageMap = {
+                'Grey': {
+                    side: '/images/octa/grey/octa_grey_side_1.jpg',
+                    front: '/images/octa/grey/octa_grey_front_1.webp',
+                    back: '/images/octa/grey/octa_grey_back_1.jpg'
+                },
+                'Copper': {
+                    side: '/images/octa/copper/octa_copper_side_2.jpg',
+                    front: '/images/octa/copper/octa_copper_front_2.webp',
+                    back: '/images/octa/copper/octa_copper_back_2.jpg'
+                },
+                'Blue': {
+                    side: '/images/octa/grey/octa_grey_side_1.jpg',
+                    front: '/images/octa/blue/octa_blue_front_3.jpg',
+                    back: '/images/octa/grey/octa_grey_back_1.jpg'
+                }
+            };
+
+            const selected = imageMap[value];
+            if (selected) {
+                document.getElementById('slider-img-1').src = selected.side;
+                document.getElementById('slider-img-2').src = selected.front;
+                document.getElementById('slider-img-3').src = selected.back;
+
+                // Update the third image on the right
+                document.getElementById('vehicle-wheels').src = selected.side;
+            }
         }
 
-        // Now update main side-view image based on exterior and wheel
-        const color = currentExterior.toLowerCase();
-        const wheel = currentWheels.toLowerCase().replace(/\s/g, '_');
-        const newImagePath = `/images/octa/${color}/octa_${color}_${wheel}.jpg`;
+        // Additional logic for interior and wheels (already working)
+        if (type === 'interior') {
+            document.getElementById('interior-name').textContent = value;
 
-        document.getElementById('vehicle-side-view').src = newImagePath;
-        document.getElementById('vehicle-wheels').src = `/images/octa/wheel/${wheel}.png`;
+            const interiorImages = {
+                'Black Leather': '/images/octa/interior/interior_black.avif',
+                'Beige Leather': '/images/octa/interior/interior_beige.jpg',
+                'Grey Fabric': '/images/octa/interior/interior_grey.avif'
+            };
+            const selectedInterior = interiorImages[value];
+            if (selectedInterior) {
+                document.getElementById('vehicle-interior').src = selectedInterior;
+            }
+        }
+
+        if (type === 'wheels') {
+            document.getElementById('wheels-name').textContent = value;
+        }
     }
-
-    function switchTab(tabName) {
-        // Deactivate all tabs
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-        // Activate selected tab
-        document.querySelector(`.tab-btn[onclick*="${tabName}"]`).classList.add('active');
-        document.getElementById(`tab-${tabName}`).classList.add('active');
-    }
-
 
         let currentSlide = 0;
 
