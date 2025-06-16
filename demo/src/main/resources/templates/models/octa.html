@@ -932,9 +932,6 @@
                     <p id="wheels-name">Alloy 1</p>
                 </div>
             </div>
-
-
-
         </div>
     </section>
 
@@ -995,41 +992,16 @@
         document.getElementById('tab-' + tab).classList.add('active');
     }
 
+
+    let currentExterior = 'Grey';
+    let currentWheels = 'Alloy 1';
     function updateConfig(type, value) {
         if (type === 'exterior') {
+            currentExterior = value;
             document.getElementById('exterior-name').textContent = value;
-
-            // Define image paths for each color
-            const imageMap = {
-                'Grey': {
-                    side: '/images/octa/grey/octa_grey_side_1.jpg',
-                    front: '/images/octa/grey/octa_grey_front_1.webp',
-                    back: '/images/octa/grey/octa_grey_back_1.jpg'
-                },
-                'Copper': {
-                    side: '/images/octa/copper/octa_copper_side_2.jpg',
-                    front: '/images/octa/copper/octa_copper_front_2.webp',
-                    back: '/images/octa/copper/octa_copper_back_2.jpg'
-                },
-                'Blue': {
-                    side: '/images/octa/grey/octa_grey_side_1.jpg',
-                    front: '/images/octa/blue/octa_blue_front_3.jpg',
-                    back: '/images/octa/grey/octa_grey_back_1.jpg'
-                }
-            };
-
-            const selected = imageMap[value];
-            if (selected) {
-                document.getElementById('slider-img-1').src = selected.side;
-                document.getElementById('slider-img-2').src = selected.front;
-                document.getElementById('slider-img-3').src = selected.back;
-
-                // Update the third image on the right
-                document.getElementById('vehicle-wheels').src = selected.side;
-            }
+            updateImages(); // Call image updater
         }
 
-        // Additional logic for interior and wheels (already working)
         if (type === 'interior') {
             document.getElementById('interior-name').textContent = value;
 
@@ -1045,9 +1017,75 @@
         }
 
         if (type === 'wheels') {
+            currentWheels = value;
             document.getElementById('wheels-name').textContent = value;
+            updateImages(); // Call image updater
         }
     }
+    function updateImages() {
+        const imageMap = {
+            'Grey': {
+                'Alloy 1': {
+                    side: '/images/octa/grey/octa_grey_side_1.jpg',
+                    front: '/images/octa/grey/octa_grey_front_1.webp',
+                    back: '/images/octa/grey/octa_grey_back_1.jpg',
+                },
+                'Alloy 2': {
+                    side: '/images/octa/copper/octa_copper_side_2.jpg',
+                    front: '/images/octa/copper/octa_copper_front_2.webp',
+                    back: '/images/octa/copper/octa_copper_back_2.webp'
+                },
+                'Alloy 3': {
+                    side: '/images/octa/grey/octa_grey_side_3.jpg',
+                    front: '/images/octa/grey/octa_grey_front_3.webp',
+                    back: '/images/octa/grey/octa_grey_back_3.jpg',
+                }
+            },
+            'Copper': {
+                'Alloy 1': {
+                    side: '/images/octa/copper/alloy1/side.webp',
+                    front: '/images/octa/copper/alloy1/front.webp',
+                    back: '/images/octa/copper/alloy1/back.webp'
+                },
+                'Alloy 2': {
+                    side: '/images/octa/copper/alloy2/side.jpg',
+                    front: '/images/octa/copper/alloy2/front.jpg',
+                    back: '/images/octa/copper/alloy2/back.jpg'
+                },
+                'Alloy 3': {
+                    side: '/images/octa/copper/alloy3/side.jpg',
+                    front: '/images/octa/copper/alloy3/front.jpg',
+                    back: '/images/octa/copper/alloy3/back.jpg'
+                }
+            },
+            'Blue': {
+                'Alloy 1': {
+                    side: '/images/octa/blue/alloy1/side.jpg',
+                    front: '/images/octa/blue/alloy1/front.jpg',
+                    back: '/images/octa/blue/alloy1/back.jpg'
+                },
+                'Alloy 2': {
+                    side: '/images/octa/blue/alloy2/side.jpg',
+                    front: '/images/octa/blue/alloy2/front.jpg',
+                    back: '/images/octa/blue/alloy2/back.jpg'
+                },
+                'Alloy 3': {
+                    side: '/images/octa/blue/alloy3/side.jpg',
+                    front: '/images/octa/blue/alloy3/front.jpg',
+                    back: '/images/octa/blue/alloy3/back.jpg'
+                }
+            }
+        };
+
+        const selectedSet = imageMap[currentExterior]?.[currentWheels];
+        if (selectedSet) {
+            document.getElementById('slider-img-1').src = selectedSet.side;
+            document.getElementById('slider-img-2').src = selectedSet.front;
+            document.getElementById('slider-img-3').src = selectedSet.back;
+            document.getElementById('vehicle-wheels').src = selectedSet.side;
+        }
+    }
+
 
         let currentSlide = 0;
 
