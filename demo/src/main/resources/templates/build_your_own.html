@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Defender</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+</head>
+
+<body class="font-sans" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
+
+        <!-- Logo (top-right) -->
+        <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+            <img th:src="@{images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+        </div>
+
+        <!-- Centered User Button -->
+        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="relative">
+                <button id="user-button"
+                        class="flex h-10 px-2.5 gap-2 bg-transparent rounded-full items-center font-bold text-white text-sm border border-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         viewBox="0 0 256 256" style="color: white;">
+                        <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown -->
+                <div id="user-dropdown"
+                     class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-black border border-white rounded shadow-lg z-50 text-white">
+                    <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
+                    <form id="logoutForm" action="/logout" method="post" style="display:none;" th:action="@{/logout}" th:method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
+
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"
+                       class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Menu Button -->
+        <div class="relative z-10">
+            <button id="menu-button"
+                    class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+                Menu
+            </button>
+            <div id="menu-dropdown"
+                 class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Store</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">My Defender</a>
+            </div>
+        </div>
+    </header>
+    <section class="relative h-[90vh] bg-white bg-cover bg-center mb-0 pb-0">
+        <div class="absolute inset-0 bg-white flex flex-col items-center text-center p-4">
+
+            <!-- Navigation Bar with light grey text -->
+            <nav class="bg-transparent text-gray-400 pt-2 pb-3 w-full">
+                <div class="flex justify-center gap-6 text-xs md:text-sm font-semibold uppercase tracking-wide flex-wrap">
+                    <a href="#inspiration" class="hover:text-gray-600">INSPIRATION</a>
+                    <a href="#bodystyle" class="hover:text-gray-600">BODYSTYLE</a>
+                    <a href="#model" class="hover:text-gray-600">MODEL</a>
+                    <a href="#engine" class="hover:text-gray-600">ENGINE</a>
+                    <a href="#exterior" class="hover:text-gray-600">EXTERIOR</a>
+                    <a href="#wheels" class="hover:text-gray-600">WHEELS</a>
+                    <a href="#interior" class="hover:text-gray-600">INTERIOR</a>
+                    <a href="#headlining" class="hover:text-gray-600">HEADLINING</a>
+                    <a href="#options" class="hover:text-gray-600">OPTIONS</a>
+                    <a href="#summary" class="hover:text-gray-600">SUMMARY</a>
+                </div>
+            </nav>
+
+        </div>
+    </section>
+
+    <footer class="site-footer">
+    <div class="footer-links">
+        <a href="#">CHANGE MARKET</a> |
+        <a href="#">TERMS & CONDITIONS</a> |
+        <a href="#">CONTACT US</a> |
+        <a href="#">COOKIES & PRIVACY</a>
+    </div>
+
+    <p class="legal-note">© JAGUAR LAND ROVER LIMITED 2025</p>
+
+    <p class="legal-description">
+        Jaguar Land Rover Limited: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
+    </p>
+
+    <p class="legal-description">
+        Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
+    </p>
+
+    <p class="legal-description">
+        Smart Settings is intended to be released as part of a future wireless software update. Software development and releases are subject to movements in planning and programming, and dates may be subject to change.
+    </p>
+
+    <p class="legal-description">
+        There is currently a global shortage of semi-conductor components. Jaguar Land Rover India Limited (JLRIL) is affected by this shortage and as a result, certain Jaguar and Land Rover products may not be available and delivery timelines for some products may be extended by authorised Jaguar Land Rover Retailers. Please contact your authorised Jaguar Land Rover Retailer for further updates.
+    </p>
+
+    <p class="legal-description">
+        Accessories/features shown may not be part of standard equipment. iPod is a registered trademark of Apple Inc., registered in the US and other countries. Meridian is a registered trademark of Meridian Audio Ltd. Please note not all features set out above are available as standard for all Land Rover models. Some features are available as a cost option only. Please refer to the Owners Handbook for Navigation Terms and Conditions. The Information and specification shown are not binding and are subject to change without prior notice. These are indicative specifications for reference only.
+    </p>
+
+    <p class="legal-description">
+        The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. A vehicle's actual fuel consumption may differ from that achieved in such tests and these figures are for comparative purposes only.
+    </p>
+
+    <p class="legal-description">
+        From 30 September 2019 Spotify will no longer be supporting the InControl Apps access. As the dominant preferred access by customers it will be available to customers via Smartphone Pack where installed.
+    </p>
+
+    <p class="legal-description">
+        Important note on imagery & specification. The global shortage of semiconductors is currently affecting vehicle build specifications, option availability, and build timings. This is a very dynamic situation, and as a result imagery used within the website at present may not fully reflect current specifications for features, options, trim and colour schemes. Please consult your authorised Retailer who will be able to confirm any current restrictions with you in order to allow an informed choice.
+    </p>
+
+    <p class="legal-description">
+        Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local retailer for local availability and prices.
+    </p>
+
+    <p class="legal-description">
+        <strong>COLOURS:</strong> Image colours reproduced here are provided for illustrative purposes only. Colours are reproduced on-screen and may therefore vary compared to the actual finish. The company reserves the right to alter or withdraw any colour finish without notice. Some of these colours may not be obtainable in your country. Please check availability of colours and current specifications with your Jaguar Retailer. Distributors and Retailers are not agents of Jaguar Land Rover Limited and have absolutely no authority to bind Jaguar Land Rover Limited to any express or implied undertaking or representation.
+    </p>
+
+    <p class="legal-description">
+        The mapping on this website is provided by external mapping providers and is for general information purposes only.
+    </p>
+
+    <p class="legal-description">
+        *The prices mentioned are ex-showroom and are subject to change without notice. The ex-showroom price does not include any optional items (such as accessories and other specialised items), which are at your discretion. The ex-showroom price is inclusive of GST (including compensation cess) and road service assistance (for breakdowns only) but excludes Vehicle Registration Tax, Tax Collected at Source (TCS) and Insurance Premium. For your information, the sale transaction will be directly between yourself and an independent Jaguar Land Rover India Limited (“JLRIL”) authorised retailer. Accessories/features/colours and other equipment shown may not be available on vehicles sold in India. Please contact your local Authorised Retailer for any information including the availability of vehicles, features, options, pricing etc. Jaguar Land Rover India Limited (“JLRIL”) is not involved in the sale transaction or the Assured Buy Back offer / campaign. The Assured Buy Back offer / campaign is at the sole discretion of a JLRIL authorised retailer. Please contact your nearest JLRIL authorised retailer for any information.
+    </p>
+</footer>
+    </div>
+</body>
+</html>

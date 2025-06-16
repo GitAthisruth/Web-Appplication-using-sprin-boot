@@ -101,19 +101,19 @@ function updateImages() {
         },
         'Copper': {
             'Alloy 1': {
-                side: '/images/octa/copper/alloy1/side.webp',
-                front: '/images/octa/copper/alloy1/front.webp',
-                back: '/images/octa/copper/alloy1/back.webp'
+                side: '/images/octa/copper/octa_copper_side_1.webp',
+                front: '/images/octa/copper/octa_copper_front_1.webp',
+                back: '/images/octa/copper/octa_copper_back_1.webp'
             },
             'Alloy 2': {
-                side: '/images/octa/copper/alloy2/side.jpg',
-                front: '/images/octa/copper/alloy2/front.jpg',
-                back: '/images/octa/copper/alloy2/back.jpg'
+                side: '/images/octa/copper/octa_copper_side_2.jpg',
+                front: '/images/octa/copper/octa_copper_front_2_.jpg',
+                back: '/images/octa/copper/octa_copper_back_2.jpg'
             },
             'Alloy 3': {
-                side: '/images/octa/copper/alloy3/side.jpg',
-                front: '/images/octa/copper/alloy3/front.jpg',
-                back: '/images/octa/copper/alloy3/back.jpg'
+                side: '/images/octa/copper/octa_copper_side_3.jpg',
+                front: '/images/octa/copper/octa_copper_front_3.jpg',
+                back: '/images/octa/copper/octa_copper_back_3_.jpg'
             }
         },
         'Blue': {

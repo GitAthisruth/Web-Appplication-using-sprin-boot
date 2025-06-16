@@ -77,6 +77,16 @@
 
     <!-- Main Content -->
     <main th:inline="css" style="" th:style="'background-image: url(' + @{/images/bg-wallpaper.jpg} + '); background-size: cover; background-position: center;'">
+
+        <div class="relative">
+            <a th:href="@{/build_your_own}"
+               class="absolute top-[50px] right-[20px] px-6 py-3 text-lg font-semibold bg-[rgba(38,38,38,0.7)] text-white border border-white rounded hover:bg-white hover:text-black transition">
+                BUILD YOUR OWN
+            </a>
+        </div>
+
+
+
         <div class="max-w-[960px] h-screen flex items-center ml-[20px]">
             <div class="flex flex-col">
                 <h1 class="text-left text-[64px] font-extrabold leading-tight text-white"
