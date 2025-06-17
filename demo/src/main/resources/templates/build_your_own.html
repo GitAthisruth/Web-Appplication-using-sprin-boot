@@ -20,13 +20,13 @@
 
 <body class="font-sans" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
-
-    <!-- Header -->
+    <!-- BODY STYLE IMAGE & OPTIONS -->
+    <!-- HEADER -->
     <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
 
         <!-- Logo (top-right) -->
         <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
-            <img th:src="@{images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+            <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
         </div>
 
         <!-- Centered User Button -->
@@ -74,13 +74,23 @@
             </div>
         </div>
     </header>
-    <section class="relative h-[90vh] bg-white bg-cover bg-center mb-0 pb-0">
-        <div class="absolute inset-0 bg-white flex flex-col items-center text-center p-4">
 
-            <!-- Navigation Bar with light grey text -->
+    <!-- NAVIGATION SECTION (NO height, normal flow) -->
+    <section class="relative bg-white bg-cover bg-center">
+        <!-- Back Button -->
+        <div class="absolute top-4 left-4 z-50">
+            <a href="javascript:history.back()" aria-label="Back" class="build-back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex flex-col items-center text-center px-4 pt-16 md:pt-12">
             <nav class="bg-transparent text-gray-400 pt-2 pb-3 w-full">
                 <div class="flex justify-center gap-6 text-xs md:text-sm font-semibold uppercase tracking-wide flex-wrap">
-                    <a href="#inspiration" class="hover:text-gray-600">INSPIRATION</a>
                     <a href="#bodystyle" class="hover:text-gray-600">BODYSTYLE</a>
                     <a href="#model" class="hover:text-gray-600">MODEL</a>
                     <a href="#engine" class="hover:text-gray-600">ENGINE</a>
@@ -92,68 +102,104 @@
                     <a href="#summary" class="hover:text-gray-600">SUMMARY</a>
                 </div>
             </nav>
-
         </div>
     </section>
 
-    <footer class="site-footer">
-    <div class="footer-links">
-        <a href="#">CHANGE MARKET</a> |
-        <a href="#">TERMS & CONDITIONS</a> |
-        <a href="#">CONTACT US</a> |
-        <a href="#">COOKIES & PRIVACY</a>
-    </div>
+    <!-- BODY STYLE IMAGE & OPTIONS -->
+    <section class="flex min-h-[80vh] bg-white border-t border-gray-200">
+        <!-- Left: Image Display (2/3 width) -->
+        <div class="w-2/3 p-4 flex items-center justify-center">
+            <img id="modelImage" th:src="@{/images/octa/blue/octa_blue_front_3.jpg}" alt="Defender OCTA"
+                 class="w-full max-h-full object-contain rounded-xl shadow-md transition-all duration-300" />
+        </div>
 
-    <p class="legal-note">© JAGUAR LAND ROVER LIMITED 2025</p>
+        <!-- Right: Options (1/3 width) -->
+        <div class="w-1/3 p-6 flex flex-col justify-center gap-6 bg-gray-50 border-l border-gray-200">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 uppercase">Bodystyle</h2>
+            <div class="space-y-4">
+                <button onclick="changeModel('defender_octa.jpg', 'Defender OCTA')"
+                        class="block w-full bg-black text-white px-6 py-4 rounded-xl text-center text-lg font-semibold hover:bg-gray-800 transition">
+                    DEFENDER OCTA
+                </button>
+                <button onclick="changeModel('defender_90.jpg', 'Defender 90')"
+                        class="block w-full bg-black text-white px-6 py-4 rounded-xl text-center text-lg font-semibold hover:bg-gray-800 transition">
+                    DEFENDER 90
+                </button>
+                <button onclick="changeModel('defender_110.jpg', 'Defender 110')"
+                        class="block w-full bg-black text-white px-6 py-4 rounded-xl text-center text-lg font-semibold hover:bg-gray-800 transition">
+                    DEFENDER 110
+                </button>
+                <button onclick="changeModel('defender_130.jpg', 'Defender 130')"
+                        class="block w-full bg-black text-white px-6 py-4 rounded-xl text-center text-lg font-semibold hover:bg-gray-800 transition">
+                    DEFENDER 130
+                </button>
+            </div>
+        </div>
+    </section>
 
-    <p class="legal-description">
-        Jaguar Land Rover Limited: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
-    </p>
 
-    <p class="legal-description">
-        Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
-    </p>
 
-    <p class="legal-description">
-        Smart Settings is intended to be released as part of a future wireless software update. Software development and releases are subject to movements in planning and programming, and dates may be subject to change.
-    </p>
+    <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
+        <div class="footer-links flex space-x-6 mb-4">
+            <p>PRIVACY POLICY</p>
+            <p>TERMS AND CONDITIONS</p>
+            <p>CONTACT US</p>
+            <p>SELECT A COUNTRY</p>
+        </div>
 
-    <p class="legal-description">
-        There is currently a global shortage of semi-conductor components. Jaguar Land Rover India Limited (JLRIL) is affected by this shortage and as a result, certain Jaguar and Land Rover products may not be available and delivery timelines for some products may be extended by authorised Jaguar Land Rover Retailers. Please contact your authorised Jaguar Land Rover Retailer for further updates.
-    </p>
+        <p class="legal-note font-semibold mb-4">
+            © Jaguar Land Rover Limited 2025: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
+        </p>
 
-    <p class="legal-description">
-        Accessories/features shown may not be part of standard equipment. iPod is a registered trademark of Apple Inc., registered in the US and other countries. Meridian is a registered trademark of Meridian Audio Ltd. Please note not all features set out above are available as standard for all Land Rover models. Some features are available as a cost option only. Please refer to the Owners Handbook for Navigation Terms and Conditions. The Information and specification shown are not binding and are subject to change without prior notice. These are indicative specifications for reference only.
-    </p>
+        <div class="legal-description space-y-4 text-justify">
+            <p>
+                <strong>Important note on imagery & specification:</strong> We are living through exceptional times. Due to the Covid pandemic we have been prevented or delayed in the creation of new images of current model years. Now the global impact of micro-chip shortages is further affecting build specifications, options and launch timings. Until this unique event settles, please note that many images cannot be updated to 22/23 model year specifications. Features, options, trim and colour schemes may differ from many images. Customers are urged to consult their local Retailer for detailed 22/23 model year specifications and to not base an order on marketing imagery and specification alone.
+            </p>
 
-    <p class="legal-description">
-        The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. A vehicle's actual fuel consumption may differ from that achieved in such tests and these figures are for comparative purposes only.
-    </p>
+            <p>
+                Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local Retailer for local availability and prices.
+            </p>
 
-    <p class="legal-description">
-        From 30 September 2019 Spotify will no longer be supporting the InControl Apps access. As the dominant preferred access by customers it will be available to customers via Smartphone Pack where installed.
-    </p>
+            <p>
+                *Plug In Hybrid models are only available with 5 seats, due to battery geometry in loadspace.
+            </p>
 
-    <p class="legal-description">
-        Important note on imagery & specification. The global shortage of semiconductors is currently affecting vehicle build specifications, option availability, and build timings. This is a very dynamic situation, and as a result imagery used within the website at present may not fully reflect current specifications for features, options, trim and colour schemes. Please consult your authorised Retailer who will be able to confirm any current restrictions with you in order to allow an informed choice.
-    </p>
+            <p>**Market dependent availability.</p>
 
-    <p class="legal-description">
-        Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local retailer for local availability and prices.
-    </p>
+            <p>
+                ††The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. PHEV with a fully charged battery. For comparison purposes only. Real world figures may differ. CO2, fuel economy, PHEV eAER, energy consumption and range figures may vary according to factors such as driving styles, environmental conditions, load, wheel fitment, accessories fitted, actual route and battery condition. Range figures are based upon production vehicle over a standardised route. V8 P635 figures provided are manufacturer’s estimates and will be replaced with the official EU test figures as soon as they are available
+            </p>
 
-    <p class="legal-description">
-        <strong>COLOURS:</strong> Image colours reproduced here are provided for illustrative purposes only. Colours are reproduced on-screen and may therefore vary compared to the actual finish. The company reserves the right to alter or withdraw any colour finish without notice. Some of these colours may not be obtainable in your country. Please check availability of colours and current specifications with your Jaguar Retailer. Distributors and Retailers are not agents of Jaguar Land Rover Limited and have absolutely no authority to bind Jaguar Land Rover Limited to any express or implied undertaking or representation.
-    </p>
+            <p>‡Max speed is 209km/h when fitted with 22" wheels.</p>
+            <p>⬨Max speed is 191km/h when fitted with 20" wheels.</p>
+            <p>‡‡When combined with electric motor.</p>
+            <p>△Includes a 75kg driver, full fluids and 90% fuel.</p>
+            <p>▲Includes full fluids and 90% fuel.</p>
+            <p>◇Dynamic roof load allows for up to 118kg/168kg (90/110 and 130) when fitted with Off-road tyres and Expedition Roof Rack. Static roof load allows for up to 300kg.</p>
+            <p>⬧Behind row 1 figures for Hard Top relates to behind loadspace partition.</p>
+            <p>✧Dry: Volume as measured with VDA-compliant solid blocks (200mm x 50mm x 100mm). Hard Top models: Includes underfloor stowage, excludes jack and tools.</p>
+            <p>✦Wet: Volume as measured by simulating the loadspace filled with liquid. Hard Top models: Includes underfloor stowage, excludes jack and tools.</p>
+            <p>▼Defender V8 models have no dynamic roof loading capacity. Static roof load allows for up to 300kg.</p>
+            <p>▽With towing eye cover removed.</p>
+            <p>▼▼100kg (22" Wheels with All Season Tyres) / 168kg (20" Wheels with All-Terrain or Advanced All-Terrain Tyres). Roof load is 0kg when OCTA mode is activated.</p>
 
-    <p class="legal-description">
-        The mapping on this website is provided by external mapping providers and is for general information purposes only.
-    </p>
+            <p>
+                Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
+            </p>
 
-    <p class="legal-description">
-        *The prices mentioned are ex-showroom and are subject to change without notice. The ex-showroom price does not include any optional items (such as accessories and other specialised items), which are at your discretion. The ex-showroom price is inclusive of GST (including compensation cess) and road service assistance (for breakdowns only) but excludes Vehicle Registration Tax, Tax Collected at Source (TCS) and Insurance Premium. For your information, the sale transaction will be directly between yourself and an independent Jaguar Land Rover India Limited (“JLRIL”) authorised retailer. Accessories/features/colours and other equipment shown may not be available on vehicles sold in India. Please contact your local Authorised Retailer for any information including the availability of vehicles, features, options, pricing etc. Jaguar Land Rover India Limited (“JLRIL”) is not involved in the sale transaction or the Assured Buy Back offer / campaign. The Assured Buy Back offer / campaign is at the sole discretion of a JLRIL authorised retailer. Please contact your nearest JLRIL authorised retailer for any information.
-    </p>
-</footer>
-    </div>
+            <p>
+                Optional features and their availability may differ by vehicle specification (model and powertrain), or require the installation of other features in order to be fitted. Please contact your local Retailer for more details, or configure your vehicle online.
+            </p>
+        </div>
+    </footer>
+</div>
+<script>
+    function changeModel(imageFileName, altText) {
+        const image = document.getElementById('modelImage');
+        image.src = `/images/${imageFileName}`;
+        image.alt = altText;
+    }
+</script>
+
 </body>
 </html>

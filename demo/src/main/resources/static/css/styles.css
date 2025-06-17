@@ -95,6 +95,26 @@ header {
     stroke: white;
 }
 
+.build-back-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 9999px; /* Full circle */
+    background-color: white;
+    color: black;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow for visibility */
+}
+
+.build-back-button:hover {
+    background-color: black;
+    color: white;
+}
+
+
 
 .back-button-container a {
     width: 2.5rem; /* 40px */
