@@ -217,55 +217,53 @@
                 </div>
             </div>
 
-            <!-- Exterior Header -->
-            <h2 id="exterior" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Exterior</h2>
-
-            <!-- Exterior Details Card -->
-            <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
-                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Select Finish & Colour</h3>
-
-                <!-- Finish Selection -->
-                <div class="mb-4">
-                    <p class="text-sm font-medium text-gray-700 mb-2">Finish Type:</p>
-                    <div class="flex gap-3">
-                        <button onclick="selectFinish('gloss')" id="finish-gloss"
-                                class="px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
-                            Gloss
-                        </button>
-                        <button onclick="selectFinish('matte')" id="finish-matte"
-                                class="px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
-                            Matte
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Metallic Colors -->
-                <div class="mb-4">
-                    <p class="text-sm font-medium text-gray-700 mb-2">Metallic:</p>
-                    <div class="flex gap-3">
-                        <div onclick="selectColor(this, 'Borasco Grey')" title="Borasco Grey"
-                             class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
+            <!-- Metallic Colors -->
+            <div class="mb-4">
+                <p class="text-sm font-medium text-gray-700 mb-2">Metallic:</p>
+                <div class="flex gap-3">
+                    <div onclick="selectColor(this)" title="Borasco Grey"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400"
                              style="background-color: #4B4B4B;"></div>
-                    </div>
-                </div>
-
-                <!-- Premium Metallic Colors -->
-                <div>
-                    <p class="text-sm font-medium text-gray-700 mb-2">Premium Metallic:</p>
-                    <div class="flex gap-3">
-                        <div onclick="selectColor(this, 'Charente Grey')" title="Charente Grey"
-                             class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
-                             style="background-color: #A0A3A8;"></div>
-                        <div onclick="selectColor(this, 'Sargasso Blue')" title="Sargasso Blue"
-                             class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
-                             style="background-color: #1A334C;"></div>
-                        <div onclick="selectColor(this, 'Petra Copper')" title="Petra Copper"
-                             class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
-                             style="background-color: #924C2E;"></div>
+                        <p class="color-desc text-xs text-center text-gray-700 mt-1 min-h-[1rem] opacity-0 transition-opacity duration-300">
+                            Borasco Grey
+                        </p>
                     </div>
                 </div>
             </div>
 
+            <!-- Premium Metallic Colors -->
+            <div>
+                <p class="text-sm font-medium text-gray-700 mb-2">Premium Metallic:</p>
+                <div class="flex gap-3">
+                    <div onclick="selectColor(this)" title="Charente Grey"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400"
+                             style="background-color: #A0A3A8;"></div>
+                        <p class="color-desc text-xs text-center text-gray-700 mt-1 min-h-[1rem] opacity-0 transition-opacity duration-300">
+                            Charente Grey
+                        </p>
+                    </div>
+
+                    <div onclick="selectColor(this)" title="Sargasso Blue"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400"
+                             style="background-color: #1A334C;"></div>
+                        <p class="color-desc text-xs text-center text-gray-700 mt-1 min-h-[1rem] opacity-0 transition-opacity duration-300">
+                            Sargasso Blue
+                        </p>
+                    </div>
+
+                    <div onclick="selectColor(this)" title="Petra Copper"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400"
+                             style="background-color: #924C2E;"></div>
+                        <p class="color-desc text-xs text-center text-gray-700 mt-1 min-h-[1rem] opacity-0 transition-opacity duration-300">
+                            Petra Copper
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <h2 id="wheels" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Wheels</h2>
 
@@ -510,16 +508,41 @@
         document.getElementById('finish-' + type).classList.add('bg-black', 'text-white');
     }
 
-    function selectColor(element, colorName) {
-        // Clear all previous selections
-        document.querySelectorAll('.cursor-pointer').forEach(el => {
-            el.classList.remove('ring-2', 'ring-black');
+    function selectColor(selectedEl) {
+        // Reset all color descriptions and borders
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            const desc = circle.querySelector('.color-desc');
+            if (desc) {
+                desc.classList.remove('opacity-100');
+                desc.classList.add('opacity-0');
+            }
+
+            const dot = circle.querySelector('div'); // inner color dot
+            if (dot) {
+                dot.classList.remove('border-black');
+                dot.classList.add('border-gray-400');
+            }
         });
 
-        // Mark selected
-        element.classList.add('ring-2', 'ring-black');
-        console.log("Selected color:", colorName);
+        // Show selected description
+        const selectedDesc = selectedEl.querySelector('.color-desc');
+        if (selectedDesc) {
+            selectedDesc.classList.remove('opacity-0');
+            selectedDesc.classList.add('opacity-100');
+        }
+
+        // Highlight the selected color dot
+        const selectedDot = selectedEl.querySelector('div'); // inner dot
+        if (selectedDot) {
+            selectedDot.classList.remove('border-gray-400');
+            selectedDot.classList.add('border-black');
+        }
+
+        // Optional: Log selected color
+        console.log("Selected color:", selectedDesc?.textContent.trim());
     }
+
+
 
     function updateConfig(category, value, el) {
         // Remove black border and add gray border to all wheel options
