@@ -619,29 +619,57 @@
         };
 
         let visibilityMap = {
+            bodystyle: 0,
+            model: 0,
+            engine: 0,
+            exterior: 0,
             wheels: 0,
-            interior: 0
+            interior: 0,
+            handling: 0
         };
+
+        let currentSlideIndex = null;
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const id = entry.target.id;
-                if (id === "wheels" || id === "interior") {
+                if (id in visibilityMap) {
                     visibilityMap[id] = entry.intersectionRatio;
                 }
             });
 
-            if (visibilityMap.interior > visibilityMap.wheels && visibilityMap.interior > 0.1) {
-                goToSlide(5); // 6th image
+            // Check if any of bodystyle, model, engine or exterior is visible > 0.1
+            const showSlide0 = ['bodystyle', 'model', 'engine', 'exterior']
+                .some(section => visibilityMap[section] > 0.1);
+
+            if (showSlide0) {
+                if (currentSlideIndex !== 0) {
+                    goToSlide(0);
+                    currentSlideIndex = 0;
+                }
+            } else if ((visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels)
+                && (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1)) {
+                if (currentSlideIndex !== 5) {
+                    goToSlide(5);
+                    currentSlideIndex = 5;
+                }
             } else if (visibilityMap.wheels > 0.1) {
-                goToSlide(2); // 3rd image
+                if (currentSlideIndex !== 2) {
+                    goToSlide(2);
+                    currentSlideIndex = 2;
+                }
             } else {
-                goToSlide(0); // default to first image
+                // Do not change slide if nothing visible enough
             }
+
         }, options);
 
-        observer.observe(document.getElementById("wheels"));
-        observer.observe(document.getElementById("interior"));
+        // Observe all relevant sections
+        ['bodystyle', 'model', 'engine', 'exterior', 'wheels', 'interior', 'handling']
+            .forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
     });
 
 </script>
