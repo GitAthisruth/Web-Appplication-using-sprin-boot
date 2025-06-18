@@ -157,7 +157,7 @@
         </div>
 
         <!-- Right: Body Style Options -->
-        <div class="w-full md:w-1/3 p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
+        <div  class="w-full md:w-1/3 p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
             <h2 id="bodystyle" class="text-lg md:text-xl font-bold mb-2 md:mb-4 text-gray-800 uppercase">Bodystyle</h2>
             <div class="space-y-2 md:space-y-3">
                 <button onclick="changeModel('defender_octa.jpg', 'Defender OCTA')"
@@ -302,12 +302,114 @@
                         </div>
                     </div>
 
-                    <!-- Brake Caliper Section -->
+                    <!-- ENGINE -->
+                    <h2 id="engine" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Engine</h2>
+                    <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">P635 Petrol V8 Mild Hybrid</h3>
+                        <div class="text-sm text-gray-700 space-y-2">
+                            <p><span class="font-medium">Displacement:</span> 4.0</p>
+                            <p><span class="font-medium">Maximum Power:</span> 467 kW @ 5,855–7,000 rpm</p>
+                            <p><span class="font-medium">Acceleration (0–100 km/h):</span></p>
+                        </div>
+                    </div>
+
+                    <!-- EXTERIOR -->
+                    <h2 id="exterior" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Exterior</h2>
+                    <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Select Finish & Colour</h3>
+
+                        <!-- Finish Selection -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Finish Type:</p>
+                            <div class="flex gap-3">
+                                <button onclick="selectFinish('gloss')" id="finish-gloss"
+                                        class="px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
+                                    Gloss
+                                </button>
+                                <button onclick="selectFinish('matte')" id="finish-matte"
+                                        class="px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
+                                    Matte
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Metallic Colors -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-2">Metallic:</p>
+                            <div class="flex gap-3">
+                                <div onclick="selectColor(this, 'Borasco Grey')" title="Borasco Grey"
+                                     class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
+                                     style="background-color: #4B4B4B;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Premium Metallic Colors -->
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 mb-2">Premium Metallic:</p>
+                            <div class="flex gap-3">
+                                <div onclick="selectColor(this, 'Charente Grey')" title="Charente Grey"
+                                     class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
+                                     style="background-color: #A0A3A8;"></div>
+                                <div onclick="selectColor(this, 'Sargasso Blue')" title="Sargasso Blue"
+                                     class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
+                                     style="background-color: #1A334C;"></div>
+                                <div onclick="selectColor(this, 'Petra Copper')" title="Petra Copper"
+                                     class="w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer"
+                                     style="background-color: #924C2E;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WHEELS -->
+                    <h2 id="wheels" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Wheels</h2>
+                    <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Choose Your Wheel</h3>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <!-- Alloy 1 -->
+                            <div onclick="updateConfig('wheels', '50.80 cm (20) Style 1086, Diamond Turned, Satin Dark Tint wheels with Satin Black contrast', this)"
+                                 class="wheel-thumb-wrapper border-2 border-black rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_1.png}" alt="Alloy 1"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                    20&quot; Style 1086<br>Satin Dark Tint
+                                </p>
+                            </div>
+
+                            <!-- Alloy 2 -->
+                            <div onclick="updateConfig('wheels', '55.88 cm (22) Style 7026, Diamond Turned wheels with Gloss Black contrast', this)"
+                                 class="wheel-thumb-wrapper border-2 border-gray-300 rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_2.png}" alt="Alloy 2"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                    22&quot; Style 7026<br>Diamond Turned
+                                </p>
+                            </div>
+
+                            <!-- Alloy 3 -->
+                            <div onclick="updateConfig('wheels', '55.88 cm (22) Style 7026, Gloss Black wheels', this)"
+                                 class="wheel-thumb-wrapper border-2 border-gray-300 rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_3.png}" alt="Alloy 3"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                    22&quot; Style 7026<br>Gloss Black
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Selected Wheel Name -->
+                        <div class="mt-4 min-h-[3rem]">
+                            <p id="wheels-name" class="text-sm text-gray-600">
+                                50.80 cm (20) Style 1086, Diamond Turned, Satin Dark Tint wheels with Satin Black contrast
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- BRAKE CALIPERS -->
                     <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md mt-6">
                         <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Brake Calipers</h3>
-
                         <div onclick="updateConfig('brake', 'Phosphor Bronze front brake calipers', this)"
-                             class="brake-thumb-wrapper border-2 border-gray-300 rounded-xl p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center justify-center selected:!border-black">
+                             class="brake-thumb-wrapper border-2 border-gray-300 rounded-xl p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center justify-center">
                             <img th:src="@{/images/octa/brake.jpg}" alt="Brake Caliper"
                                  class="w-32 h-20 object-contain mb-2">
                             <p class="text-sm text-center font-medium text-gray-700">
@@ -315,7 +417,6 @@
                             </p>
                         </div>
                     </div>
-
 
                 </div>
                 <!-- INTERIOR -->
@@ -414,9 +515,6 @@
 
                     </div>
                 </div>
-
-
-
     </section>
     <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
         <div class="footer-links flex space-x-6 mb-4">
