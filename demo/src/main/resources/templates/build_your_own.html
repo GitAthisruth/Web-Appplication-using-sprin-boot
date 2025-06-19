@@ -266,7 +266,7 @@
             <div class="mb-6">
                 <p class="text-sm font-medium text-gray-700 mb-2">Finish Type:</p>
                 <div class="flex gap-3">
-                    <button onclick="selectFinish(this, 'Gloss Finish')" class="finish-btn px-4 py-2 text-sm font-medium border border-gray-400 rounded-lg text-gray-800 hover:bg-black hover:text-white transition">
+                    <button onclick="selectFinish(this, 'Gloss Finish')" class="finish-btn px-4 py-2 text-sm font-medium border border-gray-400 rounded-lg text-gray-800 hover:bg-black hover:text-white transition" >
                         Gloss Finish
                     </button>
                     <button onclick="selectFinish(this, 'Matte Protective Film')" class="finish-btn px-4 py-2 text-sm font-medium border border-gray-400 rounded-lg text-gray-800 hover:bg-black hover:text-white transition">
@@ -274,8 +274,10 @@
                     </button>
                 </div>
 
+                <span id="selected-finish-type" style="display: none;">Gloss Finish</span>
 
-            <h2 id="wheels" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Wheels</h2>
+
+                <h2 id="wheels" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Wheels</h2>
 
                 <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
                     <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
@@ -510,7 +512,11 @@
         currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
         updateSlider();
     }
+    let selectedColor = 'Borasco Grey';
+    let selectedFinish = 'Gloss Finish';
     function selectColor(el, colorName) {
+        selectedColor = colorName;
+
         // Remove previous black borders
         document.querySelectorAll(".color-circle div").forEach(dot => {
             dot.classList.remove("border-black");
@@ -522,15 +528,19 @@
         dot.classList.remove("border-gray-400");
         dot.classList.add("border-black");
 
-        // Only update shared text for Premium Metallics
+        // Update shared text
         if (colorName !== "Borasco Grey") {
             document.getElementById("selected-color-name").textContent = colorName;
         } else {
             document.getElementById("selected-color-name").textContent = "";
         }
+
+        updateMappedImages(); // 🔁
     }
 
     function selectFinish(button, finishName) {
+        selectedFinish = finishName;
+
         document.querySelectorAll(".finish-btn").forEach(btn => {
             btn.classList.remove("bg-black", "text-white", "border-black");
             btn.classList.add("text-gray-800", "border-gray-400");
@@ -540,6 +550,32 @@
         button.classList.add("bg-black", "text-white", "border-black");
 
         document.getElementById("selected-finish-type").textContent = finishName;
+
+        // Add this line for debugging
+        console.log('Finish selected:', finishName);
+
+        updateMappedImages();
+    }
+
+    function updateMappedImages() {
+        console.log('Updating images for:', selectedColor, selectedFinish);
+
+        const map = imageMap[selectedColor]?.[selectedFinish];
+        if (!map) {
+            console.warn('Image map not found for:', selectedColor, selectedFinish);
+            return;
+        }
+
+        console.log('Found image map:', map);
+
+        const imgs = document.querySelectorAll('#imageSlider .slide img');
+        ['slide1', 'slide2', 'slide3', 'slide4'].forEach((key, i) => {
+            if (imgs[i] && map[key]) {
+                console.log(`Updating slide ${i} with:`, map[key]);
+                imgs[i].src = map[key];
+                imgs[i].alt = `${selectedColor} - ${selectedFinish} - ${key}`;
+            }
+        });
     }
 
     function updateConfig(category, value, el) {
@@ -613,6 +649,11 @@
         }
     }
     document.addEventListener("DOMContentLoaded", () => {
+        const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
+        if (defaultColorEl) selectColor(defaultColorEl, 'Borasco Grey');
+
+        const defaultFinishBtn = document.querySelector('.finish-btn');
+        if (defaultFinishBtn) selectFinish(defaultFinishBtn, 'Gloss Finish');
         const options = {
             root: document.querySelector(".overflow-auto"),
             threshold: Array.from({ length: 101 }, (_, i) => i / 100) // 0 to 1 by 0.01
@@ -671,6 +712,67 @@
                 if (el) observer.observe(el);
             });
     });
+
+    const imageMap = {
+        'Borasco Grey': {
+            'Gloss Finish': {
+                'slide1': `/images/octa/build/octa_grey_front_1.webp`,
+                'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
+                'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
+                'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+            },
+            'Matte Protective Film': {
+                'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+            }
+        },
+        'Charente Grey': {
+            'Gloss Finish': {
+                'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
+                'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
+                'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
+                'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+            },
+            'Matte Protective Film': {
+                'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
+                'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
+                'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
+                'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+            }
+        },
+        'Sargasso Blue': {
+            'Gloss Finish': {
+                'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
+                'slide2': `/images/octa/build/octa_blue_side_1.png`,
+                'slide3': `/images/octa/build/octa_blue_back_1.png`,
+                'slide4': `/images/octa/build/octa_blue_top_1.png`
+            },
+            'Matte Protective Film': {
+                'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
+                'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
+                'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
+                'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+            }
+        },
+        'Petra Copper': {
+            'Gloss Finish': {
+                'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+            },
+            'Matte Protective Film': {
+                'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
+                'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
+                'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
+                'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+            }
+        },
+        // Add similar entries for Sargasso Blue, Petra Copper...
+    };
+
 
 </script>
 </body>
