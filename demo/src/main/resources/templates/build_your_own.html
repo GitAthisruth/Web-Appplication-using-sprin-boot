@@ -488,10 +488,17 @@
     </footer>
 </div>
 <script>
-    function changeModel(imageFileName, altText) {
+    let selectedModel = 'Defender OCTA';
+    function changeModel(imageFileName, modelName) {
+        selectedModel = modelName; // 🔁 Track current model
+
         const image = document.getElementById('modelImage');
-        image.src = `/images/${imageFileName}`;
-        image.alt = altText;
+        if (image) {
+            image.src = `/images/${imageFileName}`;
+            image.alt = modelName;
+        }
+
+        updateMappedImages(); // update images based on model too
     }
 
     let currentIndex = 0;
@@ -558,22 +565,20 @@
     }
 
     function updateMappedImages() {
-        console.log('Updating images for:', selectedColor, selectedFinish);
+        console.log('Updating images for:', selectedModel, selectedColor, selectedFinish);
 
-        const map = imageMap[selectedColor]?.[selectedFinish];
+        const map = imageMap[selectedModel]?.[selectedColor]?.[selectedFinish];
         if (!map) {
-            console.warn('Image map not found for:', selectedColor, selectedFinish);
+            console.warn('Image map not found for:', selectedModel, selectedColor, selectedFinish);
             return;
         }
-
-        console.log('Found image map:', map);
 
         const imgs = document.querySelectorAll('#imageSlider .slide img');
         ['slide1', 'slide2', 'slide3', 'slide4'].forEach((key, i) => {
             if (imgs[i] && map[key]) {
                 console.log(`Updating slide ${i} with:`, map[key]);
                 imgs[i].src = map[key];
-                imgs[i].alt = `${selectedColor} - ${selectedFinish} - ${key}`;
+                imgs[i].alt = `${selectedModel} - ${selectedColor} - ${selectedFinish} - ${key}`;
             }
         });
     }
@@ -714,62 +719,240 @@
     });
 
     const imageMap = {
-        'Borasco Grey': {
-            'Gloss Finish': {
-                'slide1': `/images/octa/build/octa_grey_front_1.webp`,
-                'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
-                'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
-                'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+        'Defender OCTA': {
+            'Borasco Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_grey_front_1.webp`,
+                    'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
+                    'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
+                    'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                }
             },
-            'Matte Protective Film': {
-                'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
-                'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
-                'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
-                'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+            'Charente Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
+                    'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
+                    'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
+                    'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
+                    'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
+                    'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
+                    'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+                }
+            },
+            'Sargasso Blue': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
+                    'slide2': `/images/octa/build/octa_blue_side_1.png`,
+                    'slide3': `/images/octa/build/octa_blue_back_1.png`,
+                    'slide4': `/images/octa/build/octa_blue_top_1.png`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
+                    'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
+                    'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
+                    'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+                }
+            },
+            'Petra Copper': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
+                    'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
+                    'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
+                    'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+                }
             }
         },
-        'Charente Grey': {
-            'Gloss Finish': {
-                'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
-                'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
-                'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
-                'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+        'Defender 90': {
+            'Borasco Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/90_front_1.jpg`,
+                    'slide2':`/images/octa/build/90_side_1.png`,
+                    'slide3': `/images/octa/build/90_back_1.jpg`,
+                    'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/octa/copper/90_front_1.jpg`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                }
             },
-            'Matte Protective Film': {
-                'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
-                'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
-                'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
-                'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+            'Charente Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
+                    'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
+                    'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
+                    'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
+                    'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
+                    'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
+                    'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+                }
+            },
+            'Sargasso Blue': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
+                    'slide2': `/images/octa/build/octa_blue_side_1.png`,
+                    'slide3': `/images/octa/build/octa_blue_back_1.png`,
+                    'slide4': `/images/octa/build/octa_blue_top_1.png`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
+                    'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
+                    'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
+                    'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+                }
+            },
+            'Petra Copper': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
+                    'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
+                    'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
+                    'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+                }
             }
         },
-        'Sargasso Blue': {
-            'Gloss Finish': {
-                'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
-                'slide2': `/images/octa/build/octa_blue_side_1.png`,
-                'slide3': `/images/octa/build/octa_blue_back_1.png`,
-                'slide4': `/images/octa/build/octa_blue_top_1.png`
+        'Defender 110': {
+            'Borasco Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_grey_front_1.webp`,
+                    'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
+                    'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
+                    'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                }
             },
-            'Matte Protective Film': {
-                'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
-                'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
-                'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
-                'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+            'Charente Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
+                    'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
+                    'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
+                    'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
+                    'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
+                    'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
+                    'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+                }
+            },
+            'Sargasso Blue': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
+                    'slide2': `/images/octa/build/octa_blue_side_1.png`,
+                    'slide3': `/images/octa/build/octa_blue_back_1.png`,
+                    'slide4': `/images/octa/build/octa_blue_top_1.png`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
+                    'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
+                    'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
+                    'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+                }
+            },
+            'Petra Copper': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
+                    'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
+                    'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
+                    'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+                }
             }
         },
-        'Petra Copper': {
-            'Gloss Finish': {
-                'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
-                'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
-                'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
-                'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+        'Defender 130': {
+            'Borasco Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_grey_front_1.webp`,
+                    'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
+                    'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
+                    'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                }
             },
-            'Matte Protective Film': {
-                'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
-                'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
-                'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
-                'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+            'Charente Grey': {
+                'Gloss Finish': {
+                    'slide1': `/images/charente_grey/gloss/charente_grey_gloss_front_1.webp`,
+                    'slide2': `/images/charente_grey/gloss/charente_grey_gloss_side_1.jpg`,
+                    'slide3': `/images/charente_grey/gloss/charente_grey_gloss_back_1.jpg`,
+                    'slide4': `/images/charente_grey/gloss/charente_grey_gloss_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/charente_grey/matte/charente_grey_matte_front_1.jpg`,
+                    'slide2': `/images/charente_grey/matte/charente_grey_matte_side_1.jpg`,
+                    'slide3': `/images/charente_grey/matte/charente_grey_matte_back_1.jpg`,
+                    'slide4': `/images/charente_grey/matte/charente_grey_matte_top_1.jpg`
+                }
+            },
+            'Sargasso Blue': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/build/octa_blue_front_1.jpg`,
+                    'slide2': `/images/octa/build/octa_blue_side_1.png`,
+                    'slide3': `/images/octa/build/octa_blue_back_1.png`,
+                    'slide4': `/images/octa/build/octa_blue_top_1.png`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/sargasso_blue/matte/sargasso_blue_matte_front_1.jpg`,
+                    'slide2': `/images/sargasso_blue/matte/sargasso_blue_matte_side_1.jpg`,
+                    'slide3': `/images/sargasso_blue/matte/sargasso_blue_matte_back_1.jpg`,
+                    'slide4': `/images/sargasso_blue/matte/sargasso_blue_matte_top_1.jpg`
+                }
+            },
+            'Petra Copper': {
+                'Gloss Finish': {
+                    'slide1': `/images/octa/copper/octa_copper_front_1.webp`,
+                    'slide2': `/images/octa/copper/octa_copper_side_1.webp`,
+                    'slide3': `/images/octa/copper/octa_copper_back_1.webp`,
+                    'slide4': `/images/octa/build/octa_copper_top_1.jpg`
+                },
+                'Matte Protective Film': {
+                    'slide1': `/images/petra_copper/matte/petra_copper_matte_front_1.jpg`,
+                    'slide2': `/images/petra_copper/matte/petra_copper_matte_side_1.jpg`,
+                    'slide3': `/images/petra_copper/matte/petra_copper_matte_back_1.jpg`,
+                    'slide4': `/images/petra_copper/matte/petra_copper_matte_top_1.jpg`
+                }
             }
         },
+
+
         // Add similar entries for Sargasso Blue, Petra Copper...
     };
 
