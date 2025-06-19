@@ -144,12 +144,12 @@
                          alt="Slide 4" />
                 </div>
                 <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
-                    <img th:src="@{/images/octa/build/dashboard.jpg}"
+                    <img th:src="@{/images/octa/build/octa_dashboard_trim_1.jpg}"
                          class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
                          alt="Slide 5" />
                 </div>
                 <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
-                    <img th:src="@{/images/octa/build/interior_black.jpg}"
+                    <img th:src="@{/images/octa/build/octa_interior_trim_1.jpg}"
                          class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
                          alt="Slide 6" />
                 </div>
@@ -358,7 +358,7 @@
 
                     <!-- SEMI-ANILINE OPTIONS -->
                     <div id="trim-options-semi-aniline" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div onclick="selectInteriorOption(this, 'Burnt Sienna/Ebony perforated Semi-Aniline leather')"
+                        <div onclick="selectInteriorOption(this, 'burnt_sienna')"
                              class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
                             <img th:src="@{/images/octa/build/burnt_sienna.png}" alt="Burnt Sienna"
                                  class="w-20 h-16 object-cover mb-2 rounded">
@@ -366,7 +366,7 @@
                             <p class="text-xs text-gray-500 leading-tight">Perforated Semi-Aniline leather</p>
                         </div>
 
-                        <div onclick="selectInteriorOption(this, 'Kvadrat™ seats with Ebony interior, Ebony perforated Semi-Aniline leather')"
+                        <div onclick="selectInteriorOption(this,'kvadrat_ebony')"
                              class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
                             <img th:src="@{/images/octa/build/ebony_head.jpg}" alt="Ebony Kvadrat"
                                  class="w-20 h-16 object-cover mb-2 rounded">
@@ -377,7 +377,7 @@
 
                     <!-- ULTRAFABRIC OPTIONS -->
                     <div id="trim-options-ultrafabric" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hidden">
-                        <div onclick="selectInteriorOption(this, 'Light Cloud/Lunar perforated Ultrafabrics™ seats with Light Cloud/Lunar interior')"
+                        <div onclick="selectInteriorOption(this, 'cloud_lunar')"
                              class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
                             <img th:src="@{/images/octa/build/cloud.png}" alt="Light Cloud"
                                  class="w-20 h-16 object-cover mb-2 rounded">
@@ -385,7 +385,7 @@
                             <p class="text-xs text-gray-500 leading-tight">Perforated Ultrafabrics™ seats</p>
                         </div>
 
-                        <div onclick="selectInteriorOption(this, 'Khaki/Ebony perforated Ultrafabrics™ seats with Khaki/Ebony interior')"
+                        <div onclick="selectInteriorOption(this, 'khaki_ebony')"
                              class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
                             <img th:src="@{/images/octa/build/khaky.png}" alt="Khaki Ebony"
                                  class="w-20 h-16 object-cover mb-2 rounded">
@@ -490,7 +490,7 @@
 <script>
     let selectedModel = 'Defender OCTA';
     function changeModel(imageFileName, modelName) {
-        selectedModel = modelName; // 🔁 Track current model
+        selectedModel = modelName; //  Track current model
 
         const image = document.getElementById('modelImage');
         if (image) {
@@ -519,6 +519,7 @@
         currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
         updateSlider();
     }
+
     let selectedColor = 'Borasco Grey';
     let selectedFinish = 'Gloss Finish';
     function selectColor(el, colorName) {
@@ -542,7 +543,7 @@
             document.getElementById("selected-color-name").textContent = "";
         }
 
-        updateMappedImages(); // 🔁
+        updateMappedImages(); //
     }
 
     function selectFinish(button, finishName) {
@@ -565,7 +566,7 @@
     }
 
     function updateMappedImages() {
-        console.log('Updating images for:', selectedModel, selectedColor, selectedFinish,selectedWheel);
+        console.log('Updating images for:', selectedModel, selectedColor, selectedFinish, selectedWheel, selectedInterior);
 
         const map = imageMap[selectedModel]?.[selectedColor]?.[selectedFinish]?.[selectedWheel];
         if (!map) {
@@ -581,7 +582,10 @@
                 imgs[i].alt = `${selectedModel} - ${selectedColor} - ${selectedFinish} - ${selectedWheel} - ${key}`;
             }
         });
+
+
     }
+
 
     let selectedWheel = 'Wheel1'; // default
     function updateConfig(category, value, el) {
@@ -598,36 +602,38 @@
         if (category === 'wheels') {
             document.getElementById('wheels-name').textContent = value;
 
-            // ✅ Use the data-wheel attribute for explicit selection
+
             selectedWheel = el.getAttribute('data-wheel') || 'Wheel1';
 
-            // ✅ Update image slides based on wheel selection
             updateMappedImages();
         }
 
         console.log(`Updated ${category}: ${value}`);
     }
 
+    let selectedTrim = 'semi-aniline'; // default
+    let selectedInterior = 'burnt_sienna'; // default
 
     function selectTrim(type) {
-        // Remove active state from all trim buttons
+        selectedTrim = type; //  track trim type
+
         document.querySelectorAll('.trim-btn').forEach(btn => {
             btn.classList.remove('bg-black', 'text-white');
             btn.classList.add('border-gray-400', 'text-gray-800');
         });
 
-        // Hide all trim option groups
         document.getElementById('trim-options-semi-aniline').classList.add('hidden');
         document.getElementById('trim-options-ultrafabric').classList.add('hidden');
 
-        // Show selected trim group
         document.getElementById(`trim-options-${type}`).classList.remove('hidden');
 
-        // Highlight the selected trim button
         const selectedBtn = document.getElementById(`trim-${type}`);
         selectedBtn.classList.add('bg-black', 'text-white');
         selectedBtn.classList.remove('border-gray-400', 'text-gray-800');
+
+        updateInteriorImage();
     }
+
 
     function selectInteriorOption(el, value) {
         document.querySelectorAll('.interior-option').forEach(option => {
@@ -638,8 +644,44 @@
         el.classList.remove('border-gray-300');
         el.classList.add('border-black');
 
+        selectedInterior = value; // <-- store current selection globally
+        console.log("selectedInterior: ",selectedInterior)
         console.log("Interior selected:", value);
+        updateInteriorImage(); //
     }
+
+
+    function updateInteriorImage() {
+        const trimType = document.getElementById('trim-options-semi-aniline').classList.contains('hidden')
+            ? 'ultrafabric'
+            : 'semi-aniline';
+
+        const interiorSlides = imageMap[selectedModel]?.interiorImages?.[trimType]?.[selectedInterior];
+        console.log("Trim Type:", trimType);
+        console.log("Selected Model:", selectedModel);
+        console.log("Selected Interior:", selectedInterior);
+        console.log("Interior Slides:", imageMap[selectedModel]?.interiorImages?.[trimType]?.[selectedInterior]);
+        console.log(imageMap['Defender OCTA'].interiorImages['semi-aniline']['burnt_sienna']);
+        if (interiorSlides) {
+            const imgs = document.querySelectorAll('#imageSlider .slide img');
+            console.log("Image nodes found:", imgs.length); // should be at least 6
+            if (imgs[4] && interiorSlides.slide5) {
+                imgs[4].src = interiorSlides.slide5;
+                imgs[4].alt = `${trimType} - ${selectedInterior} - Interior View 1`;
+            }
+
+            if (imgs[5] && interiorSlides.slide6) {
+                imgs[5].src = interiorSlides.slide6;
+                imgs[5].alt = `${trimType} - ${selectedInterior} - Interior View 2`;
+            }
+
+            console.log('Interior images updated via updateInteriorImage:', interiorSlides);
+        } else {
+            console.warn("No interior images found for", trimType, selectedInterior);
+        }
+    }
+
+
     function selectHeadliningOption(el, value) {
         document.querySelectorAll('.headlining-option').forEach(option => {
             option.classList.remove('border-black');
@@ -666,6 +708,14 @@
 
         const defaultFinishBtn = document.querySelector('.finish-btn');
         if (defaultFinishBtn) selectFinish(defaultFinishBtn, 'Gloss Finish');
+        selectTrim('semi-aniline');
+
+        const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
+        if (defaultInteriorEl) {
+            selectInteriorOption(defaultInteriorEl, 'burnt_sienna');
+        }
+
+        updateInteriorImage();
         const options = {
             root: document.querySelector(".overflow-auto"),
             threshold: Array.from({ length: 101 }, (_, i) => i / 100) // 0 to 1 by 0.01
@@ -724,7 +774,6 @@
                 if (el) observer.observe(el);
             });
     });
-
     const imageMap = {
         'Defender OCTA': {
             'Borasco Grey': {
@@ -892,6 +941,30 @@
                         'slide2': `/images/petra_copper/matte/wheel3_side.jpg`,
                         'slide3': `/images/petra_copper/matte/wheel3_back.jpg`,
                         'slide4': `/images/petra_copper/matte/wheel3_top.jpg`
+                    }
+                }
+            },
+
+            // Interior slides (5 and 6)
+            interiorImages: {
+                'semi-aniline': {
+                    'burnt_sienna': {
+                        slide5: '/images/octa/build/octa_dashboard_trim_1.jpg',
+                        slide6: '/images/octa/build/octa_interior_trim_1.jpg'
+                    },
+                    'kvadrat_ebony': {
+                        slide5: '/images/octa/build/octa_dashboard_trim_2.png',
+                        slide6: '/images/octa/build/octa_interior_trim_2.webp'
+                    }
+                },
+                'ultrafabric': {
+                    'cloud_lunar': {
+                        slide5: '/images/octa/interior/grey_cloud_lunar_front.jpg',
+                        slide6: '/images/octa/interior/grey_cloud_lunar_back.jpg'
+                    },
+                    'khaki_ebony': {
+                        slide5: '/images/octa/interior/grey_khaki_ebony_front.jpg',
+                        slide6: '/images/octa/interior/grey_khaki_ebony_back.jpg'
                     }
                 }
             }
