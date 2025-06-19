@@ -46,5 +46,10 @@ public class LoginController {
         return "build_your_own";
     }
 
+    @GetMapping("/sample")
+    public String sample() {
+        return "sample";
+    }
+
 }
 
