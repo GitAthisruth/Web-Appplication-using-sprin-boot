@@ -167,23 +167,23 @@
         </div>
 
         <!-- Right: Body Style Options -->
-        <div  class="w-full md:w-1/3 overflow-y-auto h-screen p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
+        <div class="w-full md:w-1/3 overflow-y-auto h-screen p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
             <h2 id="bodystyle" class="text-lg md:text-xl font-bold mb-2 md:mb-4 text-gray-800 uppercase">Bodystyle</h2>
-            <div class="space-y-2 md:space-y-3">
-                <button onclick="changeModel('defender_octa.jpg', 'Defender OCTA')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+            <div id="modelButtons" class="space-y-2 md:space-y-3">
+                <button onclick="changeModel(this, 'defender_octa.jpg', 'Defender OCTA')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER OCTA
                 </button>
-                <button onclick="changeModel('defender_90.jpg', 'Defender 90')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_90.jpg', 'Defender 90')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 90
                 </button>
-                <button onclick="changeModel('defender_110.jpg', 'Defender 110')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_110.jpg', 'Defender 110')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 110
                 </button>
-                <button onclick="changeModel('defender_130.jpg', 'Defender 130')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_130.jpg', 'Defender 130')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 130
                 </button>
             </div>
@@ -477,17 +477,37 @@
 </div>
 <script>
     let selectedModel = 'Defender OCTA';
-    function changeModel(imageFileName, modelName) {
-        selectedModel = modelName; //  Track current model
 
+    function changeModel(button, imageFileName, modelName) {
+        selectedModel = modelName;
+
+        // Update image
         const image = document.getElementById('modelImage');
         if (image) {
             image.src = `/images/${imageFileName}`;
             image.alt = modelName;
         }
 
-        updateMappedImages(); // update images based on model too
+        // Highlight selected button
+        document.querySelectorAll('.model-button').forEach(btn => {
+            btn.classList.remove('bg-black', 'text-white');
+            btn.classList.add('bg-white', 'text-black');
+        });
+
+        button.classList.remove('bg-white', 'text-black');
+        button.classList.add('bg-black', 'text-white');
+
+        // Update any dependent UI
+        updateMappedImages();
     }
+
+    // Optional: Set default selection on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const defaultButton = document.querySelector('.model-button');
+        if (defaultButton) {
+            defaultButton.click();
+        }
+    });
 
     let currentIndex = 0;
     const slider = document.getElementById('imageSlider');
