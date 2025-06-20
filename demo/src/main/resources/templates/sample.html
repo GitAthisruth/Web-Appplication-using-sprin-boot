@@ -650,7 +650,6 @@
         updateInteriorImage(); //
     }
 
-
     function updateInteriorImage() {
         const trimType = document.getElementById('trim-options-semi-aniline').classList.contains('hidden')
             ? 'ultrafabric'
@@ -660,39 +659,67 @@
         console.log("Trim Type:", trimType);
         console.log("Selected Model:", selectedModel);
         console.log("Selected Interior:", selectedInterior);
-        console.log("Interior Slides:", imageMap[selectedModel]?.interiorImages?.[trimType]?.[selectedInterior]);
+        console.log("Interior Slides:", interiorSlides);
         console.log(imageMap['Defender OCTA'].interiorImages['semi-aniline']['burnt_sienna']);
+
         if (interiorSlides) {
             const imgs = document.querySelectorAll('#imageSlider .slide img');
             console.log("Image nodes found:", imgs.length); // should be at least 6
-            if (imgs[4] && interiorSlides.slide5) {
-                imgs[4].src = interiorSlides.slide5;
-                imgs[4].alt = `${trimType} - ${selectedInterior} - Interior View 1`;
+
+            // Check for headlining override
+            const headliningKey = selectedHeadlining?.toLowerCase().replace(/\s+/g, '_');
+            const headliningSlides = interiorSlides.headliningImages?.[headliningKey];
+
+            // Slide 5
+            if (imgs[4]) {
+                if (headliningSlides?.slide5) {
+                    imgs[4].src = headliningSlides.slide5;
+                    imgs[4].alt = `${headliningKey} - Headlining Dashboard`;
+                } else if (interiorSlides.slide5) {
+                    imgs[4].src = interiorSlides.slide5;
+                    imgs[4].alt = `${trimType} - ${selectedInterior} - Interior View 1`;
+                }
             }
 
-            if (imgs[5] && interiorSlides.slide6) {
-                imgs[5].src = interiorSlides.slide6;
-                imgs[5].alt = `${trimType} - ${selectedInterior} - Interior View 2`;
+            // Slide 6
+            if (imgs[5]) {
+                if (headliningSlides?.slide6) {
+                    imgs[5].src = headliningSlides.slide6;
+                    imgs[5].alt = `${headliningKey} - Headlining Rear View`;
+                } else if (interiorSlides.slide6) {
+                    imgs[5].src = interiorSlides.slide6;
+                    imgs[5].alt = `${trimType} - ${selectedInterior} - Interior View 2`;
+                }
             }
 
-            console.log('Interior images updated via updateInteriorImage:', interiorSlides);
+            console.log('Interior images updated via updateInteriorImage:', {
+                interiorSlides,
+                headliningOverride: headliningSlides
+            });
         } else {
             console.warn("No interior images found for", trimType, selectedInterior);
         }
     }
 
+    let selectedHeadlining = null;
 
     function selectHeadliningOption(el, value) {
         document.querySelectorAll('.headlining-option').forEach(option => {
-            option.classList.remove('border-black');
-            option.classList.add('border-gray-300');
+            option.classList.remove('ring-2', 'ring-black');
         });
 
-        el.classList.remove('border-gray-300');
-        el.classList.add('border-black');
+        el.classList.add('ring-2', 'ring-black');
+
+        selectedHeadlining = value.toLowerCase().replace(/\s+/g, '_'); // Normalize to match key in imageMap
 
         console.log("Headlining selected:", value);
+        console.log("Normalized headlining key:", selectedHeadlining);
+
+        // Trigger image update
+        updateInteriorImage();
     }
+
+
     function goToSlide(index) {
         const slider = document.getElementById("imageSlider");
         const slides = document.querySelectorAll(".slide");
@@ -950,21 +977,61 @@
                 'semi-aniline': {
                     'burnt_sienna': {
                         slide5: '/images/octa/build/octa_dashboard_trim_1.jpg',
-                        slide6: '/images/octa/build/octa_interior_trim_1.jpg'
+                        slide6: '/images/octa/build/octa_interior_trim_1.jpg',
+                        headliningImages: {
+                            ebony_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_dash_1.jpg',
+                                slide6: '/images/octa/build/headlining_1.jpg'
+                            },
+                            light_cloud_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_4.webp',
+                                slide6: '/images/octa/build/headlining_2.avif'
+                            }
+                        }
                     },
                     'kvadrat_ebony': {
                         slide5: '/images/octa/build/octa_dashboard_trim_2.png',
-                        slide6: '/images/octa/build/octa_interior_trim_2.webp'
+                        slide6: '/images/octa/build/octa_interior_trim_2.webp',
+                        headliningImages: {
+                            ebony_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_1.jpg',
+                                slide6: '/images/octa/build/headlining_2.avif'
+                            },
+                            light_cloud_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_3.avif',
+                                slide6: '/images/octa/build/headlining_4.webp'
+                            }
+                        }
                     }
                 },
                 'ultrafabric': {
                     'cloud_lunar': {
                         slide5: '/images/octa/interior/grey_cloud_lunar_front.jpg',
-                        slide6: '/images/octa/interior/grey_cloud_lunar_back.jpg'
+                        slide6: '/images/octa/interior/grey_cloud_lunar_back.jpg',
+                        headliningImages: {
+                            ebony_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_1.jpg',
+                                slide6: '/images/octa/build/headlining_2.avif'
+                            },
+                            light_cloud_suedecloth_headlining: {
+                                slide5: '/images/octa/build/headlining_3.avif',
+                                slide6: '/images/octa/build/headlining_4.webp'
+                            }
+                        }
                     },
                     'khaki_ebony': {
                         slide5: '/images/octa/interior/grey_khaki_ebony_front.jpg',
-                        slide6: '/images/octa/interior/grey_khaki_ebony_back.jpg'
+                        slide6: '/images/octa/interior/grey_khaki_ebony_back.jpg',
+                        headliningImages: {
+                            ebony_suedecloth_headlining: {
+                                slide5: '/images/octa/headlining/ebony_trim_1.jpg',
+                                slide6: '/images/octa/headlining/ebony_trim_2.jpg'
+                            },
+                            light_cloud_suedecloth_headlining: {
+                                slide5: '/images/octa/headlining/lightcloud_trim_1.jpg',
+                                slide6: '/images/octa/headlining/lightcloud_trim_2.jpg'
+                            }
+                        }
                     }
                 }
             }
