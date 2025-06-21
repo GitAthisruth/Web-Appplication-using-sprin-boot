@@ -1,7 +1,13 @@
 package com.example.demo.model;
 
 
+
+
 import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -14,6 +20,8 @@ public class User {
     private String password;
     private String role = "USER";
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Build> builds = new ArrayList<>();
     // Constructors
     public User() {}
 

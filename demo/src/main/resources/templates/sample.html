@@ -118,6 +118,12 @@
     <section class="flex flex-col md:flex-row h-screen bg-white border-t border-gray-200">
         <!-- Left: Image Slider (2/3) -->
         <div class="slider-container sticky top-0 w-full md:w-2/3 max-h-screen overflow-hidden bg-white z-0 flex items-center justify-center">
+            <button id="saveBuildBtn"
+                    class="save-build-btn absolute top-4 right-4 bg-white text-black border border-black rounded-full px-4 py-1 md:px-5 md:py-2 text-sm md:text-base font-medium hover:bg-black hover:text-white transition z-10"
+                    data-selected="false"
+                    onclick="saveBuild()">
+                Save Build
+            </button>
             <!-- Slider -->
             <div id="imageSlider"
                  class="slider flex transition-transform duration-1000 ease-in-out h-full">
@@ -164,29 +170,31 @@
                     class="nav-btn absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black border border-black rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-black hover:text-white transition z-10">
                 &#10095;
             </button>
+
         </div>
 
         <!-- Right: Body Style Options -->
-        <div  class="w-full md:w-1/3 overflow-y-auto h-screen p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
+        <div class="w-full md:w-1/3 overflow-y-auto h-screen p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
             <h2 id="bodystyle" class="text-lg md:text-xl font-bold mb-2 md:mb-4 text-gray-800 uppercase">Bodystyle</h2>
-            <div class="space-y-2 md:space-y-3">
-                <button onclick="changeModel('defender_octa.jpg', 'Defender OCTA')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+            <div id="modelButtons" class="space-y-2 md:space-y-3">
+                <button onclick="changeModel(this, 'defender_octa.jpg', 'Defender OCTA')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER OCTA
                 </button>
-                <button onclick="changeModel('defender_90.jpg', 'Defender 90')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_90.jpg', 'Defender 90')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 90
                 </button>
-                <button onclick="changeModel('defender_110.jpg', 'Defender 110')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_110.jpg', 'Defender 110')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 110
                 </button>
-                <button onclick="changeModel('defender_130.jpg', 'Defender 130')"
-                        class="block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                <button onclick="changeModel(this, 'defender_130.jpg', 'Defender 130')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
                     DEFENDER 130
                 </button>
             </div>
+
             <h2 id="model" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Model</h2>
 
             <!-- Model Details Card -->
@@ -420,7 +428,17 @@
 
                     </div>
                 </div>
+                <div class="text-right mt-4">
+                    <button
+                            class="save-build-btn bg-white text-black border border-black rounded-full px-4 py-1 md:px-5 md:py-2 text-sm md:text-base font-medium hover:bg-black hover:text-white transition z-10"
+                            data-selected="false"
+                            onclick="saveBuild()">
+                        Save Build
+                    </button>
+                </div>
+
     </section>
+
     <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
         <div class="footer-links flex space-x-6 mb-4">
             <p>PRIVACY POLICY</p>
@@ -476,19 +494,117 @@
     </footer>
 </div>
 <script>
-    let selectedModel = 'Defender OCTA';
-    function changeModel(imageFileName, modelName) {
-        selectedModel = modelName; //  Track current model
+    let isBuildSaved = false;
+    async function saveBuild() {
+        const buttons = document.querySelectorAll('.save-build-btn');
+        const isSelected = buttons[0].getAttribute('data-selected') === 'true';
 
+        const buildData = {
+            model: selectedModel,
+            color: selectedColor,
+            finish: selectedFinish,
+            wheel: selectedWheel,
+            trim: selectedTrim,
+            interior: selectedInterior,
+            headlining: selectedHeadlining
+        };
+
+        if (isSelected) {
+            const confirmDelete = confirm("Delete will erase your build?");
+            if (!confirmDelete) return;
+        }
+
+        try {
+            const response = await fetch("/api/builds/toggle", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(buildData)
+            });
+
+            const message = await response.text();
+            alert(message);
+
+            const newState = !isSelected;
+
+            buttons.forEach(btn => {
+                btn.setAttribute("data-selected", newState.toString());
+                btn.textContent = newState ? "Saved" : "Save Build";
+                btn.classList.toggle("bg-black", newState);
+                btn.classList.toggle("text-white", newState);
+                btn.classList.toggle("bg-white", !newState);
+                btn.classList.toggle("text-black", !newState);
+            });
+
+        } catch (error) {
+            console.error("Error saving/deleting build:", error);
+            alert("An error occurred while saving/deleting the build.");
+        }
+    }
+    async function checkIfBuildExists() {
+        const queryParams = new URLSearchParams({
+            model: selectedModel,
+            color: selectedColor,
+            finish: selectedFinish,
+            wheel: selectedWheel,
+            trim: selectedTrim,
+            interior: selectedInterior,
+            headlining: selectedHeadlining
+        });
+
+        try {
+            const response = await fetch(`/api/builds/exists?${queryParams.toString()}`);
+            const exists = await response.json();
+
+            document.querySelectorAll('.save-build-btn').forEach(btn => {
+                btn.setAttribute("data-selected", exists.toString());
+                btn.textContent = exists ? "Saved" : "Save Build";
+                btn.classList.toggle("bg-black", exists);
+                btn.classList.toggle("text-white", exists);
+                btn.classList.toggle("bg-white", !exists);
+                btn.classList.toggle("text-black", !exists);
+            });
+        } catch (err) {
+            console.error("Failed to check build existence:", err);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        checkIfBuildExists();
+    });
+
+    let selectedModel = 'Defender OCTA';
+    function changeModel(button, imageFileName, modelName) {
+        selectedModel = modelName;
+
+        // Update image
         const image = document.getElementById('modelImage');
         if (image) {
             image.src = `/images/${imageFileName}`;
             image.alt = modelName;
         }
 
-        updateMappedImages(); // update images based on model too
+        // Highlight selected button
+        document.querySelectorAll('.model-button').forEach(btn => {
+            btn.classList.remove('bg-black', 'text-white');
+            btn.classList.add('bg-white', 'text-black');
+        });
+
+        button.classList.remove('bg-white', 'text-black');
+        button.classList.add('bg-black', 'text-white');
+
+        // Update any dependent UI
+        updateMappedImages();
     }
 
+    // Optional: Set default selection on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const defaultButton = document.querySelector('.model-button');
+        if (defaultButton) {
+            defaultButton.click();
+        }
+    });
     let currentIndex = 0;
     const slider = document.getElementById('imageSlider');
     const slides = slider?.querySelectorAll('.slide') || [];

@@ -420,6 +420,13 @@
 
                     </div>
                 </div>
+                <!-- Selected Features Summary -->
+                <div id="selectedFeaturesContainer" class="bg-white border border-gray-300 rounded-xl p-4 shadow-md mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Your Selected Features</h3>
+                    <ul id="selectedFeaturesList" class="space-y-2 text-sm text-gray-700">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </div>
     </section>
     <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
         <div class="footer-links flex space-x-6 mb-4">
@@ -476,8 +483,10 @@
     </footer>
 </div>
 <script>
+    function saveBuild() {
+        alert("Build saved!");
+    }
     let selectedModel = 'Defender OCTA';
-
     function changeModel(button, imageFileName, modelName) {
         selectedModel = modelName;
 
