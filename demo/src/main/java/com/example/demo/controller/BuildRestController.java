@@ -48,7 +48,16 @@ public class BuildRestController {
         String message = buildUserService.toggleBuild(user, buildRequest);
         return ResponseEntity.ok(message);
     }
-
+    @PutMapping("/sample")
+    public ResponseEntity<String> updateBuild(@RequestBody Build buildRequest, Authentication authentication) {
+        try {
+            User user = buildUserService.getCurrentUser(authentication);
+            String msg = buildUserService.updateBuild(user, buildRequest);
+            return ResponseEntity.ok(msg);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
     @GetMapping
     public ResponseEntity<List<Build>> getAllBuilds(Authentication authentication) {
         User user = buildUserService.getCurrentUser(authentication);

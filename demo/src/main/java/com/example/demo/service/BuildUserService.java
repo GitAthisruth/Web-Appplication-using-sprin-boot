@@ -86,4 +86,36 @@ public class BuildUserService {
             throw new RuntimeException("Build not found.");
         }
     }
+
+
+    public String updateBuild(User user, Build updatedBuild) {
+        Optional<Build> existing = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadlining(
+                user,
+                updatedBuild.getModel(),
+                updatedBuild.getColor(),
+                updatedBuild.getFinish(),
+                updatedBuild.getWheel(),
+                updatedBuild.getTrim(),
+                updatedBuild.getInterior(),
+                updatedBuild.getHeadlining()
+        );
+
+        if (existing.isPresent()) {
+            Build buildToUpdate = existing.get();
+
+            // Optionally, add a helper method in Build entity to update fields
+            buildToUpdate.setModel(updatedBuild.getModel());
+            buildToUpdate.setColor(updatedBuild.getColor());
+            buildToUpdate.setFinish(updatedBuild.getFinish());
+            buildToUpdate.setWheel(updatedBuild.getWheel());
+            buildToUpdate.setTrim(updatedBuild.getTrim());
+            buildToUpdate.setInterior(updatedBuild.getInterior());
+            buildToUpdate.setHeadlining(updatedBuild.getHeadlining());
+
+            buildRepository.save(buildToUpdate);
+            return "Build updated successfully.";
+        } else {
+            throw new RuntimeException("Build not found to update.");
+        }
+    }
 }
