@@ -46,12 +46,13 @@ public class LoginController {
     }
 
 
-    @GetMapping("test/sample")
+    @GetMapping("/sample")
     public String sample(Model model, HttpServletRequest request) {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
         model.addAttribute("_csrf", csrfToken);
-        return "sample";
+        return "sample"; // sample.html
     }
+
 
     @ModelAttribute
     public void addCsrfToken(Model model, HttpServletRequest request) {

@@ -118,4 +118,7 @@ public class BuildUserService {
             throw new RuntimeException("Build not found to update.");
         }
     }
+    public void saveBuild(Build build) {
+        buildRepository.save(build);
+    }
 }

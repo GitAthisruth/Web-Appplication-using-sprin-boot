@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Defender</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -499,16 +502,63 @@
     </footer>
 </div>
 <script>
-    let isBuildSaved = false; // global state
+    function resetSaveState() {
+        isBuildSaved = false;
+        updateSaveButtonUI(false);
+    }
 
-    function saveBuild() {
+    async function saveBuild() {
         const buttons = document.querySelectorAll('.save-build-btn');
-        isBuildSaved = !isBuildSaved;
 
-        // Update button states and appearance
+        if (!isBuildSaved) {
+            // Save build
+            const buildData = {
+                model: selectedModel,
+                color: selectedColor,
+                finish: selectedFinish,
+                wheel: selectedWheel,
+                trim: selectedTrim,
+                interior: selectedInterior,
+                headlining: selectedHeadlining
+            };
+            console.log("Saving build with data:", buildData);
+
+            // Get CSRF token and header name from meta tags
+            const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
+            console.log("CSRF Token:", csrfToken);
+            console.log("CSRF Header:", csrfHeader);
+
+            try {
+                const response = await fetch('/test/save-build', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify(buildData)
+                });
+
+                if (response.ok) {
+                    console.log('Build saved successfully');
+                    isBuildSaved = true;
+                    updateSaveButtonUI(true);
+                } else {
+                    console.error('Failed to save build');
+                }
+            } catch (error) {
+                console.error('Error saving build:', error);
+            }
+        }
+    }
+
+
+    function updateSaveButtonUI(saved) {
+        const buttons = document.querySelectorAll('.save-build-btn');
         buttons.forEach(button => {
-            button.setAttribute('data-selected', isBuildSaved.toString());
-            if (isBuildSaved) {
+            button.setAttribute('data-selected', saved.toString());
+            if (saved) {
                 button.classList.add('bg-black', 'text-white');
                 button.classList.remove('bg-white', 'text-black');
                 button.textContent = "Saved";
@@ -518,15 +568,6 @@
                 button.textContent = "Save Build";
             }
         });
-
-        // Perform save or unsave logic here (e.g., send to backend)
-        if (isBuildSaved) {
-            console.log("Build saved!");
-            // send data to backend
-        } else {
-            console.log("Build unsaved!");
-            // send delete request to backend
-        }
     }
 
     let selectedModel = 'Defender OCTA';
@@ -551,6 +592,7 @@
 
         // Update any dependent UI
         updateMappedImages();
+        resetSaveState();
     }
 
     // Optional: Set default selection on page load
@@ -623,6 +665,7 @@
         console.log('Finish selected:', finishName);
 
         updateMappedImages();
+        resetSaveState();
     }
 
     function updateMappedImages() {
@@ -666,6 +709,7 @@
             selectedWheel = el.getAttribute('data-wheel') || 'Wheel1';
 
             updateMappedImages();
+            resetSaveState();
         }
 
         console.log(`Updated ${category}: ${value}`);
@@ -692,6 +736,7 @@
         selectedBtn.classList.remove('border-gray-400', 'text-gray-800');
 
         updateInteriorImage();
+        resetSaveState();
     }
 
 
@@ -707,7 +752,8 @@
         selectedInterior = value; // <-- store current selection globally
         console.log("selectedInterior: ",selectedInterior)
         console.log("Interior selected:", value);
-        updateInteriorImage(); //
+        updateInteriorImage();
+        resetSaveState();
     }
 
     function updateInteriorImage() {
@@ -761,7 +807,7 @@
         }
     }
 
-    let selectedHeadlining = null;
+
 
     function selectHeadliningOption(el, value) {
         document.querySelectorAll('.headlining-option').forEach(option => {
@@ -777,7 +823,17 @@
 
         // Trigger image update
         updateInteriorImage();
+        resetSaveState();
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const lightCloud = [...document.querySelectorAll('.headlining-option')].find(el =>
+            el.textContent.toLowerCase().includes('light cloud')
+        );
+        if (lightCloud) {
+            lightCloud.click();
+        }
+    });
 
 
     function goToSlide(index) {

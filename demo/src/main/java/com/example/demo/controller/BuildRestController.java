@@ -48,6 +48,21 @@ public class BuildRestController {
         String message = buildUserService.toggleBuild(user, buildRequest);
         return ResponseEntity.ok(message);
     }
+
+    @PostMapping("/save-build")
+    public ResponseEntity<String> saveOnly(@RequestBody Build buildRequest, Authentication authentication) {
+        User user = buildUserService.getCurrentUser(authentication);
+
+        boolean exists = buildUserService.checkIfBuildExists(user, buildRequest);
+        if (exists) {
+            return ResponseEntity.badRequest().body("Build already exists.");
+        }
+
+        buildRequest.setUser(user);
+        buildUserService.saveBuild(buildRequest);
+        return ResponseEntity.ok("Build saved.");
+    }
+
     @PutMapping("/sample")
     public ResponseEntity<String> updateBuild(@RequestBody Build buildRequest, Authentication authentication) {
         try {
@@ -58,6 +73,7 @@ public class BuildRestController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
     @GetMapping
     public ResponseEntity<List<Build>> getAllBuilds(Authentication authentication) {
         User user = buildUserService.getCurrentUser(authentication);
