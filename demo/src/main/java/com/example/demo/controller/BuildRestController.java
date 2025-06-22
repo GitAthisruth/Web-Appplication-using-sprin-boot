@@ -1,0 +1,68 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.Build;
+import com.example.demo.model.User;
+import com.example.demo.service.BuildUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("test")
+public class BuildRestController {
+
+    @Autowired
+    private BuildUserService buildUserService;
+
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> checkIfBuildExists(
+            @RequestParam String model,
+            @RequestParam String color,
+            @RequestParam String finish,
+            @RequestParam String wheel,
+            @RequestParam String trim,
+            @RequestParam String interior,
+            @RequestParam String headlining,
+            Authentication authentication
+    ) {
+        User user = buildUserService.getCurrentUser(authentication);
+        Build buildRequest = new Build();
+        buildRequest.setModel(model);
+        buildRequest.setColor(color);
+        buildRequest.setFinish(finish);
+        buildRequest.setWheel(wheel);
+        buildRequest.setTrim(trim);
+        buildRequest.setInterior(interior);
+        buildRequest.setHeadlining(headlining);
+
+        boolean exists = buildUserService.checkIfBuildExists(user, buildRequest);
+        return ResponseEntity.ok(exists);
+    }
+
+    @PostMapping("/sample")
+    public ResponseEntity<String> toggleBuild(@RequestBody Build buildRequest, Authentication authentication) {
+        User user = buildUserService.getCurrentUser(authentication);
+        String message = buildUserService.toggleBuild(user, buildRequest);
+        return ResponseEntity.ok(message);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Build>> getAllBuilds(Authentication authentication) {
+        User user = buildUserService.getCurrentUser(authentication);
+        return ResponseEntity.ok(buildUserService.getAllBuilds(user));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteBuild(@RequestBody Build buildRequest, Authentication authentication) {
+        try {
+            User user = buildUserService.getCurrentUser(authentication);
+            String msg = buildUserService.deleteBuild(user, buildRequest);
+            return ResponseEntity.ok(msg);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+}

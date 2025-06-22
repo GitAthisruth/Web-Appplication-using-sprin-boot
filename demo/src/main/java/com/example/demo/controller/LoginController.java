@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 public class LoginController {
@@ -41,16 +45,34 @@ public class LoginController {
         return "models/90";
     }
 
-    @GetMapping("/build_your_own")
-    public String build_your_own() {
-        return "build_your_own";
+
+    @GetMapping("test/sample")
+    public String sample(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("_csrf", csrfToken);
+        return "sample";
     }
 
-//    @GetMapping("/sample")
-//    public String sample() {
-//        return "sample";
-//    }
+    @ModelAttribute
+    public void addCsrfToken(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        if (csrfToken != null) {
+            model.addAttribute("_csrf", csrfToken);
+        }
 //
-//}
+    }
+    @GetMapping("/build_your_own")
+    public String buildYourOwn(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("_csrf", csrfToken);
+        return "build_your_own";
+    }
 }
 
+//public class BuildController {
+//
+//    @GetMapping("/sample")
+//    public String sample() {
+//        return "sample"; // Make sure sample.html exists in `src/main/resources/templates/`
+//    }
+//}

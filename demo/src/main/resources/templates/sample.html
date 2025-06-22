@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- CSRF Token for JavaScript -->
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>Defender</title>
 
     <!-- Google Fonts -->
@@ -436,7 +439,6 @@
                         Save Build
                     </button>
                 </div>
-
     </section>
 
     <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
@@ -494,10 +496,11 @@
     </footer>
 </div>
 <script>
-    let isBuildSaved = false;
     async function saveBuild() {
         const buttons = document.querySelectorAll('.save-build-btn');
-        const isSelected = buttons[0].getAttribute('data-selected') === 'true';
+
+        // Determine if the build is currently saved
+        const isCurrentlySaved = buttons[0].getAttribute('data-selected') === 'true';
 
         const buildData = {
             model: selectedModel,
@@ -509,41 +512,70 @@
             headlining: selectedHeadlining
         };
 
-        if (isSelected) {
+        console.log("Build Data to Send:", buildData);
+
+        if (isCurrentlySaved) {
             const confirmDelete = confirm("Delete will erase your build?");
             if (!confirmDelete) return;
         }
 
+        // Get CSRF token and header name
+        const tokenMeta = document.querySelector('meta[name="_csrf"]');
+        const headerMeta = document.querySelector('meta[name="_csrf_header"]');
+
+        if (!tokenMeta || !headerMeta) {
+            console.error("Missing CSRF meta tags.");
+            alert("CSRF protection not properly set. Contact admin.");
+            return;
+        }
+
+        const token = tokenMeta.getAttribute('content');
+        const header = headerMeta.getAttribute('content');
+        console.log("CSRF Token:", token);
+        console.log("CSRF Header Name:", header);
+
         try {
-            const response = await fetch("/api/builds/toggle", {
+            const response = await fetch("/test/sample", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    [header]: token
                 },
                 body: JSON.stringify(buildData)
             });
 
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Server error response:", errorText);
+                throw new Error("Server responded with an error");
+            }
+
             const message = await response.text();
             alert(message);
 
-            const newState = !isSelected;
-
-            buttons.forEach(btn => {
-                btn.setAttribute("data-selected", newState.toString());
-                btn.textContent = newState ? "Saved" : "Save Build";
-                btn.classList.toggle("bg-black", newState);
-                btn.classList.toggle("text-white", newState);
-                btn.classList.toggle("bg-white", !newState);
-                btn.classList.toggle("text-black", !newState);
-            });
+            const newState = !isCurrentlySaved;
+            updateButtonStates(newState);
 
         } catch (error) {
             console.error("Error saving/deleting build:", error);
             alert("An error occurred while saving/deleting the build.");
         }
     }
-    async function checkIfBuildExists() {
-        const queryParams = new URLSearchParams({
+    function updateButtonStates(isSaved) {
+        const buttons = document.querySelectorAll('.save-build-btn');
+
+        buttons.forEach(btn => {
+            btn.setAttribute('data-selected', isSaved.toString());
+            btn.textContent = isSaved ? 'Build Saved' : 'Save';
+
+            btn.classList.toggle('bg-black', isSaved);
+            btn.classList.toggle('text-white', isSaved);
+            btn.classList.toggle('bg-white', !isSaved);
+            btn.classList.toggle('text-black', !isSaved);
+        });
+    }
+    async function checkIfBuildSaved() {
+        const buildData = {
             model: selectedModel,
             color: selectedColor,
             finish: selectedFinish,
@@ -551,27 +583,27 @@
             trim: selectedTrim,
             interior: selectedInterior,
             headlining: selectedHeadlining
-        });
+        };
+
+        const params = new URLSearchParams(buildData).toString();
 
         try {
-            const response = await fetch(`/api/builds/exists?${queryParams.toString()}`);
-            const exists = await response.json();
+            const response = await fetch(`/test/exists?${params}`);
+            const isSaved = await response.json();
 
-            document.querySelectorAll('.save-build-btn').forEach(btn => {
-                btn.setAttribute("data-selected", exists.toString());
-                btn.textContent = exists ? "Saved" : "Save Build";
-                btn.classList.toggle("bg-black", exists);
-                btn.classList.toggle("text-white", exists);
-                btn.classList.toggle("bg-white", !exists);
-                btn.classList.toggle("text-black", !exists);
-            });
-        } catch (err) {
-            console.error("Failed to check build existence:", err);
+            updateButtonStates(isSaved);
+        } catch (error) {
+            console.error("Error checking if build is saved:", error);
         }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        checkIfBuildExists();
+    window.addEventListener('DOMContentLoaded', async () => {
+        const defaultButton = document.querySelector('.model-button');
+        if (defaultButton) {
+            defaultButton.click();
+        }
+
+        await checkIfBuildSaved(); // <- ensures state is correct on load
     });
 
     let selectedModel = 'Defender OCTA';
@@ -686,7 +718,6 @@
                 imgs[i].alt = `${selectedModel} - ${selectedColor} - ${selectedFinish} - ${selectedWheel} - ${key}`;
             }
         });
-
 
     }
 
@@ -904,6 +935,48 @@
                 const el = document.getElementById(id);
                 if (el) observer.observe(el);
             });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select the default element (e.g., the first one - Ebony)
+        const defaultOption = document.querySelector('.headlining-option');
+
+        if (defaultOption) {
+            selectHeadliningOption(defaultOption, 'Ebony suedecloth headlining');
+        }
+    });
+    document.addEventListener("DOMContentLoaded", async () => {
+        const button = document.querySelector('.save-build-btn');
+
+        const buildData = {
+            model: selectedModel,
+            color: selectedColor,
+            finish: selectedFinish,
+            wheel: selectedWheel,
+            trim: selectedTrim,
+            interior: selectedInterior,
+            headlining: selectedHeadlining
+        };
+
+        const query = new URLSearchParams(buildData).toString();
+
+        try {
+            const response = await fetch(`/test/exists?${query}`);
+            const isSaved = await response.json();
+
+            if (isSaved) {
+                button.setAttribute('data-selected', 'true');
+                button.textContent = 'Build Saved';
+                button.classList.add('bg-black', 'text-white');
+                button.classList.remove('bg-white', 'text-black');
+            } else {
+                button.setAttribute('data-selected', 'false');
+                button.textContent = 'Save Build';
+                button.classList.add('bg-white', 'text-black');
+                button.classList.remove('bg-black', 'text-white');
+            }
+        } catch (error) {
+            console.error("Error checking if build is saved:", error);
+        }
     });
     const imageMap = {
         'Defender OCTA': {
