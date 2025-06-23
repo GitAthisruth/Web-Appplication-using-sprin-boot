@@ -719,25 +719,27 @@
     let selectedInterior = 'burnt_sienna'; // default
 
     function selectTrim(type) {
-        selectedTrim = type; //  track trim type
+    const semi = document.getElementById('trim-options-semi-aniline');
+    const ultra = document.getElementById('trim-options-ultrafabric');
 
-        document.querySelectorAll('.trim-btn').forEach(btn => {
-            btn.classList.remove('bg-black', 'text-white');
-            btn.classList.add('border-gray-400', 'text-gray-800');
-        });
-
-        document.getElementById('trim-options-semi-aniline').classList.add('hidden');
-        document.getElementById('trim-options-ultrafabric').classList.add('hidden');
-
-        document.getElementById(`trim-options-${type}`).classList.remove('hidden');
-
-        const selectedBtn = document.getElementById(`trim-${type}`);
-        selectedBtn.classList.add('bg-black', 'text-white');
-        selectedBtn.classList.remove('border-gray-400', 'text-gray-800');
-
-        updateInteriorImage();
-        resetSaveState();
+    if (type === 'semi-aniline') {
+        semi.classList.remove('hidden');
+        ultra.classList.add('hidden');
+    } else {
+        ultra.classList.remove('hidden');
+        semi.classList.add('hidden');
     }
+
+    // Reset UI of trim buttons
+    document.querySelectorAll('.trim-btn').forEach(btn => {
+        btn.classList.remove('bg-black', 'text-white');
+        btn.classList.add('text-gray-800');
+    });
+    document.getElementById(`trim-${type}`).classList.add('bg-black', 'text-white');
+
+    selectedTrim = type;
+    resetSaveState();
+}
 
 
     function selectInteriorOption(el, value) {
