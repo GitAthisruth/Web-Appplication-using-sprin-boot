@@ -104,4 +104,16 @@ public class Build {
         this.user = user;
     }
 
+    @Column(name = "brake_calipers")
+private String brakeCalipers;
+
+public String getBrakeCalipers() {
+    return brakeCalipers;
+}
+
+public void setBrakeCalipers(String brakeCalipers) {
+    this.brakeCalipers = brakeCalipers;
+}
+
+
 }

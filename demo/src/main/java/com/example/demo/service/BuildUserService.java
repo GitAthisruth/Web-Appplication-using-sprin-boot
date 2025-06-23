@@ -27,7 +27,7 @@ public class BuildUserService {
     }
 
     public boolean checkIfBuildExists(User user, Build buildRequest) {
-        return buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadlining(
+        return buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadliningAndBrakeCalipers(
                 user,
                 buildRequest.getModel(),
                 buildRequest.getColor(),
@@ -35,12 +35,13 @@ public class BuildUserService {
                 buildRequest.getWheel(),
                 buildRequest.getTrim(),
                 buildRequest.getInterior(),
-                buildRequest.getHeadlining()
+                buildRequest.getHeadlining(),
+                buildRequest.getBrakeCalipers()
         ).isPresent();
     }
 
     public String toggleBuild(User user, Build buildRequest) {
-        Optional<Build> existing = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadlining(
+        Optional<Build> existing = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadliningAndBrakeCalipers(
                 user,
                 buildRequest.getModel(),
                 buildRequest.getColor(),
@@ -48,7 +49,8 @@ public class BuildUserService {
                 buildRequest.getWheel(),
                 buildRequest.getTrim(),
                 buildRequest.getInterior(),
-                buildRequest.getHeadlining()
+                buildRequest.getHeadlining(),
+                buildRequest.getBrakeCalipers()
         );
 
         if (existing.isPresent()) {
@@ -67,8 +69,8 @@ public class BuildUserService {
                 .toList();
     }
 
-    public String deleteBuild(User user, Build buildRequest) {
-        Optional<Build> build = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadlining(
+    public boolean deleteBuild(User user, Build buildRequest) {
+        Optional<Build> build = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadliningAndBrakeCalipers(
                 user,
                 buildRequest.getModel(),
                 buildRequest.getColor(),
@@ -76,20 +78,22 @@ public class BuildUserService {
                 buildRequest.getWheel(),
                 buildRequest.getTrim(),
                 buildRequest.getInterior(),
-                buildRequest.getHeadlining()
+                buildRequest.getHeadlining(),
+                buildRequest.getBrakeCalipers()
         );
-
+    
         if (build.isPresent()) {
             buildRepository.delete(build.get());
-            return "Build deleted successfully.";
+            return true; // Indicates successful deletion
         } else {
-            throw new RuntimeException("Build not found.");
+            return false; // Indicates build was not found
         }
     }
+    
 
 
     public String updateBuild(User user, Build updatedBuild) {
-        Optional<Build> existing = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadlining(
+        Optional<Build> existing = buildRepository.findByUserAndModelAndColorAndFinishAndWheelAndTrimAndInteriorAndHeadliningAndBrakeCalipers(
                 user,
                 updatedBuild.getModel(),
                 updatedBuild.getColor(),
@@ -97,7 +101,8 @@ public class BuildUserService {
                 updatedBuild.getWheel(),
                 updatedBuild.getTrim(),
                 updatedBuild.getInterior(),
-                updatedBuild.getHeadlining()
+                updatedBuild.getHeadlining(),
+                updatedBuild.getBrakeCalipers()
         );
 
         if (existing.isPresent()) {
@@ -111,6 +116,7 @@ public class BuildUserService {
             buildToUpdate.setTrim(updatedBuild.getTrim());
             buildToUpdate.setInterior(updatedBuild.getInterior());
             buildToUpdate.setHeadlining(updatedBuild.getHeadlining());
+            buildToUpdate.setBrakeCalipers(updatedBuild.getBrakeCalipers());
 
             buildRepository.save(buildToUpdate);
             return "Build updated successfully.";

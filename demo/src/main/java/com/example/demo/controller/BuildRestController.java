@@ -82,12 +82,22 @@ public class BuildRestController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteBuild(@RequestBody Build buildRequest, Authentication authentication) {
+        if (buildRequest == null || authentication == null) {
+            return ResponseEntity.badRequest().body("Invalid request data.");
+        }
+    
         try {
             User user = buildUserService.getCurrentUser(authentication);
-            String msg = buildUserService.deleteBuild(user, buildRequest);
-            return ResponseEntity.ok(msg);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            boolean deleted = buildUserService.deleteBuild(user, buildRequest);
+    
+            if (deleted) {
+                return ResponseEntity.ok("Build deleted successfully.");
+            } else {
+                return ResponseEntity.status(404).body("Build not found.");
+            }
+        } catch (Exception ex) {
+            return ResponseEntity.status(500).body("Error deleting build: " + ex.getMessage());
         }
     }
+    
 }
