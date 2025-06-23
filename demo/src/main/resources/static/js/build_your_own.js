@@ -144,17 +144,31 @@ card.querySelector('ul').addEventListener('click', handleBuildClick);
 
 
 window.addEventListener('DOMContentLoaded', () => {
-const saved = localStorage.getItem('selectedBuild');
-if (saved) {
-    try {
-        const build = JSON.parse(saved);
-        applyBuild(build); // This function should apply the customizations
-        localStorage.removeItem('selectedBuild');
-    } catch (e) {
-        console.error("Invalid build format from storage", e);
+    const saved = localStorage.getItem('selectedBuild');
+    if (saved) {
+        try {
+            const build = JSON.parse(saved);
+            applyBuild(build); // This function should apply the customizations
+            localStorage.removeItem('selectedBuild');
+        } catch (e) {
+            console.error("Invalid build format from storage", e);
+        }
+    } else {
+        //  Default-select Wheel1 if no saved build
+        const defaultWheel = document.querySelector('.wheel-thumb-wrapper[data-wheel="Wheel1"]');
+        if (defaultWheel) {
+            updateConfig('wheels', 'Wheel1', defaultWheel);
+        }
     }
-}
+
+    // Optionally initialize default brake caliper selection if needed
+    const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
+    if (selectedBrake) {
+        const text = selectedBrake.querySelector('p')?.innerText.trim();
+        updateConfig('brake', text, selectedBrake);
+    }
 });
+
 
 function toggleBuildsModal() {
     const modal = document.getElementById('savedBuildsModal');
@@ -289,7 +303,7 @@ let selectedFinish = 'Gloss Finish';
 function selectColor(el, colorName) {
     selectedColor = colorName;
 
-    // Remove previous black borders
+   
     document.querySelectorAll(".color-circle div").forEach(dot => {
         dot.classList.remove("border-black");
         dot.classList.add("border-gray-400");
@@ -351,8 +365,12 @@ function updateMappedImages() {
 
 }
 
-
-let selectedWheel = null;
+const wheelNameMap = {
+    'Wheel1': '20" Style 1086 - Satin Dark Tint',
+    'Wheel2': '22" Style 7026 - Diamond Turned',
+    'Wheel3': '22" Style 7026 - Gloss Black'
+};
+let selectedWheel = wheelNameMap['Wheel1'];
 let selectedBrakeCalipers = 'Phosphor Bronze front brake calipers';
 
 function updateConfig(category, value, el) {
@@ -365,11 +383,11 @@ function updateConfig(category, value, el) {
     el.classList.remove('border-gray-300');
     el.classList.add('border-black');
 
-    // ✅ Save the data-wheel value instead of label
+    // Save the data-wheel value instead of label
     selectedWheel = el.getAttribute('data-wheel') || 'Wheel1';
 
     // Visual name update remains
-    const displayText = el.querySelector('p')?.innerText?.trim() || '';
+    const displayText = wheelNameMap[selectedWheel] || selectedWheel;
     document.getElementById('wheels-name').textContent = displayText;
 
     updateMappedImages();

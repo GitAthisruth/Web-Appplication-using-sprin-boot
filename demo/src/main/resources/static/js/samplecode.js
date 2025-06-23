@@ -103,7 +103,7 @@ card.querySelector('ul').addEventListener('click', handleBuildClick);
 
     card.querySelector('ul').addEventListener('click', () => {
         localStorage.setItem('selectedBuild', JSON.stringify(build));
-        window.location.href = "/sample";
+        window.location.href = "/build_your_own";
     });
 
     // Delete button
@@ -178,12 +178,14 @@ function applyBuild(build) {
 
     
     const wheelEl = document.querySelector(`.wheel-thumb-wrapper[data-wheel="${build.wheel}"]`);
-    if (wheelEl) {
-        console.log("✅ Applying saved wheel:", build.wheel);
-        updateConfig('wheels', build.wheel, wheelEl);
-    } else {
-        console.warn("⚠️ No matching wheel found for:", build.wheel);
-    }
+if (wheelEl) {
+    console.log("Applying saved wheel:", build.wheel);
+    selectedWheel = build.wheel; //Ensure selectedWheel is set
+    updateConfig('wheels', build.wheel, wheelEl);
+} else {
+    console.warn("No matching wheel found for:", build.wheel);
+}
+
 
     // Apply brake calipers
     if (build.brakeCalipers) {
@@ -191,7 +193,7 @@ function applyBuild(build) {
         if (brakeEl) {
             updateConfig('brake', build.brakeCalipers, brakeEl);
         } else {
-            console.warn("⚠️ No matching brake caliper found for:", build.brakeCalipers);
+            console.warn("No matching brake caliper found for:", build.brakeCalipers);
         }
     }
 
@@ -287,7 +289,7 @@ let selectedFinish = 'Gloss Finish';
 function selectColor(el, colorName) {
     selectedColor = colorName;
 
-    // Remove previous black borders
+   
     document.querySelectorAll(".color-circle div").forEach(dot => {
         dot.classList.remove("border-black");
         dot.classList.add("border-gray-400");
@@ -350,7 +352,7 @@ function updateMappedImages() {
 }
 
 
-let selectedWheel = 'Wheel1';
+let selectedWheel = null;
 let selectedBrakeCalipers = 'Phosphor Bronze front brake calipers';
 
 function updateConfig(category, value, el) {
