@@ -283,7 +283,11 @@ let currentIndex = 0;
 function updateSlider() {
     const slider = document.getElementById("imageSlider");
     if (slider) {
-        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        const offset = currentIndex * 100;
+        slider.style.transform = `translateX(-${offset}%)`;
+        console.log(`Slider moved to index ${currentIndex}, offset: ${offset}%`);
+    } else {
+        console.error("Slider not found!");
     }
 }
 
@@ -573,12 +577,80 @@ function goToSlide(index) {
     }
 }
 
+function goToSlide(index) {
+    const totalSlides = document.querySelectorAll("#imageSlider .slide").length;
+    console.log(`goToSlide called with index: ${index}`);
+
+    if (index >= 0 && index < totalSlides) {
+        currentIndex = index;
+        updateSlider();
+        console.log(`Slide updated to index: ${index}`);
+    } else {
+        console.warn(`Invalid slide index: ${index}`);
+    }
+}
+
+function observeSectionsAndChangeSlides() {
+    const sections = document.querySelectorAll('#wheels, #interior, #headlining, #bodystyle, #engine, #exterior, #model');
+
+    const observerOptions = {
+        root: null,
+        threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+
+                switch (id) {
+                    case 'wheels':
+                        currentIndex = 2;
+                        console.log("Scrolled to 'Wheels' - Slide 3");
+                        break;
+                    case 'interior':
+                    case 'headlining':
+                        currentIndex = 5;
+                        console.log(`Scrolled to '${id}' - Slide 6`);
+                        break;
+                    default:
+                        currentIndex = 0;
+                        console.log(`Scrolled to '${id}' - Slide 1`);
+                        break;
+                }
+
+                updateSlider();
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        if (section) observer.observe(section);
+    });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const defaultButton = document.querySelector('.model-button');
+    if (defaultButton) {
+        defaultButton.click();
+    }
+
+    observeSectionsAndChangeSlides();
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Apply default selections
     const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
-    if (defaultColorEl) selectColor(defaultColorEl, 'Borasco Grey');
+    if (defaultColorEl) {
+        selectColor(defaultColorEl, 'Borasco Grey');
+    }
 
     const defaultFinishBtn = document.querySelector('.finish-btn');
-    if (defaultFinishBtn) selectFinish(defaultFinishBtn, 'Gloss Finish');
+    if (defaultFinishBtn) {
+        selectFinish(defaultFinishBtn, 'Gloss Finish');
+    }
+
     selectTrim('semi-aniline');
 
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
@@ -587,11 +659,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateInteriorImage();
-    const options = {
-        root: document.querySelector(".overflow-auto"),
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100) // 0 to 1 by 0.01
-    };
 
+    // 2. Initialize visibility map and observer
     let visibilityMap = {
         bodystyle: 0,
         model: 0,
@@ -609,42 +678,53 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = entry.target.id;
             if (id in visibilityMap) {
                 visibilityMap[id] = entry.intersectionRatio;
+                console.log(`Section ${id} visibility: ${visibilityMap[id].toFixed(2)}`);
             }
         });
 
-        // Check if any of bodystyle, model, engine or exterior is visible > 0.1
+        // Slide logic
         const showSlide0 = ['bodystyle', 'model', 'engine', 'exterior']
             .some(section => visibilityMap[section] > 0.1);
 
-        if (showSlide0) {
-            if (currentSlideIndex !== 0) {
-                goToSlide(0);
-                currentSlideIndex = 0;
-            }
-        } else if ((visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels)
-            && (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1)) {
-            if (currentSlideIndex !== 5) {
-                goToSlide(5);
-                currentSlideIndex = 5;
-            }
-        } else if (visibilityMap.wheels > 0.1) {
-            if (currentSlideIndex !== 2) {
-                goToSlide(2);
-                currentSlideIndex = 2;
-            }
-        } else {
-            // Do not change slide if nothing visible enough
+        if (showSlide0 && currentSlideIndex !== 0) {
+            goToSlide(0);
+            currentSlideIndex = 0;
+        } else if (
+            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels) &&
+            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1) &&
+            currentSlideIndex !== 5
+        ) {
+            goToSlide(5);
+            currentSlideIndex = 5;
+        } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
+            goToSlide(2);
+            currentSlideIndex = 2;
         }
+    }, {
+        root: document.getElementById('scrollable-panel'),
+        threshold: 0.1
+    });
 
-    }, options);
-
-    // Observe all relevant sections
-    ['bodystyle', 'model', 'engine', 'exterior', 'wheels', 'interior', 'handling']
-        .forEach(id => {
-            const el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
+    // 3. Observe target sections
+    [
+        'bodystyle',
+        'model',
+        'engine',
+        'exterior',
+        'wheels',
+        'interior',
+        'handling'
+    ].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            console.log(`Observing section: ${id}`);
+            observer.observe(el);
+        } else {
+            console.warn(`Section not found: ${id}`);
+        }
+    });
 });
+
 const imageMap = {
     'Defender OCTA': {
         'Borasco Grey': {
