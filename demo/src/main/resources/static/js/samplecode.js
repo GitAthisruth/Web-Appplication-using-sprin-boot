@@ -144,17 +144,31 @@ card.querySelector('ul').addEventListener('click', handleBuildClick);
 
 
 window.addEventListener('DOMContentLoaded', () => {
-const saved = localStorage.getItem('selectedBuild');
-if (saved) {
-    try {
-        const build = JSON.parse(saved);
-        applyBuild(build); // This function should apply the customizations
-        localStorage.removeItem('selectedBuild');
-    } catch (e) {
-        console.error("Invalid build format from storage", e);
+    const saved = localStorage.getItem('selectedBuild');
+    if (saved) {
+        try {
+            const build = JSON.parse(saved);
+            applyBuild(build); // This function should apply the customizations
+            localStorage.removeItem('selectedBuild');
+        } catch (e) {
+            console.error("Invalid build format from storage", e);
+        }
+    } else {
+        //  Default-select Wheel1 if no saved build
+        const defaultWheel = document.querySelector('.wheel-thumb-wrapper[data-wheel="Wheel1"]');
+        if (defaultWheel) {
+            updateConfig('wheels', 'Wheel1', defaultWheel);
+        }
     }
-}
+
+    // Optionally initialize default brake caliper selection if needed
+    const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
+    if (selectedBrake) {
+        const text = selectedBrake.querySelector('p')?.innerText.trim();
+        updateConfig('brake', text, selectedBrake);
+    }
 });
+
 
 function toggleBuildsModal() {
     const modal = document.getElementById('savedBuildsModal');
@@ -266,20 +280,27 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 let currentIndex = 0;
-const slider = document.getElementById('imageSlider');
-const slides = slider?.querySelectorAll('.slide') || [];
-const totalSlides = slides.length;
-
 function updateSlider() {
-    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+    const slider = document.getElementById("imageSlider");
+    if (slider) {
+        const offset = currentIndex * 100;
+        slider.style.transform = `translateX(-${offset}%)`;
+        console.log(`Slider moved to index ${currentIndex}, offset: ${offset}%`);
+    } else {
+        console.error("Slider not found!");
+    }
 }
 
 function nextSlide() {
+    const slides = document.querySelectorAll('#imageSlider .slide');
+    const totalSlides = slides.length;
     currentIndex = (currentIndex + 1) % totalSlides;
     updateSlider();
 }
 
 function prevSlide() {
+    const slides = document.querySelectorAll('#imageSlider .slide');
+    const totalSlides = slides.length;
     currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
     updateSlider();
 }
@@ -351,8 +372,12 @@ function updateMappedImages() {
 
 }
 
-
-let selectedWheel = null;
+const wheelNameMap = {
+    'Wheel1': '20" Style 1086 - Satin Dark Tint',
+    'Wheel2': '22" Style 7026 - Diamond Turned',
+    'Wheel3': '22" Style 7026 - Gloss Black'
+};
+let selectedWheel = wheelNameMap['Wheel1'];
 let selectedBrakeCalipers = 'Phosphor Bronze front brake calipers';
 
 function updateConfig(category, value, el) {
@@ -365,11 +390,11 @@ function updateConfig(category, value, el) {
     el.classList.remove('border-gray-300');
     el.classList.add('border-black');
 
-    // ✅ Save the data-wheel value instead of label
+    // Save the data-wheel value instead of label
     selectedWheel = el.getAttribute('data-wheel') || 'Wheel1';
 
     // Visual name update remains
-    const displayText = el.querySelector('p')?.innerText?.trim() || '';
+    const displayText = wheelNameMap[selectedWheel] || selectedWheel;
     document.getElementById('wheels-name').textContent = displayText;
 
     updateMappedImages();
@@ -543,22 +568,82 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
 function goToSlide(index) {
-    const slider = document.getElementById("imageSlider");
-    const slides = document.querySelectorAll(".slide");
-    const totalSlides = slides.length;
+    const totalSlides = document.querySelectorAll("#imageSlider .slide").length;
+    console.log(`goToSlide called with index: ${index}`);
 
     if (index >= 0 && index < totalSlides) {
-        slider.style.transform = `translateX(-${index * 100}%)`;
+        currentIndex = index;
+        updateSlider();
+        console.log(`Slide updated to index: ${index}`);
+    } else {
+        console.warn(`Invalid slide index: ${index}`);
     }
 }
 
+function observeSectionsAndChangeSlides() {
+    const sections = document.querySelectorAll('#wheels, #interior, #headlining, #bodystyle, #engine, #exterior, #model');
+
+    const observerOptions = {
+        root: null,
+        threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+
+                switch (id) {
+                    case 'wheels':
+                        currentIndex = 2;
+                        console.log("Scrolled to 'Wheels' - Slide 3");
+                        break;
+                    case 'interior':
+                    case 'headlining':
+                        currentIndex = 5;
+                        console.log(`Scrolled to '${id}' - Slide 6`);
+                        break;
+                    default:
+                        currentIndex = 0;
+                        console.log(`Scrolled to '${id}' - Slide 1`);
+                        break;
+                }
+
+                updateSlider();
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        if (section) observer.observe(section);
+    });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const defaultButton = document.querySelector('.model-button');
+    if (defaultButton) {
+        defaultButton.click();
+    }
+
+    observeSectionsAndChangeSlides();
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Apply default selections
     const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
-    if (defaultColorEl) selectColor(defaultColorEl, 'Borasco Grey');
+    if (defaultColorEl) {
+        selectColor(defaultColorEl, 'Borasco Grey');
+    }
 
     const defaultFinishBtn = document.querySelector('.finish-btn');
-    if (defaultFinishBtn) selectFinish(defaultFinishBtn, 'Gloss Finish');
+    if (defaultFinishBtn) {
+        selectFinish(defaultFinishBtn, 'Gloss Finish');
+    }
+
     selectTrim('semi-aniline');
 
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
@@ -567,11 +652,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateInteriorImage();
-    const options = {
-        root: document.querySelector(".overflow-auto"),
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100) // 0 to 1 by 0.01
-    };
 
+    // 2. Initialize visibility map and observer
     let visibilityMap = {
         bodystyle: 0,
         model: 0,
@@ -589,42 +671,53 @@ document.addEventListener("DOMContentLoaded", () => {
             const id = entry.target.id;
             if (id in visibilityMap) {
                 visibilityMap[id] = entry.intersectionRatio;
+                console.log(`Section ${id} visibility: ${visibilityMap[id].toFixed(2)}`);
             }
         });
 
-        // Check if any of bodystyle, model, engine or exterior is visible > 0.1
+        // Slide logic
         const showSlide0 = ['bodystyle', 'model', 'engine', 'exterior']
             .some(section => visibilityMap[section] > 0.1);
 
-        if (showSlide0) {
-            if (currentSlideIndex !== 0) {
-                goToSlide(0);
-                currentSlideIndex = 0;
-            }
-        } else if ((visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels)
-            && (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1)) {
-            if (currentSlideIndex !== 5) {
-                goToSlide(5);
-                currentSlideIndex = 5;
-            }
-        } else if (visibilityMap.wheels > 0.1) {
-            if (currentSlideIndex !== 2) {
-                goToSlide(2);
-                currentSlideIndex = 2;
-            }
-        } else {
-            // Do not change slide if nothing visible enough
+        if (showSlide0 && currentSlideIndex !== 0) {
+            goToSlide(0);
+            currentSlideIndex = 0;
+        } else if (
+            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels) &&
+            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1) &&
+            currentSlideIndex !== 5
+        ) {
+            goToSlide(5);
+            currentSlideIndex = 5;
+        } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
+            goToSlide(2);
+            currentSlideIndex = 2;
         }
+    }, {
+        root: document.getElementById('scrollable-panel'),
+        threshold: 0.1
+    });
 
-    }, options);
-
-    // Observe all relevant sections
-    ['bodystyle', 'model', 'engine', 'exterior', 'wheels', 'interior', 'handling']
-        .forEach(id => {
-            const el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
+    // 3. Observe target sections
+    [
+        'bodystyle',
+        'model',
+        'engine',
+        'exterior',
+        'wheels',
+        'interior',
+        'handling'
+    ].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            console.log(`Observing section: ${id}`);
+            observer.observe(el);
+        } else {
+            console.warn(`Section not found: ${id}`);
+        }
+    });
 });
+
 const imageMap = {
     'Defender OCTA': {
         'Borasco Grey': {
