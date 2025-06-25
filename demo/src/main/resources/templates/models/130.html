@@ -99,6 +99,13 @@
     right: 10px;
 }
 
+.hidden {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
 </style>
 
 </head>
@@ -292,7 +299,7 @@
     <div class="max-w-4xl mx-auto text-center mb-12">
       <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
       <p class="text-lg">
-        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+        Composed on any surface.
       </p>
     </div>
   
@@ -306,9 +313,134 @@
         />
       </div>
     </div>
+    <p class="text-lg">
+        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+      </p>
+  </section>
+
+  <section id="build-order">
+    <h2 class="section-title">BUILD AND ORDER</h2>
+    <p>Choose from our distinct models to begin your journey</p>
+  
+    <div class="configurator">
+      <!-- Left + Right Image Columns -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-1" src="/images/130/grey/defender130_grey_side.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-2" src="/images/130/grey/defender130_grey_front.jpg" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-3" src="/images/130/grey/defender130_grey_back.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior" src="/images/130/interior/interior_black.jpg" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels" src="/images/130/grey/defender130_grey_side.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Column: Options -->
+    <div class="configurator-options">
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab('wheels')">Wheels</span>
+      </div>
+  
+      <!-- Exterior Options -->
+      <div class="tab-content active" id="tab-exterior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateConfig('exterior', 'Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateConfig('exterior', 'Santorini Black Metallic')"></div>
+          <div class="box-swatch" style="background-color:#7B7B7B" onclick="updateConfig('exterior', 'Borasco Grey Metallic')"></div>
+          <div class="box-swatch" style="background-color:#8B6F4E" onclick="updateConfig('exterior', 'Gondwana Stone Metallic')"></div>
+          <div class="box-swatch" style="background-color:#912F27" onclick="updateConfig('exterior', 'Sedona Red Metallic')"></div>
+          <div class="box-swatch" style="background-color:#4D6952" onclick="updateConfig('exterior', 'Woolstone Green Metallic')"></div>
+        </div>
+        <p id="exterior-name">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <!-- Interior Options -->
+      <div class="tab-content hidden" id="tab-interior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateConfig('interior', 'Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#3a3a3a" onclick="updateConfig('interior', 'Ebony Resist seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateConfig('interior', 'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+          <div class="box-swatch" style="background-color:#a67c52" onclick="updateConfig('interior', 'Caraway Windsor leather seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#e5e5e5" onclick="updateConfig('interior', 'Light Cloud perforated Windsor leather seats with Light Cloud interior')"></div>
+          <div class="box-swatch" style="background-color:#2f2f2f" onclick="updateConfig('interior', 'Ebony Windsor leather and Kvadrat™ seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#6b4e31" onclick="updateConfig('interior', 'Caraway/Ebony Windsor leather and Kvadrat™ seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#f0f0f0" onclick="updateConfig('interior', 'Light Cloud/Lunar Ultrafabrics™ seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <!-- Wheels Options -->
+      <div class="tab-content hidden" id="tab-wheels">
+        <div class="palette-row">
+          <img src="/images/130/wheels/wheel_1.png" alt="Alloy 1" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010 wheels')">
+          <img src="/images/130/wheels/wheel_2.png" alt="Alloy 2" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010, Gloss Black wheels')">
+          <img src="/images/130/wheels/wheel_3.png" alt="Alloy 3" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5094, Satin Dark Grey wheels')">
+          <img src="/images/130/wheels/wheel_4.png" alt="Alloy 4" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5095, Diamond Turned wheels with Gloss Dark Grey contrast')">
+          <img src="/images/130/wheels/wheel_5.png" alt="Alloy 5" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098 wheels')">
+          <img src="/images/130/wheels/wheel_6.png" alt="Alloy 6" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098, Satin Dark Grey wheels')">
+        </div>
+        <p id="wheels-name">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
+  <section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Section Heading -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">ALL-ROUND PERSONALISATION</h3>
+    </div>
+  
+    <!-- Full Width Image -->
+    <div class="relative w-full mx-auto mb-12">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/performance_1.webp"
+          alt="Capability"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- Subheading and Description -->
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-semibold mb-4">BOUNDLESS POSSIBILITIES</h3>
+      <p class="text-lg">
+        From exterior options to preconfigured accessory packs, equip your Defender 130 to match your lifestyle.
+      </p>
+    </div>
   </section>
   
-
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">CHANGE MARKET</a> |
@@ -398,6 +530,7 @@
       });
     }
   
+
     function setFormSlide(index) {
       const img = document.getElementById("designImage2");
       const dots = document.querySelectorAll(".dot-btn-form");
@@ -421,6 +554,31 @@
       formIndex = (formIndex + 1) % formSlides.length;
       setFormSlide(formIndex);
     }, 5000);
+    function switchTab(tab) {
+    // Remove 'active' class from all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Add 'active' class to clicked tab button
+    document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
+
+    // Hide all tab content sections
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.add('hidden');
+      content.classList.remove('active');
+    });
+
+    // Show only the selected tab content
+    const activeTab = document.getElementById('tab-' + tab);
+    activeTab.classList.remove('hidden');
+    activeTab.classList.add('active');
+  }
+
+  // Ensure only 'Exterior' is visible on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    switchTab('exterior');
+  });
   </script>
   
 </html>
