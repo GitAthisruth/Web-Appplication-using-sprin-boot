@@ -105,6 +105,46 @@
         </nav>
     </div>
 </section>
+<section id="start" class="slider-section-90 mt-10">
+    <div class="slider-container-90">
+      <div class="slider-90" id="slider-90">
+        
+        <div class="slide-90">
+          <div class="slide-content-90">
+            <img th:src="@{/images/90/defender_90_1.jpeg}" th:alt="'DEFENDER 90'" class="slide-image-90 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+              <h3 class="overlay-title">DEFENDER 90</h3>
+              <p class="overlay-text">Defender in its purest form.</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="slide-90">
+          <div class="slide-content-90">
+            <img th:src="@{/images/90/defender_90_2.jpeg}" th:alt="'DEFENDER JOURNEYS'" class="slide-image-90 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+              <h3 class="overlay-title">DEFENDER JOURNEYS</h3>
+              <p class="overlay-text">Experience India like never before behind the wheels of the iconic Defender.</p>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Navigation Buttons -->
+      <button class="nav-btn prev-btn" onclick="changeSlide90(-1)">&#10094;</button>
+      <button class="nav-btn next-btn" onclick="changeSlide90(1)">&#10095;</button>
+    </div>
+  </section>
+  
+  <section class="w-full bg-[#0a0a0a] py-10 px-4 md:px-10 lg:px-20 text-white">
+    <div class="w-full max-w-screen-2xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
+      <h3 class="text-2xl md:text-4xl font-semibold text-center leading-snug tracking-wide">
+        At home anywhere. This is the three‑door Defender for a new generation.
+      </h3>
+    </div>
+  </section>
+
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">CHANGE MARKET</a> |
@@ -165,4 +205,30 @@
     </footer>
 </div>
 </body>
+<script>
+    let currentSlideIndex90 = 0;
+
+function showSlide90(index) {
+  const slides = document.querySelectorAll('.slider-90 .slide-90');
+  if (slides.length === 0) return;
+
+  currentSlideIndex90 = (index + slides.length) % slides.length;
+
+  slides.forEach(slide => {
+    slide.style.display = 'none';
+  });
+
+  slides[currentSlideIndex90].style.display = 'block';
+}
+
+function changeSlide90(direction) {
+  showSlide90(currentSlideIndex90 + direction);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  showSlide90(currentSlideIndex90);
+});
+
+</script>
+
 </html>
