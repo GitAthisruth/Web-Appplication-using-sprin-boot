@@ -247,6 +247,76 @@
       </p>
     </div>
   </section>
+
+  <section id="performance" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header + Option Buttons -->
+    <div class="max-w-4xl mx-auto text-center mb-8">
+      <h3 class="text-4xl font-bold mb-4">PERFORMANCE</h3>
+  
+      <!-- Performance Options -->
+      <div class="flex justify-center flex-wrap gap-4 mt-6">
+        <button onclick="setPerformanceSlide(0)" id="perfBtn0" class="px-4 py-2 bg-white text-black rounded-md font-semibold">ELECTRIC HYBRID</button>
+        <button onclick="setPerformanceSlide(1)" id="perfBtn1" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">OCTA</button>
+        <button onclick="setPerformanceSlide(2)" id="perfBtn2" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">V8</button>
+      </div>
+    </div>
+  
+    <!-- Image -->
+    <div class="relative max-w-6xl mx-auto mb-10">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="perfImage"
+          src="/images/octa/perf_hybrid.webp"
+          alt="Performance Image"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+
+<div class="text-center max-w-6xl mx-auto flex flex-col md:flex-row gap-10 min-h-[220px] px-4">
+  <!-- Left: Specs -->
+  <div id="perfSpecs" class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+    <!-- Injected via JS -->
+  </div>
+
+  <!-- Right: Description -->
+  <div class="flex-1 text-left">
+    <h3 id="perfTitle" class="text-2xl font-semibold mb-4">DEFENDER 110 ELECTRIC HYBRID</h3>
+    <p id="perfDesc" class="text-lg">
+      Refuse to compromise.<br />300 PS engine detailed.
+    </p>
+  </div>
+</div>
+<!-- Highlighted OCTA Section -->
+<div class="mt-20 text-center">
+    <h2 class="text-4xl md:text-5xl font-bold mb-10">THE MASTER OF EXTREME PERFORMANCE</h2>
+  
+    <!-- Image -->
+    <div class="max-w-6xl mx-auto overflow-hidden rounded-lg mb-8">
+      <img
+        src="/images/octa/octa_master.webp"
+        alt="Defender OCTA"
+        class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+      />
+    </div>
+  
+    <!-- Title + Description -->
+    <div class="max-w-3xl mx-auto text-center mb-6">
+      <h3 class="text-3xl font-semibold mb-4">DEFENDER OCTA</h3>
+      <p class="text-lg">
+        An unstoppable force on any terrain with a 635PS V8 engine, cutting-edge air suspension and enhanced one meter wading depth. This is the most powerful Defender ever made.
+      </p>
+    </div>
+  
+    <!-- CTA Link -->
+    <a href="/models/octa" class="inline-block mt-4 px-6 py-3 bg-white text-black text-lg font-semibold rounded-md hover:bg-gray-200 transition">
+      EXPLORE DEFENDER OCTA
+    </a>
+  </div>
+  
+  </section>
+  
   
   
     <footer class="site-footer">
@@ -514,6 +584,86 @@
   window.addEventListener("DOMContentLoaded", () => {
     setTechSlide(0);
   });
+
+ 
+  const performanceData = {
+    images: [
+      "/images/octa/perf_hybrid.webp",
+      "/images/octa/perf_octa.webp",
+      "/images/octa/perf_v8.webp"
+    ],
+    titles: [
+      "DEFENDER 110 ELECTRIC HYBRID",
+      "DEFENDER OCTA",
+      "DEFENDER V8"
+    ],
+    descriptions: [
+      "Refuse to compromise.<br />300 PS engine detailed.",
+      "The most powerful Defender ever.<br />P635 engine detailed.",
+      "Embrace real power.<br />P525 engine detailed."
+    ],
+    specs: [
+      [
+        { label: "ELECTRIC RANGE (UP TO)", value: "48 KM" },
+        { label: "0-100 KM/H (FROM)", value: "7.6 SEC" },
+        { label: "PUBLIC CHARGING (FROM)", value: "30 MINUTES ‡" },
+        { label: "TOWING CAPACITY (FROM)", value: "3 000 KG" }
+      ],
+      [
+        { label: "0-100 KM/H", value: "4.0 SEC" },
+        { label: "MAXIMUM POWER", value: "467 kW" },
+        { label: "MAXIMUM TORQUE", value: "5 855 rpm" },
+        { label: "TOP SPEED", value: "250 KM/H*" }
+      ],
+      [
+        { label: "0-100 KM/H", value: "5.4 SEC" },
+        { label: "MAXIMUM POWER", value: "386 kW" },
+        { label: "MAXIMUM TORQUE", value: "5 500 rpm" },
+        { label: "TOP SPEED", value: "240 KM/H**" }
+      ]
+    ]
+  };
+
+  function setPerformanceSlide(index) {
+    const img = document.getElementById("perfImage");
+    const title = document.getElementById("perfTitle");
+    const desc = document.getElementById("perfDesc");
+    const specs = document.getElementById("perfSpecs");
+
+    // Update image, title, and description
+    img.src = performanceData.images[index];
+    title.textContent = performanceData.titles[index];
+    desc.innerHTML = performanceData.descriptions[index];
+
+    // Inject specs
+    const currentSpecs = performanceData.specs[index];
+    specs.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left px-4">
+        ${currentSpecs.map(s => `
+          <div>
+            <h4 class="text-sm uppercase opacity-70">${s.label}</h4>
+            <p class="text-xl font-bold">${s.value}</p>
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    // Button highlight logic
+    for (let i = 0; i < performanceData.images.length; i++) {
+      const btn = document.getElementById(`perfBtn${i}`);
+      btn.classList.toggle("bg-white", i === index);
+      btn.classList.toggle("text-black", i === index);
+      btn.classList.toggle("bg-gray-700", i !== index);
+      btn.classList.toggle("text-white", i !== index);
+    }
+  }
+
+  // Default selection on load
+  window.addEventListener("DOMContentLoaded", () => {
+    setPerformanceSlide(0);
+  });
+
+
   </script>
   
 </html>
