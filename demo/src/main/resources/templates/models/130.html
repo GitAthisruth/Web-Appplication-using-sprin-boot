@@ -185,46 +185,129 @@
         </nav>
     </div>
 </section>
-<section id="design" class="slider-section-130 mt-10">
+<!-- START SECTION -->
+<section id="start" class="slider-section-130 mt-10">
     <div class="slider-container-130">
-        <div class="slider-130" id="slider-130">
-            <div class="slide-130">
-                <div class="slide-content-130">
-                    <img th:src="@{/images/130/defender_130_1.jpeg}" th:alt="'DEFENDER JOURNEYS'" class="slide-image-130" />
-                    <div class="overlay">
-                        <h3 class="overlay-title">DEFENDER JOURNEYS</h3>
-                        <p class="overlay-text">Experience India like never before behind the wheels of the iconic Defender.</p>
-                    </div>
-                </div>
+      <div class="slider-130" id="slider-130">
+        <div class="slide-130">
+          <div class="slide-content-130">
+            <img th:src="@{/images/130/defender_130_1.jpeg}" th:alt="'DEFENDER JOURNEYS'" class="slide-image-130 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+              <h3 class="overlay-title">DEFENDER JOURNEYS</h3>
+              <p class="overlay-text">Experience India like never before behind the wheels of the iconic Defender.</p>
             </div>
-
-            <div class="slide-130">
-                <div class="slide-content-130">
-                    <img th:src="@{/images/130/defender_130_2.jpeg}" th:alt="'DEFENDER 130'" class="slide-image-130" />
-                    <div class="overlay">
-                        <h3 class="overlay-title">DEFENDER 130</h3>
-                        <p class="overlay-text">Comfort in capability.</p>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-
-        <!-- Navigation Buttons -->
-        <button class="nav-btn prev-btn" onclick="slide130(-1)">&#10094;</button>
-        <button class="nav-btn next-btn" onclick="slide130(1)">&#10095;</button>
+  
+        <div class="slide-130">
+          <div class="slide-content-130">
+            <img th:src="@{/images/130/defender_130_2.jpeg}" th:alt="'DEFENDER 130'" class="slide-image-130 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+              <h3 class="overlay-title">DEFENDER 130</h3>
+              <p class="overlay-text">Comfort in capability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Navigation Buttons -->
+      <button class="nav-btn prev-btn" onclick="slide130(-1)">&#10094;</button>
+      <button class="nav-btn next-btn" onclick="slide130(1)">&#10095;</button>
     </div>
-</section>
-<script>
-    let currentSlide130 = 0;
-
-    function slide130(direction) {
-        const slider = document.getElementById('slider-130');
-        const totalSlides = slider.children.length;
-
-        currentSlide130 = (currentSlide130 + direction + totalSlides) % totalSlides;
-        slider.style.transform = `translateX(-${currentSlide130 * 100}%)`;
-    }
-</script>
+  </section>
+  
+  <!-- HIGHLIGHT BANNER -->
+  <section class="w-full bg-[#0a0a0a] py-10 px-6 md:px-14 text-white">
+    <div class="max-w-7xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
+      <h2 class="text-3xl md:text-5xl font-bold text-center leading-tight tracking-wide">
+        All in adventure. <br class="hidden md:block" />
+        <span class="text-lg md:text-2xl font-medium block mt-6">
+          With eight seats and best-in-class space.
+        </span>
+      </h2>
+    </div>
+  </section>
+  
+<!-- DESIGN SECTION -->
+<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
+      <p class="text-lg">
+        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+      </p>
+    </div>
+  
+    <!-- Image Slider 1 -->
+    <div class="relative max-w-6xl mx-auto">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="designImage"
+          src="/images/octa/performance_0.webp"
+          alt="Defender"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+  
+      <!-- Dot Navigation -->
+      <div class="flex justify-center mt-6 space-x-4">
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-100" onclick="setDesignSlide(0)"></button>
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignSlide(1)"></button>
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignSlide(2)"></button>
+      </div>
+    </div>
+  
+    <!-- Second Image Slider -->
+    <div class="text-center mt-16">
+      <h3 class="text-3xl font-semibold mb-8">
+        Combining form with function, it's a design that demands attention.
+      </h3>
+  
+      <div class="relative max-w-6xl mx-auto">
+        <div class="overflow-hidden rounded-lg">
+          <img
+            id="designImage2"
+            src="/images/octa/performance_0.webp"
+            alt="Design Detail"
+            class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+          />
+        </div>
+  
+        <!-- Dot Navigation -->
+        <div class="flex justify-center mt-6 space-x-4">
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-100" onclick="setFormSlide(0)"></button>
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setFormSlide(1)"></button>
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setFormSlide(2)"></button>
+        </div>
+      </div>
+  
+      <p class="text-lg mt-6 max-w-3xl mx-auto">
+        Combining form with function, it's a design that demands attention. This description appears under the image.
+      </p>
+    </div>
+  </section>
+  
+  <!-- CAPABILITY SECTION -->
+  <section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
+      <p class="text-lg">
+        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+      </p>
+    </div>
+  
+    <!-- Full Width Matching Image -->
+    <div class="relative w-full mx-auto">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/performance_1.webp"
+          alt="Capability"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  </section>
+  
 
     <footer class="site-footer">
         <div class="footer-links">
@@ -286,4 +369,58 @@
     </footer>
 </div>
 </body>
+<script>
+    const designSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/octa_tail_0.jpg",
+      "/images/octa/performance_2.webp"
+    ];
+  
+    const formSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/octa_tail_0.jpg",
+      "/images/octa/performance_2.webp"
+    ];
+  
+    let designIndex = 0;
+    let formIndex = 0;
+  
+    function setDesignSlide(index) {
+      const img = document.getElementById("designImage");
+      const dots = document.querySelectorAll(".dot-btn");
+  
+      img.src = designSlides[index];
+      designIndex = index;
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+    function setFormSlide(index) {
+      const img = document.getElementById("designImage2");
+      const dots = document.querySelectorAll(".dot-btn-form");
+  
+      img.src = formSlides[index];
+      formIndex = index;
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+    // Auto-slide every 5 seconds
+    setInterval(() => {
+      designIndex = (designIndex + 1) % designSlides.length;
+      setDesignSlide(designIndex);
+    }, 5000);
+  
+    setInterval(() => {
+      formIndex = (formIndex + 1) % formSlides.length;
+      setFormSlide(formIndex);
+    }, 5000);
+  </script>
+  
 </html>
