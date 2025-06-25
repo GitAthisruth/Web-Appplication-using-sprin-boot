@@ -95,12 +95,11 @@
         </a>
         <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
             <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
-                <a href="#overview" class="hover:text-gray-300">CAPABILITY</a>
-                <a href="#performance" class="hover:text-gray-300">DESIGN</a>
-                <a href="#design" class="hover:text-gray-300">TECHNOLOGY</a>
-                <a href="#technology" class="hover:text-gray-300">PERFORMANCE</a>
-                <a href="#specifications" class="hover:text-gray-300">MODELS</a>
-                <a href="#gallery" class="hover:text-gray-300">NEXT STEPS</a>
+                <a href="#capability" class="hover:text-gray-300">CAPABILITY</a>
+                <a href="#desigh" class="hover:text-gray-300">DESIGN</a>
+                <a href="#technology" class="hover:text-gray-300">TECHNOLOGY</a>
+                <a href="#performance" class="hover:text-gray-300">PERFORMANCE</a>
+                <a href="#models" class="hover:text-gray-300">MODELS</a>
             </div>
         </nav>
     </div>
@@ -116,7 +115,7 @@
 
   
 <!-- DESIGN SECTION -->
-<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+<section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
     <!-- Header -->
     <div class="max-w-4xl mx-auto text-center mb-12">
       <h3 class="text-4xl font-bold mb-4">SERIOUSLY CAPABLE</h3>
@@ -157,6 +156,62 @@
       </div>
       
   </div>
+</section>
+
+<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">TOUGH. INSIDE AND OUT.</h3>
+  
+      <!-- Toggle Buttons -->
+      <div class="flex justify-center space-x-4 mt-6">
+        <button id="exteriorBtn" class="px-4 py-2 bg-white text-black rounded-md font-semibold" onclick="switchSlideType('exterior')">
+          Exterior
+        </button>
+        <button id="interiorBtn" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold" onclick="switchSlideType('interior')">
+          Interior
+        </button>
+      </div>
+    </div>
+  
+    <div class="text-center mt-16">
+      <!-- Image with arrows only -->
+      <div class="relative max-w-6xl mx-auto">
+        <div class="overflow-hidden rounded-lg relative">
+          <!-- Prev Arrow -->
+          <button
+            onclick="prevCapabilitySlide()"
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white text-black px-3 py-2 rounded-full z-10 hover:bg-gray-300"
+          >
+            ‹
+          </button>
+  
+          <!-- Image -->
+          <img
+            id="designImage2cap"
+            src=""
+            alt="Design Detail"
+            class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+          />
+  
+          <!-- Next Arrow -->
+          <button
+            onclick="nextCapabilitySlide()"
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black px-3 py-2 rounded-full z-10 hover:bg-gray-300"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+  
+      <!-- Title + Description -->
+      <div class="mt-10 max-w-3xl mx-auto min-h-[180px]">
+        <h3 id="designDetailTitlecap" class="text-3xl font-semibold mb-4"></h3>
+        <p id="designDetailDesccap" class="text-lg"></p>
+      </div>
+    </div>
+  </section>
+  
   
   
     <footer class="site-footer">
@@ -272,6 +327,108 @@
       formIndex = (formIndex + 1) % formSlides.length;
       setDesignDetailSlide(formIndex);
     }, 5000);
+
+
+  const slideData = {
+    exterior: {
+      slides: [
+        "/images/octa/performance_0.webp",
+        "/images/octa/performance_1.webp",
+        "/images/octa/performance_2.webp",
+        "/images/octa/performance_3.webp",
+        "/images/octa/performance_4.webp"
+      ],
+      titles: [
+        "UNSTOPPABLE. ANYWHERE.",
+        "CONFIDENCE AT EVERY TURN",
+        "LEAVE NOTHING BEHIND",
+        "SPACE UPON SPACE",
+        "WADE INTO ADVENTURE"
+      ],
+      descriptions: [
+        "Go from road, to mud, to snow, to anywhere. Terrain Response 2 automatically adjusts Defender’s settings for optimum power and traction. Adaptive Off-Road Cruise Control keeps the pace on any surface.",
+        "Stay focused on long drives with the Driver Attention Monitor. A camera monitors drowsiness and alerts drivers for peace of mind on longer adventures.",
+        "Pack everything with a loadspace of up to 2 277 litres✦. Even with the bags piled high, the ClearSight rearview mirror gives you a full view behind.",
+        "Bring even more, with the 168 kg dynamic roof load. Once you’re parked up, the 300 kg static load means your adventure can continue overnight with the optional Rooftop Tent.",
+        "Find the optimum entry and exit points using the live 360 video feed from Defender’s 3D Surround Camera, while sensors monitor the water’s depth."
+      ]
+    },
+    interior: {
+      slides: [
+        "/images/octa/interior_0.webp",
+        "/images/octa/interior_1.webp",
+        "/images/octa/interior_2.webp",
+        "/images/octa/interior_3.webp",
+        "/images/octa/interior_4.webp"
+      ],
+      titles: [
+        "PREMIUM COMFORT",
+        "LUXURY FINISHES",
+        "SPACIOUS DESIGN",
+        "ADVANCED TECH",
+        "EFFORTLESS ACCESS"
+      ],
+      descriptions: [
+        "Soft-touch materials and ergonomic design keep every journey comfortable, no matter the terrain.",
+        "Choose from high-end leather, wood, or sustainable fabric trims to match your style.",
+        "Clever storage and flat-folding seats offer flexibility and ample passenger room.",
+        "Touchscreen control, driver display, and ambient lighting make every detail count.",
+        "Sliding seats and wide doors ensure everyone enters and exits with ease."
+      ]
+    }
+  };
+
+  let currentSlideType = "exterior";
+  let currentSlideIndex = 0;
+
+  function setCapabilitySlide(index) {
+    const img = document.getElementById("designImage2cap");
+    const title = document.getElementById("designDetailTitlecap");
+    const desc = document.getElementById("designDetailDesccap");
+
+    const current = slideData[currentSlideType];
+
+    if (index < 0) index = current.slides.length - 1;
+    if (index >= current.slides.length) index = 0;
+
+    currentSlideIndex = index;
+
+    img.src = current.slides[index];
+    title.textContent = current.titles[index];
+    desc.textContent = current.descriptions[index];
+  }
+
+  function nextCapabilitySlide() {
+    setCapabilitySlide(currentSlideIndex + 1);
+  }
+
+  function prevCapabilitySlide() {
+    setCapabilitySlide(currentSlideIndex - 1);
+  }
+
+  function switchSlideType(type) {
+    currentSlideType = type;
+    currentSlideIndex = 0;
+    setCapabilitySlide(0);
+
+    // Update toggle button styles
+    document.getElementById("exteriorBtn").classList.toggle("bg-white", type === "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("bg-gray-700", type !== "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("text-black", type === "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("text-white", type !== "exterior");
+
+    document.getElementById("interiorBtn").classList.toggle("bg-white", type === "interior");
+    document.getElementById("interiorBtn").classList.toggle("bg-gray-700", type !== "interior");
+    document.getElementById("interiorBtn").classList.toggle("text-black", type === "interior");
+    document.getElementById("interiorBtn").classList.toggle("text-white", type !== "interior");
+  }
+
+
+  window.onload = () => {
+    switchSlideType("exterior");
+  };
+
+
   </script>
   
 </html>
