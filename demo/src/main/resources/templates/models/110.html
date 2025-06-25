@@ -212,6 +212,41 @@
     </div>
   </section>
   
+  <section id="technology" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">PROTECTED. CONNECTED.</h3>
+    </div>
+  
+    <!-- Image -->
+    <div class="relative max-w-6xl mx-auto mb-10">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="techImage"
+          src="/images/octa/tech_secure.webp"
+          alt="Technology Feature"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- Options -->
+    <div class="max-w-5xl mx-auto text-center mb-10 flex flex-wrap justify-center gap-4">
+      <button onclick="setTechSlide(0)" id="techBtn0" class="px-4 py-2 bg-white text-black rounded-md font-semibold">SECURE</button>
+      <button onclick="setTechSlide(1)" id="techBtn1" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">INTUITIVE</button>
+      <button onclick="setTechSlide(2)" id="techBtn2" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">INFORMED</button>
+      <button onclick="setTechSlide(3)" id="techBtn3" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">IMMERSED</button>
+      <button onclick="setTechSlide(4)" id="techBtn4" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">FOCUSED</button>
+    </div>
+  
+    <!-- Title + Description -->
+    <div class="text-center max-w-3xl mx-auto min-h-[180px]">
+      <h3 id="techTitle" class="text-2xl font-semibold mb-4">SECURE</h3>
+      <p id="techDesc" class="text-lg">
+        Peace of mind in your pocket. With Guardian Mode, Defender’s InControl App will alert you and our Vehicle Tracking Centre to any unauthorised interactions. You can also track and control your vehicle from anywhere.6
+      </p>
+    </div>
+  </section>
   
   
     <footer class="site-footer">
@@ -339,7 +374,7 @@
         "/images/octa/performance_4.webp"
       ],
       titles: [
-        "UNSTOPPABL",
+        "UNSTOPPABLE",
         "BUILT TO ENDURE",
         "SURE FOOTED",
         "DESIGNED WITH PURPOSE",
@@ -428,7 +463,57 @@
     switchSlideType("exterior");
   };
 
+  const techSlides = {
+    images: [
+      "/images/octa/tech_secure.webp",
+      "/images/octa/tech_intuitive.webp",
+      "/images/octa/tech_informed.webp",
+      "/images/octa/tech_immersed.webp",
+      "/images/octa/tech_focused.webp"
+    ],
+    titles: [
+      "SECURE",
+      "INTUITIVE",
+      "INFORMED",
+      "IMMERSED",
+      "FOCUSED"
+    ],
+    descriptions: [
+      "Peace of mind in your pocket. With Guardian Mode, Defender’s InControl App will alert you and our Vehicle Tracking Centre to any unauthorised interactions. You can also track and control your vehicle from anywhere.6",
+      "Control at your fingertips. Complete up to 90% of tasks in just two-taps of the award-winning Pivi Pro6 infotainment system’s 33.27 cm (13.1) Touchscreen.",
+      "Placing vehicle, navigation, and driving information in your eyeline. The 31.24 cm (12.3) Interactive Driver Display and optional Head-up Display keep you informed while you focus on the path ahead.7",
+      "The cinematic soundtrack to your adventure. The Meridian™ system creates powerful, lifelike sound.",
+      "Take a deep breath. CO₂ Management enhances wellbeing and alertness. Nanoe™X technology filters odours and bacteria.8"
+    ]
+  };
 
+  let techCurrentIndex = 0;
+
+  function setTechSlide(index) {
+    const img = document.getElementById("techImage");
+    const title = document.getElementById("techTitle");
+    const desc = document.getElementById("techDesc");
+
+    img.src = techSlides.images[index];
+    title.textContent = techSlides.titles[index];
+    desc.textContent = techSlides.descriptions[index];
+
+    // Button highlighting
+    for (let i = 0; i < techSlides.titles.length; i++) {
+      const btn = document.getElementById(`techBtn${i}`);
+      btn.classList.toggle("bg-white", i === index);
+      btn.classList.toggle("text-black", i === index);
+      btn.classList.toggle("bg-gray-700", i !== index);
+      btn.classList.toggle("text-white", i !== index);
+    }
+
+    techCurrentIndex = index;
+  }
+
+  // Default selection on load
+  window.addEventListener("DOMContentLoaded", () => {
+    setTechSlide(0);
+  });
   </script>
   
 </html>
