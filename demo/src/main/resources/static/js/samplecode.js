@@ -279,17 +279,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-let currentIndex = 0;
-function updateSlider() {
-    const slider = document.getElementById("imageSlider");
-    if (slider) {
-        const offset = currentIndex * 100;
-        slider.style.transform = `translateX(-${offset}%)`;
-        console.log(`Slider moved to index ${currentIndex}, offset: ${offset}%`);
-    } else {
-        console.error("Slider not found!");
-    }
-}
+
 
 function nextSlide() {
     const slides = document.querySelectorAll('#imageSlider .slide');
@@ -569,7 +559,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
+let currentIndex = 0;
 
+function updateSlider() {
+    const slider = document.getElementById("imageSlider");
+    if (slider) {
+        const offset = currentIndex * 100;
+        slider.style.transform = `translateX(-${offset}%)`;
+        console.log(`Slider moved to index ${currentIndex}, offset: ${offset}%`);
+    } else {
+        console.error("Slider not found!");
+    }
+}
 function goToSlide(index) {
     const totalSlides = document.querySelectorAll("#imageSlider .slide").length;
     console.log(`goToSlide called with index: ${index}`);
@@ -583,56 +584,7 @@ function goToSlide(index) {
     }
 }
 
-function observeSectionsAndChangeSlides() {
-    const sections = document.querySelectorAll('#wheels, #interior, #headlining, #bodystyle, #engine, #exterior, #model');
-
-    const observerOptions = {
-        root: null,
-        threshold: 0.5,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.id;
-
-                switch (id) {
-                    case 'wheels':
-                        currentIndex = 2;
-                        console.log("Scrolled to 'Wheels' - Slide 3");
-                        break;
-                    case 'interior':
-                    case 'headlining':
-                        currentIndex = 5;
-                        console.log(`Scrolled to '${id}' - Slide 6`);
-                        break;
-                    default:
-                        currentIndex = 0;
-                        console.log(`Scrolled to '${id}' - Slide 1`);
-                        break;
-                }
-
-                updateSlider();
-            }
-        });
-    }, observerOptions);
-
-    sections.forEach(section => {
-        if (section) observer.observe(section);
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.querySelector('.model-button');
-    if (defaultButton) {
-        defaultButton.click();
-    }
-
-    observeSectionsAndChangeSlides();
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
     const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
     if (defaultColorEl) {
@@ -653,6 +605,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateInteriorImage();
 
+    const defaultButton = document.querySelector('.model-button');
+    if (defaultButton) {
+        defaultButton.click();
+    }
+
     // 2. Initialize visibility map and observer
     let visibilityMap = {
         bodystyle: 0,
@@ -661,7 +618,8 @@ document.addEventListener("DOMContentLoaded", () => {
         exterior: 0,
         wheels: 0,
         interior: 0,
-        handling: 0
+        handling: 0,
+        headlining: 0
     };
 
     let currentSlideIndex = null;
@@ -675,7 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Slide logic
+        // Slide switching logic
         const showSlide0 = ['bodystyle', 'model', 'engine', 'exterior']
             .some(section => visibilityMap[section] > 0.1);
 
@@ -683,8 +641,8 @@ document.addEventListener("DOMContentLoaded", () => {
             goToSlide(0);
             currentSlideIndex = 0;
         } else if (
-            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels) &&
-            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1) &&
+            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
+            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
             goToSlide(5);
@@ -698,16 +656,8 @@ document.addEventListener("DOMContentLoaded", () => {
         threshold: 0.1
     });
 
-    // 3. Observe target sections
-    [
-        'bodystyle',
-        'model',
-        'engine',
-        'exterior',
-        'wheels',
-        'interior',
-        'handling'
-    ].forEach(id => {
+    // 3. Observe all relevant sections
+    Object.keys(visibilityMap).forEach(id => {
         const el = document.getElementById(id);
         if (el) {
             console.log(`Observing section: ${id}`);

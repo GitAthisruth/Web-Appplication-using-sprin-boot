@@ -16,7 +16,90 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <script th:src="@{/js/dropdown.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/configurator.js}"></script>
+<style>
+   .slider-section-130 {
+    padding: 0; /* remove padding for full-width */
+    background-color: #000;
+    color: #fff;
+    position: relative;
+    scroll-margin-top: 120px;
+}
 
+.slider-container-130 {
+    position: relative;
+    width: 100%; /* changed from max-width: 1200px */
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slider-130 {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide-130 {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide-content-130 {
+    position: relative;
+    width: 100%;
+}
+
+.slide-image-130,
+.slide-image {
+    width: 100%;
+    height: 100vh; /* full viewport height; adjust as needed */
+    object-fit: cover;
+    border-radius: 0; /* remove rounding if you want edge-to-edge image */
+    display: block;
+}
+
+/* Optional: if you want to keep border-radius inside, wrap image inside another div with padding/margin */
+.overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.overlay-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.overlay-text {
+    font-size: 1.2rem;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: #fff;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+</style>
 
 </head>
 
@@ -94,14 +177,55 @@
         </a>
         <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
             <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
-                <a href="#overview" class="hover:text-gray-300">DESIGN</a>
-                <a href="#performance" class="hover:text-gray-300">CAPABILITY</a>
-                <a href="#design" class="hover:text-gray-300">MODELS</a>
-                <a href="#technology" class="hover:text-gray-300">PERSONALISATION</a>
+                <a href="#design" class="hover:text-gray-300">DESIGN</a>
+                <a href="#capability" class="hover:text-gray-300">CAPABILITY</a>
+                <a href="#models" class="hover:text-gray-300">MODELS</a>
+                <a href="#personalisation" class="hover:text-gray-300">PERSONALISATION</a>
             </div>
         </nav>
     </div>
 </section>
+<section id="design" class="slider-section-130 mt-10">
+    <div class="slider-container-130">
+        <div class="slider-130" id="slider-130">
+            <div class="slide-130">
+                <div class="slide-content-130">
+                    <img th:src="@{/images/130/defender_130_1.jpeg}" th:alt="'DEFENDER JOURNEYS'" class="slide-image-130" />
+                    <div class="overlay">
+                        <h3 class="overlay-title">DEFENDER JOURNEYS</h3>
+                        <p class="overlay-text">Experience India like never before behind the wheels of the iconic Defender.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-130">
+                <div class="slide-content-130">
+                    <img th:src="@{/images/130/defender_130_2.jpeg}" th:alt="'DEFENDER 130'" class="slide-image-130" />
+                    <div class="overlay">
+                        <h3 class="overlay-title">DEFENDER 130</h3>
+                        <p class="overlay-text">Comfort in capability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <button class="nav-btn prev-btn" onclick="slide130(-1)">&#10094;</button>
+        <button class="nav-btn next-btn" onclick="slide130(1)">&#10095;</button>
+    </div>
+</section>
+<script>
+    let currentSlide130 = 0;
+
+    function slide130(direction) {
+        const slider = document.getElementById('slider-130');
+        const totalSlides = slider.children.length;
+
+        currentSlide130 = (currentSlide130 + direction + totalSlides) % totalSlides;
+        slider.style.transform = `translateX(-${currentSlide130 * 100}%)`;
+    }
+</script>
+
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">CHANGE MARKET</a> |
