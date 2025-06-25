@@ -16,8 +16,33 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <script th:src="@{/js/dropdown.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+<style>
+    .model-option {
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .selected-model {
+        background-color: white;
+        color: black;
+      }
+      
+      html {
+        scroll-behavior: smooth; /* for smooth scrolling */
+      }
 
-
+      .model-section {
+    display: none;
+  }
+  .model-section.active {
+    display: block;
+  }
+  .model-option.selected-model {
+    background-color: white;
+    color: black;
+  }
+</style>
+    
 </head>
 
 <body class="defender-body bg-black text-white font-sans" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
@@ -316,8 +341,198 @@
   </div>
   
   </section>
+
   
   
+
+  <section id="build-order-selector">
+    <h2 class="section-title">BUILD AND ORDER</h2>
+    <p>Choose from our distinct models to begin your journey</p>
+  
+    <div class="model-selectors mb-6 flex gap-4 justify-center">
+      <div class="model-option selected-model cursor-pointer px-6 py-3 rounded-lg border border-white text-white bg-[#222]" onclick="toggleModel('110')">
+        DEFENDER 110
+      </div>
+      <div class="model-option cursor-pointer px-6 py-3 rounded-lg border border-white text-white hover:bg-white hover:text-black transition" onclick="toggleModel('octa')">
+        DEFENDER OCTA
+      </div>
+    </div>
+  </section>
+  
+  <!-- Defender 110 Section -->
+  <section id="models-110" class="model-section active">
+    <div class="configurator">
+      <!-- Left: Image Slider -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider-110">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-1" src="/images/110/grey/110_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-2" src="/images/110/grey/110_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-3" src="/images/110/grey/110_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide110()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide110()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior-110" src="/images/110/interior/interior_black.avif" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels-110" src="/images/110/grey/110_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Configurator Options -->
+    <div class="configurator-options">
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab110('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab110('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab110('wheels')">Wheels</span>
+      </div>
+  
+      <div class="tab-content active" id="tab-exterior-110">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateExterior110('Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateExterior110('Santorini Black Metallic')"></div>
+        </div>
+        <p id="exterior-name-110">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <div class="tab-content" id="tab-interior-110">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateInterior110('Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateInterior110('Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name-110">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <div class="tab-content" id="tab-wheels-110">
+        <div class="palette-row">
+          <img src="/images/110/wheels/wheel_1.png" alt="48.26 cm (19) Style 6010 wheels" class="wheel-thumb" onclick="updateWheels110('wheel_1')">
+          <img src="/images/110/wheels/wheel_2.png" alt="48.26 cm (19) Style 6010, Gloss Black wheels" class="wheel-thumb" onclick="updateWheels110('wheel_2')">
+        </div>
+        <p id="wheels-name-110">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Defender OCTA Section -->
+  <section id="models-octa"  class="model-section">
+    <h2 class="section-title">BUILD AND ORDER</h2>
+    <p>Choose from our distinct models to begin your journey</p>
+  
+    <div class="configurator">
+      <!-- Left + Right Image Columns -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-1" src="/images/130/grey/defender130_grey_side.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-2" src="/images/130/grey/defender130_grey_front.jpg" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-3" src="/images/130/grey/defender130_grey_back.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior" src="/images/130/interior/interior_black.jpg" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels" src="/images/130/grey/defender130_grey_side.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Column: Options -->
+    <div class="configurator-options">
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab('wheels')">Wheels</span>
+      </div>
+  
+      <!-- Exterior Options -->
+      <div class="tab-content active" id="tab-exterior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateConfig('exterior', 'Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateConfig('exterior', 'Santorini Black Metallic')"></div>
+          <div class="box-swatch" style="background-color:#7B7B7B" onclick="updateConfig('exterior', 'Borasco Grey Metallic')"></div>
+          <div class="box-swatch" style="background-color:#8B6F4E" onclick="updateConfig('exterior', 'Gondwana Stone Metallic')"></div>
+          <div class="box-swatch" style="background-color:#912F27" onclick="updateConfig('exterior', 'Sedona Red Metallic')"></div>
+          <div class="box-swatch" style="background-color:#4D6952" onclick="updateConfig('exterior', 'Woolstone Green Metallic')"></div>
+        </div>
+        <p id="exterior-name">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <!-- Interior Options -->
+      <div class="tab-content" id="tab-interior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateConfig('interior', 'Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#3a3a3a" onclick="updateConfig('interior', 'Ebony Resist seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateConfig('interior', 'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+          <div class="box-swatch" style="background-color:#a67c52" onclick="updateConfig('interior', 'Caraway Windsor leather seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#e5e5e5" onclick="updateConfig('interior', 'Light Cloud perforated Windsor leather seats with Light Cloud interior')"></div>
+          <div class="box-swatch" style="background-color:#2f2f2f" onclick="updateConfig('interior', 'Ebony Windsor leather and Kvadrat™ seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#6b4e31" onclick="updateConfig('interior', 'Caraway/Ebony Windsor leather and Kvadrat™ seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#f0f0f0" onclick="updateConfig('interior', 'Light Cloud/Lunar Ultrafabrics™ seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <!-- Wheels Options -->
+      <div class="tab-content" id="tab-wheels">
+        <div class="palette-row">
+          <img src="/images/130/wheels/wheel_1.png" alt="Alloy 1" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010 wheels')">
+          <img src="/images/130/wheels/wheel_2.png" alt="Alloy 2" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010, Gloss Black wheels')">
+          <img src="/images/130/wheels/wheel_3.png" alt="Alloy 3" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5094, Satin Dark Grey wheels')">
+          <img src="/images/130/wheels/wheel_4.png" alt="Alloy 4" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5095, Diamond Turned wheels with Gloss Dark Grey contrast')">
+          <img src="/images/130/wheels/wheel_5.png" alt="Alloy 5" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098 wheels')">
+          <img src="/images/130/wheels/wheel_6.png" alt="Alloy 6" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098, Satin Dark Grey wheels')">
+        </div>
+        <p id="wheels-name">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
   
     <footer class="site-footer">
         <div class="footer-links">
@@ -663,7 +878,129 @@
     setPerformanceSlide(0);
   });
 
+//customisation
+let currentExterior110 = 'Carpathian Grey Premium Metallic';
+let currentWheelKey110 = 'wheel_1';
+let currentSlide110 = 0;
 
+function switchTab110(tab) {
+  document.querySelectorAll('#models-110 .tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('#models-110 .tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelector(`#models-110 .tab-btn[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById(`tab-${tab}-110`).classList.add('active');
+}
+
+function updateExterior110(name) {
+  currentExterior110 = name;
+  document.getElementById('exterior-name-110').innerText = name;
+  updateImages110();
+}
+
+function updateInterior110(name) {
+  document.getElementById('interior-name-110').innerText = name;
+  const interiorImages110 = {
+    'Ebony Windsor leather seats with Ebony interior': '/images/110/interior/interior_black.avif',
+    'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior': '/images/110/interior/interior_lightcloud.avif'
+  };
+  if (interiorImages110[name]) {
+    document.getElementById('vehicle-interior-110').src = interiorImages110[name];
+  }
+}
+
+function updateWheels110(wheelKey) {
+  currentWheelKey110 = wheelKey;
+  const wheelNames110 = {
+    'wheel_1': '48.26 cm (19) Style 6010 wheels',
+    'wheel_2': '48.26 cm (19) Style 6010, Gloss Black wheels'
+  };
+  document.getElementById('wheels-name-110').innerText = wheelNames110[wheelKey];
+  updateImages110();
+}
+
+function updateImages110() {
+  const imageMap110 = {
+    'Carpathian Grey Premium Metallic': {
+      'wheel_1': {
+        side: '/images/110/grey/110_grey_side_1.jpg',
+        front: '/images/110/grey/110_grey_front_1.webp',
+        back: '/images/110/grey/110_grey_back_1.jpg'
+      },
+      'wheel_2': {
+        side: '/images/110/grey/110_grey_side_2.jpg',
+        front: '/images/110/grey/110_grey_front_2.webp',
+        back: '/images/110/grey/110_grey_back_2.jpg'
+      }
+    },
+    'Santorini Black Metallic': {
+      'wheel_1': {
+        side: '/images/110/black/110_black_side_1.jpg',
+        front: '/images/110/black/110_black_front_1.webp',
+        back: '/images/110/black/110_black_back_1.jpg'
+      },
+      'wheel_2': {
+        side: '/images/110/black/110_black_side_2.jpg',
+        front: '/images/110/black/110_black_front_2.webp',
+        back: '/images/110/black/110_black_back_2.jpg'
+      }
+    }
+  };
+  const selectedSet110 = imageMap110[currentExterior110]?.[currentWheelKey110];
+  if (selectedSet110) {
+    document.getElementById('slider-img-110-1').src = selectedSet110.side;
+    document.getElementById('slider-img-110-2').src = selectedSet110.front;
+    document.getElementById('slider-img-110-3').src = selectedSet110.back;
+    document.getElementById('vehicle-wheels-110').src = selectedSet110.side;
+  }
+}
+
+function showSlide110(index) {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+}
+
+function nextSlide110() {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  currentSlide110 = (currentSlide110 + 1) % slides.length;
+  showSlide110(currentSlide110);
+}
+
+function prevSlide110() {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  currentSlide110 = (currentSlide110 - 1 + slides.length) % slides.length;
+  showSlide110(currentSlide110);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  switchTab110('exterior');
+  showSlide110(currentSlide110);
+  updateImages110();
+});
+
+function toggleModel(model) {
+    // Hide all model sections
+    document.querySelectorAll('.model-section').forEach(section => {
+      section.classList.remove('active');
+    });
+
+    // Remove selected state from all buttons
+    document.querySelectorAll('.model-option').forEach(button => {
+      button.classList.remove('selected-model');
+    });
+
+    // Show the selected section
+    document.getElementById(`models-${model}`).classList.add('active');
+
+    // Highlight the selected button
+    const selectedBtn = document.querySelector(`.model-option[onclick="toggleModel('${model}')"]`);
+    if (selectedBtn) selectedBtn.classList.add('selected-model');
+  }
+
+  // Optional: Ensure Defender 110 is shown by default on load
+  document.addEventListener("DOMContentLoaded", function () {
+    toggleModel('110');
+  });
   </script>
   
 </html>
