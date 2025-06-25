@@ -105,6 +105,60 @@
         </nav>
     </div>
 </section>
+
+<section class="w-full bg-[#0a0a0a] py-10 px-4 md:px-10 lg:px-20 text-white">
+    <div class="w-full max-w-screen-2xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
+      <h3 class="text-2xl md:text-4xl font-semibold text-center leading-snug tracking-wide">
+        Load up. Go anywhere. Share the adventure with space for up to seven.
+      </h3>
+    </div>
+  </section>
+
+  
+<!-- DESIGN SECTION -->
+<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">SERIOUSLY CAPABLE</h3>
+    </div>
+  
+    <div class="text-center mt-16">
+        <!-- Image -->
+        <div class="relative max-w-6xl mx-auto">
+          <div class="overflow-hidden rounded-lg">
+            <img
+              id="designImage2"
+              src="/images/octa/performance_0.webp"
+              alt="Design Detail"
+              class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+            />
+          </div>
+      
+          <!-- Dot Navigation -->
+          <div class="flex justify-center mt-6 space-x-4">
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-100" onclick="setDesignDetailSlide(0)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(1)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(2)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(3)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(4)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(5)"></button>
+          </div>
+        </div>
+      
+        <!-- Title + Description with consistent space -->
+        <div class="mt-10 max-w-3xl mx-auto min-h-[180px]">
+          <h3 id="designDetailTitle" class="text-3xl font-semibold mb-4">
+            UNSTOPPABLE. ANYWHERE.
+          </h3>
+          <p id="designDetailDesc" class="text-lg">
+            Go from road, to mud, to snow, to anywhere. Terrain Response 2 automatically adjusts Defender’s settings for optimum power and traction. Adaptive Off-Road Cruise Control keeps the pace on any surface.
+          </p>
+        </div>
+      </div>
+      
+  </div>
+  
+  
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">CHANGE MARKET</a> |
@@ -166,4 +220,58 @@
 </div>
 
 </body>
+<script>
+    const formSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/performance_1.webp",
+      "/images/octa/performance_2.webp",
+      "/images/octa/performance_3.webp",
+      "/images/octa/performance_4.webp",
+      "/images/octa/performance_5.webp"
+    ];
+  
+    const slideTitles = [
+      "UNSTOPPABLE. ANYWHERE.",
+      "CONFIDENCE AT EVERY TURN",
+      "LEAVE NOTHING BEHIND",
+      "SPACE UPON SPACE",
+      "WADE INTO ADVENTURE",
+      "MOVE MOUNTAINS"
+    ];
+  
+    const slideDescriptions = [
+      "Go from road, to mud, to snow, to anywhere. Terrain Response 2 automatically adjusts Defender’s settings for optimum power and traction. Adaptive Off-Road Cruise Control keeps the pace on any surface.",
+      "Stay focused on long drives with the Driver Attention Monitor. A camera monitors drowsiness and alerts drivers for peace of mind on longer adventures.",
+      "Pack everything with a loadspace of up to 2 277 litres✦. Even with the bags piled high, the ClearSight rearview mirror1 gives you a full view behind.",
+      "Bring even more, with the 168 kg2 dynamic roof load. Once you’re parked up, the 300 kg2 static load means your adventure can continue overnight with the optional Rooftop Tent.",
+      "Find the optimum entry and exit points3 using the live 360 video feed from Defender’s 3D Surround Camera, while sensors monitor the water’s depth4.",
+      "Haul everything from trailers to horse boxes, up to 3 500 kg — Advanced Tow Assist takes care of the counter steer. Pull through any challenge with the ability to winch up to 4 536 kg.5"
+    ];
+  
+    let formIndex = 0;
+  
+    function setDesignDetailSlide(index) {
+      const img = document.getElementById("designImage2");
+      const dots = document.querySelectorAll(".dot-btn-form");
+      const title = document.getElementById("designDetailTitle");
+      const desc = document.getElementById("designDetailDesc");
+  
+      img.src = formSlides[index];
+      formIndex = index;
+  
+      title.textContent = slideTitles[index];
+      desc.textContent = slideDescriptions[index];
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+    setInterval(() => {
+      formIndex = (formIndex + 1) % formSlides.length;
+      setDesignDetailSlide(formIndex);
+    }, 5000);
+  </script>
+  
 </html>
