@@ -294,8 +294,8 @@
     </div>
   </section>
   
-  <!-- CAPABILITY SECTION -->
-  <section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+ <!-- CAPABILITY SECTION -->
+<section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
     <div class="max-w-4xl mx-auto text-center mb-12">
       <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
       <p class="text-lg">
@@ -304,7 +304,7 @@
     </div>
   
     <!-- Full Width Matching Image -->
-    <div class="relative w-full mx-auto">
+    <div class="relative w-full mx-auto mb-8">
       <div class="overflow-hidden rounded-lg">
         <img
           src="/images/octa/performance_1.webp"
@@ -313,10 +313,63 @@
         />
       </div>
     </div>
-    <p class="text-lg">
+  
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-lg">
         The imposing five-door Defender 130 takes you and your passengers where you want to go.
       </p>
+    </div>
   </section>
+  
+  <!-- BALANCED POWER SECTION -->
+  <section id="balanced-power" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">BALANCED POWER</h3>
+      <p class="text-lg">
+        With a top speed of 240 km/h†, Defender 130 petrol V8 delivers unrivalled agility and an engaging drive.
+      </p>
+    </div>
+  
+    <!-- Full Width Matching Image -->
+    <div class="relative w-full mx-auto mb-8">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/exhaust.jpg"
+          alt="Balanced Power"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- V8 Engine Description -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <p class="text-lg font-semibold">DEFENDER 130 V8</p>
+      <p class="text-lg">
+        Embrace real power with the 386 kW supercharged V8 engine.
+      </p>
+    </div>
+  
+    <!-- Performance Specs -->
+    <div class="performance-specs grid grid-cols-2 md:grid-cols-4 gap-6 text-center max-w-5xl mx-auto">
+      <div class="spec-item">
+        <div class="spec-label">PASSENGERS (UP TO)</div>
+        <div class="spec-value text-3xl font-bold">8</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">LOADSPACE CAPACITY</div>
+        <div class="spec-value text-3xl font-bold">2 516 <span class="unit">L*</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">0-100 KM/H</div>
+        <div class="spec-value text-3xl font-bold">5.7 <span class="unit">SEC†</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">GROUND CLEARANCE</div>
+        <div class="spec-value text-3xl font-bold">293 <span class="unit">MM</span></div>
+      </div>
+    </div>
+  </section>
+  
 
   <section id="build-order">
     <h2 class="section-title">BUILD AND ORDER</h2>
@@ -329,37 +382,37 @@
           <!-- Slide 1 -->
           <div class="vehicle-slide active">
             <div class="vehicle-slide-content">
-              <img id="slider-img-1" src="/images/130/grey/defender130_grey_side.jpg" alt="Side View" class="vehicle-slide-image" />
+              <img id="slider-img-1" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
             </div>
           </div>
   
           <!-- Slide 2 -->
           <div class="vehicle-slide">
             <div class="vehicle-slide-content">
-              <img id="slider-img-2" src="/images/130/grey/defender130_grey_front.jpg" alt="Front View" class="vehicle-slide-image" />
+              <img id="slider-img-2" src="/images/octa/grey/octa_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
             </div>
           </div>
   
           <!-- Slide 3 -->
           <div class="vehicle-slide">
             <div class="vehicle-slide-content">
-              <img id="slider-img-3" src="/images/130/grey/defender130_grey_back.jpg" alt="Rear View" class="vehicle-slide-image" />
+              <img id="slider-img-3" src="/images/octa/grey/octa_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
             </div>
           </div>
   
           <!-- Arrows -->
-          <button class="vehicle-slider-arrow left" onclick="prevSlide()">❮</button>
-          <button class="vehicle-slider-arrow right" onclick="nextSlide()">❯</button>
+          <button class="vehicle-slider-arrow left" onclick="prevSlide130()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide130()">❯</button>
         </div>
       </div>
   
       <!-- Right: Side Images -->
       <div class="secondary-images-container">
         <div class="secondary-image">
-          <img id="vehicle-interior" src="/images/130/interior/interior_black.jpg" alt="Interior" class="config-image" />
+          <img id="vehicle-interior" src="/images/octa/interior/interior_black.avif" alt="Interior" class="config-image" />
         </div>
         <div class="secondary-image">
-          <img id="vehicle-wheels" src="/images/130/grey/defender130_grey_side.jpg" alt="Side_View_Full" class="config-image" />
+          <img id="vehicle-wheels" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
         </div>
       </div>
     </div>
@@ -368,54 +421,41 @@
     <div class="configurator-options">
       <!-- Tabs -->
       <div class="tab-buttons">
-        <span class="tab-btn active" onclick="switchTab('exterior')">Exterior</span>
-        <span class="tab-btn" onclick="switchTab('interior')">Interior</span>
-        <span class="tab-btn" onclick="switchTab('wheels')">Wheels</span>
+        <span class="tab-btn active" onclick="switchTab130('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab130('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab130('wheels')">Wheels</span>
       </div>
   
       <!-- Exterior Options -->
       <div class="tab-content active" id="tab-exterior">
         <div class="palette-row">
-          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateConfig('exterior', 'Carpathian Grey Premium Metallic')"></div>
-          <div class="box-swatch" style="background-color:black" onclick="updateConfig('exterior', 'Santorini Black Metallic')"></div>
-          <div class="box-swatch" style="background-color:#7B7B7B" onclick="updateConfig('exterior', 'Borasco Grey Metallic')"></div>
-          <div class="box-swatch" style="background-color:#8B6F4E" onclick="updateConfig('exterior', 'Gondwana Stone Metallic')"></div>
-          <div class="box-swatch" style="background-color:#912F27" onclick="updateConfig('exterior', 'Sedona Red Metallic')"></div>
-          <div class="box-swatch" style="background-color:#4D6952" onclick="updateConfig('exterior', 'Woolstone Green Metallic')"></div>
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateExterior130('Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateExterior130('Santorini Black Metallic')"></div>
         </div>
         <p id="exterior-name">Carpathian Grey Premium Metallic</p>
       </div>
   
       <!-- Interior Options -->
-      <div class="tab-content hidden" id="tab-interior">
+      <div class="tab-content" id="tab-interior">
         <div class="palette-row">
-          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateConfig('interior', 'Ebony Windsor leather seats with Ebony interior')"></div>
-          <div class="box-swatch" style="background-color:#3a3a3a" onclick="updateConfig('interior', 'Ebony Resist seats with Ebony interior')"></div>
-          <div class="box-swatch" style="background-color:#cccccc" onclick="updateConfig('interior', 'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
-          <div class="box-swatch" style="background-color:#a67c52" onclick="updateConfig('interior', 'Caraway Windsor leather seats with Caraway/Ebony interior')"></div>
-          <div class="box-swatch" style="background-color:#e5e5e5" onclick="updateConfig('interior', 'Light Cloud perforated Windsor leather seats with Light Cloud interior')"></div>
-          <div class="box-swatch" style="background-color:#2f2f2f" onclick="updateConfig('interior', 'Ebony Windsor leather and Kvadrat™ seats with Ebony interior')"></div>
-          <div class="box-swatch" style="background-color:#6b4e31" onclick="updateConfig('interior', 'Caraway/Ebony Windsor leather and Kvadrat™ seats with Caraway/Ebony interior')"></div>
-          <div class="box-swatch" style="background-color:#f0f0f0" onclick="updateConfig('interior', 'Light Cloud/Lunar Ultrafabrics™ seats with Light Cloud/Lunar interior')"></div>
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateInterior130('Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateInterior130('Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
         </div>
         <p id="interior-name">Ebony Windsor leather seats with Ebony interior</p>
       </div>
   
       <!-- Wheels Options -->
-      <div class="tab-content hidden" id="tab-wheels">
+      <div class="tab-content" id="tab-wheels">
         <div class="palette-row">
-          <img src="/images/130/wheels/wheel_1.png" alt="Alloy 1" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010 wheels')">
-          <img src="/images/130/wheels/wheel_2.png" alt="Alloy 2" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010, Gloss Black wheels')">
-          <img src="/images/130/wheels/wheel_3.png" alt="Alloy 3" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5094, Satin Dark Grey wheels')">
-          <img src="/images/130/wheels/wheel_4.png" alt="Alloy 4" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5095, Diamond Turned wheels with Gloss Dark Grey contrast')">
-          <img src="/images/130/wheels/wheel_5.png" alt="Alloy 5" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098 wheels')">
-          <img src="/images/130/wheels/wheel_6.png" alt="Alloy 6" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098, Satin Dark Grey wheels')">
+          <img src="/images/130/wheels/wheel_1.png" alt="48.26 cm (19) Style 6010 wheels" class="wheel-thumb" onclick="updateWheels130('wheel_1')">
+          <img src="/images/130/wheels/wheel_2.png" alt="48.26 cm (19) Style 6010, Gloss Black wheels" class="wheel-thumb" onclick="updateWheels130('wheel_2')">
         </div>
         <p id="wheels-name">48.26 cm (19) Style 6010 wheels</p>
       </div>
     </div>
   </section>
-  <section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+  
+  <section id="personalisation" class="bg-black text-white py-16" style="margin-inline: 50px;">
     <!-- Section Heading -->
     <div class="max-w-4xl mx-auto text-center mb-12">
       <h3 class="text-4xl font-bold mb-4">ALL-ROUND PERSONALISATION</h3>
@@ -502,6 +542,31 @@
 </div>
 </body>
 <script>
+
+  let currentMainSlide130 = 0;
+
+  function displayMainSlide130(index) {
+    const slides = document.querySelectorAll('.slider-130 .slide-130');
+    if (slides.length === 0) return;
+
+    currentMainSlide130 = (index + slides.length) % slides.length;
+
+    slides.forEach(slide => {
+      slide.style.display = 'none';
+    });
+
+    slides[currentMainSlide130].style.display = 'block';
+  }
+
+  function slide130(direction) {
+    displayMainSlide130(currentMainSlide130 + direction);
+  }
+
+  // Initialize the main slider on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    displayMainSlide130(currentMainSlide130);
+  });
+
     const designSlides = [
       "/images/octa/performance_0.webp",
       "/images/octa/octa_tail_0.jpg",
@@ -554,30 +619,105 @@
       formIndex = (formIndex + 1) % formSlides.length;
       setFormSlide(formIndex);
     }, 5000);
-    function switchTab(tab) {
-    // Remove 'active' class from all tab buttons
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.classList.remove('active');
-    });
 
-    // Add 'active' class to clicked tab button
+   
+
+  let currentExterior130 = 'Carpathian Grey Premium Metallic';
+  let currentWheelKey130 = 'wheel_1';
+
+  function switchTab130(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
     document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
-
-    // Hide all tab content sections
-    document.querySelectorAll('.tab-content').forEach(content => {
-      content.classList.add('hidden');
-      content.classList.remove('active');
-    });
-
-    // Show only the selected tab content
-    const activeTab = document.getElementById('tab-' + tab);
-    activeTab.classList.remove('hidden');
-    activeTab.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
   }
 
-  // Ensure only 'Exterior' is visible on page load
+  function updateExterior130(name) {
+    currentExterior130 = name;
+    document.getElementById('exterior-name').innerText = name;
+    updateImages130();
+  }
+
+  function updateInterior130(name) {
+    document.getElementById('interior-name').innerText = name;
+    const interiorImages130 = {
+      'Ebony Windsor leather seats with Ebony interior': '/images/octa/interior/interior_black.avif',
+      'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior': '/images/octa/interior/interior_lightcloud.avif'
+    };
+    if (interiorImages130[name]) {
+      document.getElementById('vehicle-interior').src = interiorImages130[name];
+    }
+  }
+
+  function updateWheels130(wheelKey) {
+    currentWheelKey130 = wheelKey;
+    const wheelNames130 = {
+      'wheel_1': '48.26 cm (19) Style 6010 wheels',
+      'wheel_2': '48.26 cm (19) Style 6010, Gloss Black wheels'
+    };
+    document.getElementById('wheels-name').innerText = wheelNames130[wheelKey];
+    updateImages130();
+  }
+
+  function updateImages130() {
+    const imageMap130 = {
+      'Carpathian Grey Premium Metallic': {
+        'wheel_1': {
+          side: '/images/octa/grey/octa_grey_side_1.jpg',
+          front: '/images/octa/grey/octa_grey_front_1.webp',
+          back: '/images/octa/grey/octa_grey_back_1.jpg'
+        },
+        'wheel_2': {
+          side: '/images/octa/grey/octa_grey_side_2.jpg',
+          front: '/images/octa/grey/octa_grey_front_2.webp',
+          back: '/images/octa/grey/octa_grey_back_2.jpg'
+        }
+      },
+      'Santorini Black Metallic': {
+        'wheel_1': {
+          side: '/images/octa/black/octa_black_side_1.jpg',
+          front: '/images/octa/black/octa_black_front_1.webp',
+          back: '/images/octa/black/octa_black_back_1.jpg'
+        },
+        'wheel_2': {
+          side: '/images/octa/black/octa_black_side_2.jpg',
+          front: '/images/octa/black/octa_black_front_2.webp',
+          back: '/images/octa/black/octa_black_back_2.jpg'
+        }
+      }
+    };
+    const selectedSet130 = imageMap130[currentExterior130]?.[currentWheelKey130];
+    if (selectedSet130) {
+      document.getElementById('slider-img-1').src = selectedSet130.side;
+      document.getElementById('slider-img-2').src = selectedSet130.front;
+      document.getElementById('slider-img-3').src = selectedSet130.back;
+      document.getElementById('vehicle-wheels').src = selectedSet130.side;
+    }
+  }
+
+  function showSlide130(index) {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextSlide130() {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    currentSlide130 = (currentSlide130 + 1) % slides.length;
+    showSlide130(currentSlide130);
+  }
+
+  function prevSlide130() {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    currentSlide130 = (currentSlide130 - 1 + slides.length) % slides.length;
+    showSlide130(currentSlide130);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
-    switchTab('exterior');
+    switchTab130('exterior');
+    showSlide130(currentSlide130);
+    updateImages130();
   });
   </script>
   
