@@ -68,6 +68,27 @@ public class LoginController {
         model.addAttribute("_csrf", csrfToken);
         return "build_your_own";
     }
+
+    @GetMapping("/build_defender_90")
+    public String builddefender90(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("_csrf", csrfToken);
+        return "build_defender_90";
+    }
+
+    @GetMapping("/build_defender_110")
+    public String builddefender110(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("_csrf", csrfToken);
+        return "build_defender_110";
+    }
+
+    @GetMapping("/build_defender_130")
+    public String builddefender130(Model model, HttpServletRequest request) {
+        CsrfToken csrfToken = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("_csrf", csrfToken);
+        return "build_defender_130";
+    }
 }
 
 //public class BuildController {
