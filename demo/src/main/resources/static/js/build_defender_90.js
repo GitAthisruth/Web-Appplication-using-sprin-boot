@@ -1,6 +1,6 @@
 function resetSaveState90() {
     isBuildSaved = false;
-    updateSaveButtonUI(false);
+    updateSaveButtonUI90(false);
 }
 
 async function saveBuild90() {
@@ -40,7 +40,7 @@ async function saveBuild90() {
             if (response.ok) {
                 console.log('Build saved successfully');
                 isBuildSaved = true;
-                updateSaveButtonUI(true);
+                updateSaveButtonUI90(true);
             } else {
                 console.error('Failed to save build');
             }
@@ -271,13 +271,13 @@ function changeModel90(button, imageFileName, modelName) {
     resetSaveState90();
 }
 
-// Optional: Set default selection on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.getElementById('defender90Btn');
-    if (defaultButton) {
-        defaultButton.click();  // Trigger changeModel90
-    }
-});
+// // Optional: Set default selection on page load
+// window.addEventListener('DOMContentLoaded', () => {
+//     const defaultButton = document.getElementById('defender90Btn');
+//     if (defaultButton) {
+//         defaultButton.click();  // Trigger changeModel90
+//     }
+// });
 
 
 
@@ -489,7 +489,7 @@ function updateInteriorImage90() {
     console.log("Selected Model:", selectedModel);
     console.log("Selected Interior:", selectedInterior);
     console.log("Interior Slides:", interiorSlides);
-    console.log(imageMap['Defender OCTA'].interiorImages['semi-aniline']['burnt_sienna']);
+    console.log(imageMap['Defender 90'].interiorImages['semi-aniline']['burnt_sienna']);
 
     if (interiorSlides) {
         const imgs = document.querySelectorAll('#imageSlider .slide img');
@@ -606,10 +606,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     updateInteriorImage90();
 
-    const defaultButton = document.querySelector('.model-button');
-    if (defaultButton) {
-        defaultButton.click();
-    }
+    const defaultButton = document.getElementById('defender90Btn');
+if (defaultButton) {
+    defaultButton.click();
+}
 
     // 2. Initialize visibility map and observer
     let visibilityMap = {

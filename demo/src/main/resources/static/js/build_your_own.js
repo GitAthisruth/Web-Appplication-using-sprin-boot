@@ -272,12 +272,12 @@ function changeModel(button, imageFileName, modelName) {
 }
 
 // Optional: Set default selection on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.querySelector('.model-button');
-    if (defaultButton) {
-        defaultButton.click();
-    }
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//     const defaultButton = document.querySelector('.model-button');
+//     if (defaultButton) {
+//         defaultButton.click();
+//     }
+// });
 
 
 
@@ -605,10 +605,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     updateInteriorImage();
 
-    const defaultButton = document.querySelector('.model-button');
-    if (defaultButton) {
-        defaultButton.click();
-    }
+    const defaultButton = document.getElementById("btn-defender-octa");
+if (defaultButton) {
+    defaultButton.click();
+}
 
     // 2. Initialize visibility map and observer
     let visibilityMap = {

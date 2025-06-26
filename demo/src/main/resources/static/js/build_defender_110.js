@@ -1,6 +1,6 @@
 function resetSaveState110() {
     isBuildSaved = false;
-    updateSaveButtonUI(false);
+    updateSaveButtonUI110(false);
 }
 
 async function saveBuild110() {
@@ -40,7 +40,7 @@ async function saveBuild110() {
             if (response.ok) {
                 console.log('Build saved successfully');
                 isBuildSaved = true;
-                updateSaveButtonUI(true);
+                updateSaveButtonUI110(true);
             } else {
                 console.error('Failed to save build');
             }
@@ -228,8 +228,6 @@ if (wheelEl) {
 }
 
 
-
-
 function updateSaveButtonUI110(saved) {
     const buttons = document.querySelectorAll('.save-build-btn');
     buttons.forEach(button => {
@@ -272,12 +270,12 @@ function changeModel110(button, imageFileName, modelName) {
 }
 
 // Optional: Set default selection on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.getElementById('defender110Btn');
-    if (defaultButton) {
-        defaultButton.click();  // Trigger changeModel90
-    }
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//     const defaultButton = document.getElementById('defender110Btn');
+//     if (defaultButton) {
+//         defaultButton.click();  // Trigger changeModel90
+//     }
+// });
 
 
 
@@ -606,9 +604,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     updateInteriorImage110();
 
-    const defaultButton = document.querySelector('.model-button');
+    const defaultButton = document.getElementById('defender110Btn');
     if (defaultButton) {
-        defaultButton.click();
+        defaultButton.click();  // Trigger changeModel90
     }
 
     // 2. Initialize visibility map and observer

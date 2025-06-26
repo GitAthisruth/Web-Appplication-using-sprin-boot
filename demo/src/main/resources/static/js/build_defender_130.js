@@ -1,6 +1,6 @@
 function resetSaveState130() {
     isBuildSaved = false;
-    updateSaveButtonUI(false);
+    updateSaveButtonUI130(false);
 }
 
 async function saveBuild130() {
@@ -40,7 +40,7 @@ async function saveBuild130() {
             if (response.ok) {
                 console.log('Build saved successfully');
                 isBuildSaved = true;
-                updateSaveButtonUI(true);
+                updateSaveButtonUI130(true);
             } else {
                 console.error('Failed to save build');
             }
@@ -272,12 +272,12 @@ function changeModel130(button, imageFileName, modelName) {
 }
 
 // Optional: Set default selection on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.getElementById('defender130Btn');
-    if (defaultButton) {
-        defaultButton.click();  // Trigger changeModel90
-    }
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//     const defaultButton = document.getElementById('defender130Btn');
+//     if (defaultButton) {
+//         defaultButton.click();  // Trigger changeModel90
+//     }
+// });
 
 
 
@@ -606,9 +606,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     updateInteriorImage130();
 
-    const defaultButton = document.querySelector('.model-button');
+    const defaultButton = document.getElementById('defender130Btn');
     if (defaultButton) {
-        defaultButton.click();
+        defaultButton.click();  // Trigger changeModel90
     }
 
     // 2. Initialize visibility map and observer
@@ -639,17 +639,17 @@ window.addEventListener("DOMContentLoaded", () => {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide90(0);
+            goToSlide130(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide90(5);
+            goToSlide130(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide90(2);
+            goToSlide130(2);
             currentSlideIndex = 2;
         }
     }, {
