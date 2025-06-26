@@ -674,10 +674,10 @@ const imageMap = {
         'Borasco Grey': {
             'Gloss Finish': {
                 'Wheel1': {
-                    'slide1': `/images/octa/build/octa_grey_front_1.webp`,
-                    'slide2': `/images/octa/build/octa_grey_side_1.jpg`,
-                    'slide3': `/images/octa/build/octa_grey_back_1.jpg`,
-                    'slide4': `/images/octa/build/octa_grey_top_1.jpg`
+                   'slide1': `/images/octa/build/90_front_1.jpg`,
+                    'slide2': `/images/octa/build/90_side_1.png`,
+                    'slide3': `/images/octa/build/90_back_1.jpg`,
+                    'slide4': `/images/octa/build/octa_top_blue_1.jpg`
                 },
                 'Wheel2': {
                     'slide1': `/images/octa/wheel/wheel2_front.jpg`,
