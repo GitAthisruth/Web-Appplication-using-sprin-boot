@@ -628,7 +628,7 @@ window.addEventListener("DOMContentLoaded", () => {
         exterior: 0,
         wheels: 0,
         interior: 0,
-        handling: 0,
+        headlining: 0,
         headlining: 0
     };
 
@@ -651,8 +651,8 @@ window.addEventListener("DOMContentLoaded", () => {
             goToSlide130(0);
             currentSlideIndex = 0;
         } else if (
-            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
-            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1 || visibilityMap.headlining > 0.1) &&
+            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
+            (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
             goToSlide130(5);
