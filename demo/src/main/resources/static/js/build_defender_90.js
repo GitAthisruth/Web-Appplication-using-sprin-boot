@@ -173,10 +173,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Optionally initialize default brake caliper selection if needed
-    const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
-    if (selectedBrake) {
-        const text = selectedBrake.querySelector('p')?.innerText.trim();
-        updateConfig90('brake', text, selectedBrake);
+    if (!isBuildApplied) {
+        const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
+        if (selectedBrake) {
+            const text = selectedBrake.querySelector('p')?.innerText.trim();
+            updateConfig90('brake', text, selectedBrake);
+        }
     }
 });
 
@@ -191,9 +193,13 @@ function toggleBuildsModal90() {
     }
 }
 
-function applyBuild90(build) {
 
+let isBuildApplied = false; 
+
+function applyBuild90(build) {
+    isBuildApplied = true;
     // 1. Apply Exterior Color
+    console.log("Bug Applying  Exterior color:", build.color);
     const colorEl = document.querySelector(`[title="${build.color}"]`);
     if (colorEl) {
         selectColor90(colorEl, build.color);
@@ -229,27 +235,42 @@ function applyBuild90(build) {
     }
 
     // 5. Apply Trim (this controls which interior options are visible)
+    console.log("Bug Applying   trim:", build.trim);
     selectTrim90(build.trim);
 
     // 6. Apply Interior and Headlining after DOM updates from trim
     setTimeout(() => {
-        // Interior
+        console.log("Bug Applying interior:", build.interior);
         const interiorOption = [...document.querySelectorAll('.interior-option')]
-            .find(opt => opt.getAttribute('onclick')?.includes(build.interior));
-        if (interiorOption) {
-            selectInteriorOption90(interiorOption, build.interior);
-        } else {
-            console.warn("Interior option not found:", build.interior);
-        }
+            .find(opt => {
+                const onclick = opt.getAttribute('onclick');
+                const match = onclick?.includes(build.interior);
+                console.log("Bug Checking interior option:", onclick, "match:", match);
+                return match;
+            });
+            
+            if (interiorOption) {
+                console.log("Bug Found interior element for:", build.interior);
+                selectInteriorOption90(interiorOption, build.interior);
+            } else {
+                console.warn("Interior option NOT found for:", build.interior);
+            }
 
         // Headlining
-        const headliningOption = [...document.querySelectorAll('.headlining-option')]
-            .find(opt => opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase()));
-        if (headliningOption) {
-            headliningOption.click();
-        } else {
-            console.warn("Headlining not found:", build.headlining);
-        }
+        console.log("Bug Applying headlining:", build.headlining);
+    const headliningOption = [...document.querySelectorAll('.headlining-option')]
+        .find(opt => {
+            const match = opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase());
+            console.log("Bug Checking headlining option:", opt.textContent, "match:", match);
+            return match;
+        });
+
+    if (headliningOption) {
+        console.log("Bug Found headlining:", build.headlining);
+        headliningOption.click();
+    } else {
+        console.warn("Headlining option NOT found:", build.headlining);
+    }
 
         updateMappedImages90();
         updateInteriorImage90();
@@ -328,11 +349,13 @@ function prevSlide90() {
     updateSlider90();
 }
 
+
 let selectedColor = 'Borasco Grey';
 let selectedFinish = 'Gloss Finish';
 function selectColor90(el, colorName) {
-    selectedColor = colorName;
 
+    selectedColor = colorName;
+console.log("Bug Color selected via function:", colorName, el);
    
     document.querySelectorAll(".color-circle div").forEach(dot => {
         dot.classList.remove("border-black");
@@ -486,7 +509,9 @@ if (defaultBrake) {
     updateConfig90('brake', selectedBrakeCalipers, defaultBrake);
 }
 });
+
 function selectInteriorOption90(el, value) {
+    console.log("Bug selectInteriorOption90 called with:", value, el);
     document.querySelectorAll('.interior-option').forEach(option => {
         option.classList.remove('border-black');
         option.classList.add('border-gray-300');
@@ -496,8 +521,8 @@ function selectInteriorOption90(el, value) {
     el.classList.add('border-black');
 
     selectedInterior = value; // <-- store current selection globally
-    console.log("selectedInterior: ",selectedInterior)
-    console.log("Interior selected:", value);
+    console.log("Bug selectedInterior: ",selectedInterior)
+    console.log("Bug Interior selected:", value);
     updateInteriorImage90();
     resetSaveState90();
 }
@@ -619,22 +644,24 @@ function goToSlide90(index) {
 
 window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
-    const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
-    if (defaultColorEl) {
-        selectColor90(defaultColorEl, 'Borasco Grey');
-    }
-
+    if (!isBuildApplied) {
+        // Default Exterior Color
+        const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
+        if (defaultColorEl) {
+            selectColor90(defaultColorEl, 'Borasco Grey');
+        } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
         selectFinish90(defaultFinishBtn, 'Gloss Finish');
-    }
-
-    selectTrim90('semi-aniline');
-
+}
+   
+      selectTrim90('semi-aniline');
+  
+  
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');
-    }
+        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+    } 
 
     updateInteriorImage90();
 
