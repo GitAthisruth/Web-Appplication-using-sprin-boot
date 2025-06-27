@@ -37,58 +37,44 @@
 <div class="relative flex min-h-screen flex-col overflow-x-hidden">
     <!-- BODY STYLE IMAGE & OPTIONS -->
     <!-- HEADER -->
-    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
+    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-center">
 
+        <!-- Centered "Defender" Text -->
+        <h1 class="text-white font-bold uppercase tracking-tight text-[1.125rem] md:text-[1.375rem] leading-none mt-[-2px]" style="font-family: 'Orbitron', sans-serif;">
+            DEFENDER
+          </h1>
+      
         <!-- Logo (top-right) -->
         <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
             <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
         </div>
-
-        <!-- Centered User Button -->
-        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div class="relative">
-                <button id="user-button"
-                        class="flex h-10 px-2.5 gap-2 bg-transparent rounded-full items-center font-bold text-white text-sm border border-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                         viewBox="0 0 256 256" style="color: white;">
-                        <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
-                    </svg>
-                </button>
-
-                <!-- Dropdown -->
-                <div id="user-dropdown"
-                     class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-black border border-white rounded shadow-lg z-50 text-white">
-                    <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
-                    <form id="logoutForm" action="/logout" method="post" style="display:none;" th:action="@{/logout}" th:method="post">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    </form>
-
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"
-                       class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-
+      
         <!-- Right Menu Button -->
-        <div class="relative z-10">
+        <div class="absolute top-1/2 left-10 transform -translate-y-1/2 z-10">
             <button id="menu-button"
                     class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
                 Menu
             </button>
+      
+            <!-- Menu Dropdown -->
             <div id="menu-dropdown"
                  class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
                 <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
                 <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Store</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">My Defender</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+      
+                <!-- Logout Button -->
+                <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit"
+                            class="w-full text-left text-sm text-red-400 hover:bg-gray-700">
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
-    </header>
+      </header>
 
     <!-- NAVIGATION SECTION (NO height, normal flow) -->
     <section class="relative bg-white bg-cover bg-center">
