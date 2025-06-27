@@ -1,3 +1,6 @@
+let isBuildApplied = false;
+
+
 function resetSaveState110() {
     isBuildSaved = false;
     updateSaveButtonUI110(false);
@@ -177,7 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
         if (selectedBrake) {
             const text = selectedBrake.querySelector('p')?.innerText.trim();
-            updateConfig90('brake', text, selectedBrake);
+            updateConfig110('brake', text, selectedBrake);
         }
     }
 });
@@ -618,31 +621,31 @@ function goToSlide110(index) {
         console.warn(`Invalid slide index: ${index}`);
     }
 }
-
+ 
 window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
     if (!isBuildApplied) {
         // Default Exterior Color
         const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
         if (defaultColorEl) {
-            selectColor90(defaultColorEl, 'Borasco Grey');
+            selectColor110(defaultColorEl, 'Borasco Grey');
         } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
-        selectFinish90(defaultFinishBtn, 'Gloss Finish');
+        selectFinish110(defaultFinishBtn, 'Gloss Finish');
 }
    
-      selectTrim90('semi-aniline');
+      selectTrim110('semi-aniline');
   
   
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+        selectInteriorOption110(defaultInteriorEl, 'burnt_sienna');}
     } 
 
-    updateInteriorImage90();
+    updateInteriorImage110();
 
-    const defaultButton = document.getElementById('defender90Btn');
+    const defaultButton = document.getElementById('defender110Btn');
 if (defaultButton) {
     defaultButton.click();
 }
@@ -675,17 +678,17 @@ if (defaultButton) {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide90(0);
+            goToSlide110(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide90(5);
+            goToSlide110(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide90(2);
+            goToSlide110(2);
             currentSlideIndex = 2;
         }
     }, {

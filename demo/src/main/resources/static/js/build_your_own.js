@@ -3,6 +3,7 @@ function resetSaveState() {
     updateSaveButtonUI(false);
 }
 
+
 async function saveBuild() {
     const buttons = document.querySelectorAll('.save-build-btn');
 
@@ -93,26 +94,26 @@ builds.forEach((build, index) => {
     `;
 
     const handleBuildClick = () => {
-        localStorage.setItem('selectedBuild', JSON.stringify(build));
-        toggleBuildsModal(); // close modal
-        applyBuild(build);   // apply immediately without reload
-        };
-        
-        card.querySelector('h4').addEventListener('click', handleBuildClick);
-        card.querySelector('ul').addEventListener('click', () => {
-            localStorage.setItem('selectedBuild', JSON.stringify(build));
-        
-            // Redirect based on model
-            const model = build.model
-            console.log("defender OCTA", model)
-            let targetUrl = "/build_your_own"; // default fallback
-        
-            if (model === "Defender 90") targetUrl = "/build_defender_90";
-            else if (model === "Defender 110") targetUrl = "/build_defender_110";
-            else if (model === "Defender 130") targetUrl = "/build_defender_130";
-        
-            window.location.href = targetUrl;
-        });
+localStorage.setItem('selectedBuild', JSON.stringify(build));
+toggleBuildsModal(); // close modal
+applyBuild(build);   // apply immediately without reload
+};
+
+card.querySelector('h4').addEventListener('click', handleBuildClick);
+card.querySelector('ul').addEventListener('click', () => {
+    localStorage.setItem('selectedBuild', JSON.stringify(build));
+
+    // Redirect based on model
+    const model = build.model
+    console.log("defender OCTA", model)
+    let targetUrl = "/build_your_own"; // default fallback
+
+    if (model === "Defender 90") targetUrl = "/build_defender_90";
+    else if (model === "Defender 110") targetUrl = "/build_defender_110";
+    else if (model === "Defender 130") targetUrl = "/build_defender_130";
+
+    window.location.href = targetUrl;
+});
 
     // Delete button
     const deleteBtn = card.querySelector('.delete-btn');
@@ -156,7 +157,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             const build = JSON.parse(saved);
-            applyBuild(build); // This function should apply the customizations
+            if (build.model === "Defender OCTA") {
+                applyBuild(build);
+            } // This function should apply the customizations
             localStorage.removeItem('selectedBuild');
         } catch (e) {
             console.error("Invalid build format from storage", e);
@@ -174,7 +177,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
         if (selectedBrake) {
             const text = selectedBrake.querySelector('p')?.innerText.trim();
-            updateConfig90('brake', text, selectedBrake);
+            updateConfig('brake', text, selectedBrake);
         }
     }
 });
@@ -190,52 +193,92 @@ function toggleBuildsModal() {
     }
 }
 
+
+let isBuildApplied = false; 
+
 function applyBuild(build) {
-    // Apply color
+    isBuildApplied = true;
+    // 1. Apply Exterior Color
+    console.log("Bug Applying  Exterior color:", build.color);
     const colorEl = document.querySelector(`[title="${build.color}"]`);
-    if (colorEl) selectColor(colorEl, build.color);
+    if (colorEl) {
+        selectColor(colorEl, build.color);
+    } else {
+        console.warn("Color not found:", build.color);
+    }
 
-    // Apply finish
+    // 2. Apply Finish Type
     const finishBtn = [...document.querySelectorAll('.finish-btn')]
-        .find(btn => btn.textContent.toLowerCase().includes(build.finish.toLowerCase()));
-    if (finishBtn) selectFinish(finishBtn, build.finish);
+        .find(btn => btn.textContent.trim().toLowerCase() === build.finish.toLowerCase());
+    if (finishBtn) {
+        selectFinish(finishBtn, build.finish);
+    } else {
+        console.warn("Finish not found:", build.finish);
+    }
 
-    
+    // 3. Apply Wheels
     const wheelEl = document.querySelector(`.wheel-thumb-wrapper[data-wheel="${build.wheel}"]`);
-if (wheelEl) {
-    console.log("Applying saved wheel:", build.wheel);
-    selectedWheel = build.wheel; //Ensure selectedWheel is set
-    updateConfig('wheels', build.wheel, wheelEl);
-} else {
-    console.warn("No matching wheel found for:", build.wheel);
-}
+    if (wheelEl) {
+        selectedWheel = build.wheel;
+        updateConfig('wheels', build.wheel, wheelEl);
+    }
 
-
-    // Apply brake calipers
+    // 4. Apply Brake Calipers
     if (build.brakeCalipers) {
-        const brakeEl = document.querySelector(`[onclick*="${build.brakeCalipers}"]`);
+        const brakeEl = [...document.querySelectorAll('.brake-thumb-wrapper')]
+            .find(el => el.textContent.trim().includes(build.brakeCalipers));
         if (brakeEl) {
             updateConfig('brake', build.brakeCalipers, brakeEl);
         } else {
-            console.warn("No matching brake caliper found for:", build.brakeCalipers);
+            console.warn("Brake caliper not found:", build.brakeCalipers);
         }
     }
 
-    // Apply trim
+    // 5. Apply Trim (this controls which interior options are visible)
+    console.log("Bug Applying   trim:", build.trim);
     selectTrim(build.trim);
 
-    // Apply interior and headlining after short delay
+    // 6. Apply Interior and Headlining after DOM updates from trim
     setTimeout(() => {
-        const interiorOption = document.querySelector(`[onclick*="${build.interior}"]`);
-        if (interiorOption) selectInteriorOption(interiorOption, build.interior);
+        console.log("Bug Applying interior:", build.interior);
+        const interiorOption = [...document.querySelectorAll('.interior-option')]
+            .find(opt => {
+                const onclick = opt.getAttribute('onclick');
+                const match = onclick?.includes(build.interior);
+                console.log("Bug Checking interior option:", onclick, "match:", match);
+                return match;
+            });
+            
+            if (interiorOption) {
+                console.log("Bug Found interior element for:", build.interior);
+                selectInteriorOption(interiorOption, build.interior);
+            } else {
+                console.warn("Interior option NOT found for:", build.interior);
+            }
 
-        const headliningOption = [...document.querySelectorAll('.headlining-option')]
-            .find(opt => opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase()));
-        if (headliningOption) headliningOption.click();
+        // Headlining
+        console.log("Bug Applying headlining:", build.headlining);
+    const headliningOption = [...document.querySelectorAll('.headlining-option')]
+        .find(opt => {
+            const match = opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase());
+            console.log("Bug Checking headlining option:", opt.textContent, "match:", match);
+            return match;
+        });
 
+    if (headliningOption) {
+        console.log("Bug Found headlining:", build.headlining);
+        headliningOption.click();
+    } else {
+        console.warn("Headlining option NOT found:", build.headlining);
+    }
+
+        updateMappedImages();
         updateInteriorImage();
-    }, 50);
+    }, 100); // Slight delay to ensure UI updates
+
+    resetSaveState();
 }
+
 
 
 
@@ -281,13 +324,14 @@ function changeModel(button, imageFileName, modelName) {
     resetSaveState();
 }
 
-// Optional: Set default selection on page load
+// // Optional: Set default selection on page load
 // window.addEventListener('DOMContentLoaded', () => {
-//     const defaultButton = document.querySelector('.model-button');
+//     const defaultButton = document.getElementById('defender90Btn');
 //     if (defaultButton) {
-//         defaultButton.click();
+//         defaultButton.click();  // Trigger changeModel90
 //     }
 // });
+
 
 
 
@@ -305,11 +349,13 @@ function prevSlide() {
     updateSlider();
 }
 
+
 let selectedColor = 'Borasco Grey';
 let selectedFinish = 'Gloss Finish';
 function selectColor(el, colorName) {
-    selectedColor = colorName;
 
+    selectedColor = colorName;
+console.log("Bug Color selected via function:", colorName, el);
    
     document.querySelectorAll(".color-circle div").forEach(dot => {
         dot.classList.remove("border-black");
@@ -463,7 +509,9 @@ if (defaultBrake) {
     updateConfig('brake', selectedBrakeCalipers, defaultBrake);
 }
 });
+
 function selectInteriorOption(el, value) {
+    console.log("Bug selectInteriorOption called with:", value, el);
     document.querySelectorAll('.interior-option').forEach(option => {
         option.classList.remove('border-black');
         option.classList.add('border-gray-300');
@@ -473,8 +521,8 @@ function selectInteriorOption(el, value) {
     el.classList.add('border-black');
 
     selectedInterior = value; // <-- store current selection globally
-    console.log("selectedInterior: ",selectedInterior)
-    console.log("Interior selected:", value);
+    console.log("Bug selectedInterior: ",selectedInterior)
+    console.log("Bug Interior selected:", value);
     updateInteriorImage();
     resetSaveState();
 }
@@ -600,24 +648,24 @@ window.addEventListener("DOMContentLoaded", () => {
         // Default Exterior Color
         const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
         if (defaultColorEl) {
-            selectColor90(defaultColorEl, 'Borasco Grey');
+            selectColor(defaultColorEl, 'Borasco Grey');
         } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
-        selectFinish90(defaultFinishBtn, 'Gloss Finish');
+        selectFinish(defaultFinishBtn, 'Gloss Finish');
 }
    
-      selectTrim90('semi-aniline');
+      selectTrim('semi-aniline');
   
   
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+        selectInteriorOption(defaultInteriorEl, 'burnt_sienna');}
     } 
 
-    updateInteriorImage90();
+    updateInteriorImage();
 
-    const defaultButton = document.getElementById('defender90Btn');
+    const defaultButton = document.getElementById('btn-defender-octa');
 if (defaultButton) {
     defaultButton.click();
 }
@@ -650,17 +698,17 @@ if (defaultButton) {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide90(0);
+            goToSlide(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide90(5);
+            goToSlide(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide90(2);
+            goToSlide(2);
             currentSlideIndex = 2;
         }
     }, {
