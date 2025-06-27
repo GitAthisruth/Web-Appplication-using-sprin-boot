@@ -1,10 +1,10 @@
-function resetSaveState90() {
+function resetSaveState130() {
     isBuildSaved = false;
-    updateSaveButtonUI90(false);
+    updateSaveButtonUI130(false);
 }
 
 
-async function saveBuild90() {
+async function saveBuild130() {
     const buttons = document.querySelectorAll('.save-build-btn');
 
     if (!isBuildSaved) {
@@ -41,7 +41,7 @@ async function saveBuild90() {
             if (response.ok) {
                 console.log('Build saved successfully');
                 isBuildSaved = true;
-                updateSaveButtonUI90(true);
+                updateSaveButtonUI130(true);
             } else {
                 console.error('Failed to save build');
             }
@@ -52,7 +52,7 @@ async function saveBuild90() {
 }
 
 
-async function fetchSavedBuilds90() {
+async function fetchSavedBuilds130() {
 try {
     const response = await fetch('/test', {
         method: 'GET',
@@ -63,14 +63,14 @@ try {
 
     if (!response.ok) throw new Error('Failed to load builds');
     const builds = await response.json();
-    renderBuilds90(builds);
+    renderBuilds130(builds);
 } catch (err) {
     console.error("Error fetching builds:", err);
 }
 }
 
 
-function renderBuilds90(builds) {
+function renderBuilds130(builds) {
 const container = document.getElementById('builds-list');
 container.innerHTML = '';
 
@@ -95,8 +95,8 @@ builds.forEach((build, index) => {
 
     const handleBuildClick = () => {
 localStorage.setItem('selectedBuild', JSON.stringify(build));
-toggleBuildsModal90(); // close modal
-applyBuild90(build);   // apply immediately without reload
+toggleBuildsModal130(); // close modal
+applyBuild130(build);   // apply immediately without reload
 };
 
 card.querySelector('h4').addEventListener('click', handleBuildClick);
@@ -105,7 +105,7 @@ card.querySelector('ul').addEventListener('click', () => {
 
     // Redirect based on model
     const model = build.model
-    console.log("defender 90", model)
+    console.log("defender 130", model)
     let targetUrl = "/build_your_own"; // default fallback
 
     if (model === "Defender 90") targetUrl = "/build_defender_90";
@@ -138,7 +138,7 @@ card.querySelector('ul').addEventListener('click', () => {
             if (response.ok) {
                 console.log("Build deleted successfully");
                 // Re-fetch builds after delete
-                fetchSavedBuilds90();
+                fetchSavedBuilds130();
             } else {
                 console.error("Failed to delete build");
             }
@@ -157,8 +157,8 @@ window.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             const build = JSON.parse(saved);
-            if (build.model === "Defender 90") {
-                applyBuild90(build);
+            if (build.model === "Defender 130") {
+                applyBuild130(build);
             } // This function should apply the customizations
             localStorage.removeItem('selectedBuild');
         } catch (e) {
@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
         //  Default-select Wheel1 if no saved build
         const defaultWheel = document.querySelector('.wheel-thumb-wrapper[data-wheel="Wheel1"]');
         if (defaultWheel) {
-            updateConfig90('wheels', 'Wheel1', defaultWheel);
+            updateConfig130('wheels', 'Wheel1', defaultWheel);
         }
     }
 
@@ -177,17 +177,17 @@ window.addEventListener('DOMContentLoaded', () => {
         const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
         if (selectedBrake) {
             const text = selectedBrake.querySelector('p')?.innerText.trim();
-            updateConfig90('brake', text, selectedBrake);
+            updateConfig130('brake', text, selectedBrake);
         }
     }
 });
 
 
-function toggleBuildsModal90() {
+function toggleBuildsModal130() {
     const modal = document.getElementById('savedBuildsModal');
     if (modal.classList.contains('hidden')) {
         modal.classList.remove('hidden');
-        fetchSavedBuilds90(); // load builds when opening
+        fetchSavedBuilds130(); // load builds when opening
     } else {
         modal.classList.add('hidden');
     }
@@ -196,13 +196,13 @@ function toggleBuildsModal90() {
 
 let isBuildApplied = false; 
 
-function applyBuild90(build) {
+function applyBuild130(build) {
     isBuildApplied = true;
     // 1. Apply Exterior Color
     console.log("Bug Applying  Exterior color:", build.color);
     const colorEl = document.querySelector(`[title="${build.color}"]`);
     if (colorEl) {
-        selectColor90(colorEl, build.color);
+        selectColor130(colorEl, build.color);
     } else {
         console.warn("Color not found:", build.color);
     }
@@ -211,7 +211,7 @@ function applyBuild90(build) {
     const finishBtn = [...document.querySelectorAll('.finish-btn')]
         .find(btn => btn.textContent.trim().toLowerCase() === build.finish.toLowerCase());
     if (finishBtn) {
-        selectFinish90(finishBtn, build.finish);
+        selectFinish130(finishBtn, build.finish);
     } else {
         console.warn("Finish not found:", build.finish);
     }
@@ -220,7 +220,7 @@ function applyBuild90(build) {
     const wheelEl = document.querySelector(`.wheel-thumb-wrapper[data-wheel="${build.wheel}"]`);
     if (wheelEl) {
         selectedWheel = build.wheel;
-        updateConfig90('wheels', build.wheel, wheelEl);
+        updateConfig130('wheels', build.wheel, wheelEl);
     }
 
     // 4. Apply Brake Calipers
@@ -228,7 +228,7 @@ function applyBuild90(build) {
         const brakeEl = [...document.querySelectorAll('.brake-thumb-wrapper')]
             .find(el => el.textContent.trim().includes(build.brakeCalipers));
         if (brakeEl) {
-            updateConfig90('brake', build.brakeCalipers, brakeEl);
+            updateConfig130('brake', build.brakeCalipers, brakeEl);
         } else {
             console.warn("Brake caliper not found:", build.brakeCalipers);
         }
@@ -236,7 +236,7 @@ function applyBuild90(build) {
 
     // 5. Apply Trim (this controls which interior options are visible)
     console.log("Bug Applying   trim:", build.trim);
-    selectTrim90(build.trim);
+    selectTrim130(build.trim);
 
     // 6. Apply Interior and Headlining after DOM updates from trim
     setTimeout(() => {
@@ -251,7 +251,7 @@ function applyBuild90(build) {
             
             if (interiorOption) {
                 console.log("Bug Found interior element for:", build.interior);
-                selectInteriorOption90(interiorOption, build.interior);
+                selectInteriorOption130(interiorOption, build.interior);
             } else {
                 console.warn("Interior option NOT found for:", build.interior);
             }
@@ -272,18 +272,18 @@ function applyBuild90(build) {
         console.warn("Headlining option NOT found:", build.headlining);
     }
 
-        updateMappedImages90();
-        updateInteriorImage90();
+        updateMappedImages130();
+        updateInteriorImage130();
     }, 100); // Slight delay to ensure UI updates
 
-    resetSaveState90();
+    resetSaveState130();
 }
 
 
 
 
 
-function updateSaveButtonUI90(saved) {
+function updateSaveButtonUI130(saved) {
     const buttons = document.querySelectorAll('.save-build-btn');
     buttons.forEach(button => {
         button.setAttribute('data-selected', saved.toString());
@@ -299,8 +299,8 @@ function updateSaveButtonUI90(saved) {
     });
 }
 
-let selectedModel = 'Defender 90';
-function changeModel90(button, imageFileName, modelName) {
+let selectedModel = 'Defender 130';
+function changeModel130(button, imageFileName, modelName) {
     selectedModel = modelName;
 
     // Update image
@@ -320,8 +320,8 @@ function changeModel90(button, imageFileName, modelName) {
     button.classList.add('bg-black', 'text-white');
 
     // Update any dependent UI
-    updateMappedImages90();
-    resetSaveState90();
+    updateMappedImages130();
+    resetSaveState130();
 }
 
 // // Optional: Set default selection on page load
@@ -335,24 +335,24 @@ function changeModel90(button, imageFileName, modelName) {
 
 
 
-function nextSlide90() {
+function nextSlide130() {
     const slides = document.querySelectorAll('#imageSlider .slide');
     const totalSlides = slides.length;
     currentIndex = (currentIndex + 1) % totalSlides;
-    updateSlider90();
+    updateSlider130();
 }
 
-function prevSlide90() {
+function prevSlide130() {
     const slides = document.querySelectorAll('#imageSlider .slide');
     const totalSlides = slides.length;
     currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-    updateSlider90();
+    updateSlider130();
 }
 
 
 let selectedColor = 'Borasco Grey';
 let selectedFinish = 'Gloss Finish';
-function selectColor90(el, colorName) {
+function selectColor130(el, colorName) {
 
     selectedColor = colorName;
 console.log("Bug Color selected via function:", colorName, el);
@@ -374,11 +374,11 @@ console.log("Bug Color selected via function:", colorName, el);
         document.getElementById("selected-color-name").textContent = "";
     }
 
-    updateMappedImages90();
-    resetSaveState90();
+    updateMappedImages130();
+    resetSaveState130();
 }
 
-function selectFinish90(button, finishName) {
+function selectFinish130(button, finishName) {
     selectedFinish = finishName;
 
     document.querySelectorAll(".finish-btn").forEach(btn => {
@@ -394,11 +394,11 @@ function selectFinish90(button, finishName) {
     // Add this line for debugging
     console.log('Finish selected:', finishName);
 
-    updateMappedImages90();
-    resetSaveState90();
+    updateMappedImages130();
+    resetSaveState130();
 }
 
-function updateMappedImages90() {
+function updateMappedImages130() {
     console.log('Updating images for:', selectedModel, selectedColor, selectedFinish, selectedWheel, selectedInterior);
 
     const map = imageMap[selectedModel]?.[selectedColor]?.[selectedFinish]?.[selectedWheel];
@@ -426,7 +426,7 @@ const wheelNameMap = {
 let selectedWheel = wheelNameMap['Wheel1'];
 let selectedBrakeCalipers = 'Phosphor Bronze front brake calipers';
 
-function updateConfig90(category, value, el) {
+function updateConfig130(category, value, el) {
     if (category === 'wheels') {
     document.querySelectorAll('.wheel-thumb-wrapper').forEach(div => {
         div.classList.remove('border-black');
@@ -443,8 +443,8 @@ function updateConfig90(category, value, el) {
     const displayText = wheelNameMap[selectedWheel] || selectedWheel;
     document.getElementById('wheels-name').textContent = displayText;
 
-    updateMappedImages90();
-    resetSaveState90();
+    updateMappedImages130();
+    resetSaveState130();
 }
 
 
@@ -458,7 +458,7 @@ function updateConfig90(category, value, el) {
         el.classList.add('border-black');
 
         selectedBrakeCalipers = value;
-        resetSaveState90();
+        resetSaveState130();
     }
 
     console.log(`Updated ${category}: ${value}`);
@@ -469,7 +469,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
     if (selectedBrake) {
         const text = selectedBrake.querySelector('p')?.innerText.trim();
-        updateConfig90('brake', text, selectedBrake);
+        updateConfig130('brake', text, selectedBrake);
     }
 });
 
@@ -477,7 +477,7 @@ window.addEventListener('DOMContentLoaded', () => {
 let selectedTrim = 'semi-aniline'; // default
 let selectedInterior = 'burnt_sienna'; // default
 
-function selectTrim90(type) {
+function selectTrim130(type) {
 const semi = document.getElementById('trim-options-semi-aniline');
 const ultra = document.getElementById('trim-options-ultrafabric');
 
@@ -497,7 +497,7 @@ document.querySelectorAll('.trim-btn').forEach(btn => {
 document.getElementById(`trim-${type}`).classList.add('bg-black', 'text-white');
 
 selectedTrim = type;
-resetSaveState90();
+resetSaveState130();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -506,12 +506,12 @@ const defaultBrake = [...document.querySelectorAll('.brake-thumb-wrapper')].find
 );
 
 if (defaultBrake) {
-    updateConfig90('brake', selectedBrakeCalipers, defaultBrake);
+    updateConfig130('brake', selectedBrakeCalipers, defaultBrake);
 }
 });
 
-function selectInteriorOption90(el, value) {
-    console.log("Bug selectInteriorOption90 called with:", value, el);
+function selectInteriorOption130(el, value) {
+    console.log("Bug selectInteriorOption130 called with:", value, el);
     document.querySelectorAll('.interior-option').forEach(option => {
         option.classList.remove('border-black');
         option.classList.add('border-gray-300');
@@ -523,20 +523,20 @@ function selectInteriorOption90(el, value) {
     selectedInterior = value; // <-- store current selection globally
     console.log("Bug selectedInterior: ",selectedInterior)
     console.log("Bug Interior selected:", value);
-    updateInteriorImage90();
-    resetSaveState90();
+    updateInteriorImage130();
+    resetSaveState130();
 }
 
-function scrollToBuildsAndLoad90(event) {
+function scrollToBuildsAndLoad130(event) {
 event.preventDefault();
 const buildsSection = document.getElementById('builds');
 if (buildsSection) {
     buildsSection.scrollIntoView({ behavior: 'smooth' });
-    fetchAndDisplayBuilds90();
+    fetchAndDisplayBuilds130();
 }
 }
 
-function updateInteriorImage90() {
+function updateInteriorImage130() {
     const trimType = document.getElementById('trim-options-semi-aniline').classList.contains('hidden')
         ? 'ultrafabric'
         : 'semi-aniline';
@@ -546,7 +546,7 @@ function updateInteriorImage90() {
     console.log("Selected Model:", selectedModel);
     console.log("Selected Interior:", selectedInterior);
     console.log("Interior Slides:", interiorSlides);
-    console.log(imageMap['Defender 90'].interiorImages['semi-aniline']['burnt_sienna']);
+    console.log(imageMap['Defender 130'].interiorImages['semi-aniline']['burnt_sienna']);
 
     if (interiorSlides) {
         const imgs = document.querySelectorAll('#imageSlider .slide img');
@@ -589,7 +589,7 @@ function updateInteriorImage90() {
 
 
 
-function selectHeadliningOption90(el, value) {
+function selectHeadliningOption130(el, value) {
     document.querySelectorAll('.headlining-option').forEach(option => {
         option.classList.remove('ring-2', 'ring-black');
     });
@@ -602,8 +602,8 @@ function selectHeadliningOption90(el, value) {
     console.log("Normalized headlining key:", selectedHeadlining);
 
     // Trigger image update
-    updateInteriorImage90();
-    resetSaveState90();
+    updateInteriorImage130();
+    resetSaveState130();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -619,7 +619,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 let currentIndex = 0;
 
-function updateSlider90() {
+function updateSlider130() {
     const slider = document.getElementById("imageSlider");
     if (slider) {
         const offset = currentIndex * 100;
@@ -629,13 +629,13 @@ function updateSlider90() {
         console.error("Slider not found!");
     }
 }
-function goToSlide90(index) {
+function goToSlide130(index) {
     const totalSlides = document.querySelectorAll("#imageSlider .slide").length;
     console.log(`goToSlide called with index: ${index}`);
 
     if (index >= 0 && index < totalSlides) {
         currentIndex = index;
-        updateSlider90();
+        updateSlider130();
         console.log(`Slide updated to index: ${index}`);
     } else {
         console.warn(`Invalid slide index: ${index}`);
@@ -648,24 +648,24 @@ window.addEventListener("DOMContentLoaded", () => {
         // Default Exterior Color
         const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
         if (defaultColorEl) {
-            selectColor90(defaultColorEl, 'Borasco Grey');
+            selectColor130(defaultColorEl, 'Borasco Grey');
         } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
-        selectFinish90(defaultFinishBtn, 'Gloss Finish');
+        selectFinish130(defaultFinishBtn, 'Gloss Finish');
 }
    
-      selectTrim90('semi-aniline');
+      selectTrim130('semi-aniline');
   
   
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+        selectInteriorOption130(defaultInteriorEl, 'burnt_sienna');}
     } 
 
-    updateInteriorImage90();
+    updateInteriorImage130();
 
-    const defaultButton = document.getElementById('defender90Btn');
+    const defaultButton = document.getElementById('defender130Btn');
 if (defaultButton) {
     defaultButton.click();
 }
@@ -698,17 +698,17 @@ if (defaultButton) {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide90(0);
+            goToSlide130(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide90(5);
+            goToSlide130(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide90(2);
+            goToSlide130(2);
             currentSlideIndex = 2;
         }
     }, {
@@ -729,13 +729,13 @@ if (defaultButton) {
 });
 
 const imageMap = {
-    'Defender 90': {
+    'Defender 130': {
         'Borasco Grey': {
             'Gloss Finish': {
                 'Wheel1': {
-                   'slide1': `/images/octa/build/90_front_1.jpg`,
-                    'slide2': `/images/octa/build/90_side_1.png`,
-                    'slide3': `/images/octa/build/90_back_1.jpg`,
+                   'slide1': `/images/octa/build/130_front_1.jpg`,
+                    'slide2': `/images/octa/build/130_side_1.png`,
+                    'slide3': `/images/octa/build/130_back_1.jpg`,
                     'slide4': `/images/octa/build/octa_top_blue_1.jpg`
                 },
                 'Wheel2': {
