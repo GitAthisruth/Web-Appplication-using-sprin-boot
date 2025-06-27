@@ -171,10 +171,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Optionally initialize default brake caliper selection if needed
-    const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
-    if (selectedBrake) {
-        const text = selectedBrake.querySelector('p')?.innerText.trim();
-        updateConfig130('brake', text, selectedBrake);
+    if (!isBuildApplied) {
+        const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
+        if (selectedBrake) {
+            const text = selectedBrake.querySelector('p')?.innerText.trim();
+            updateConfig90('brake', text, selectedBrake);
+        }
     }
 });
 
@@ -596,29 +598,31 @@ function goToSlide130(index) {
 
 window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
-    const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
-    if (defaultColorEl) {
-        selectColor130(defaultColorEl, 'Borasco Grey');
-    }
-
+    if (!isBuildApplied) {
+        // Default Exterior Color
+        const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
+        if (defaultColorEl) {
+            selectColor90(defaultColorEl, 'Borasco Grey');
+        } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
-        selectFinish130(defaultFinishBtn, 'Gloss Finish');
-    }
-
-    selectTrim130('semi-aniline');
-
+        selectFinish90(defaultFinishBtn, 'Gloss Finish');
+}
+   
+      selectTrim90('semi-aniline');
+  
+  
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption130(defaultInteriorEl, 'burnt_sienna');
-    }
+        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+    } 
 
-    updateInteriorImage130();
+    updateInteriorImage90();
 
-    const defaultButton = document.getElementById('defender130Btn');
-    if (defaultButton) {
-        defaultButton.click();  // Trigger changeModel90
-    }
+    const defaultButton = document.getElementById('defender90Btn');
+if (defaultButton) {
+    defaultButton.click();
+}
 
     // 2. Initialize visibility map and observer
     let visibilityMap = {
@@ -648,17 +652,17 @@ window.addEventListener("DOMContentLoaded", () => {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide130(0);
+            goToSlide90(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide130(5);
+            goToSlide90(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide130(2);
+            goToSlide90(2);
             currentSlideIndex = 2;
         }
     }, {

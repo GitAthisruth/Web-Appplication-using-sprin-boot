@@ -170,10 +170,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Optionally initialize default brake caliper selection if needed
-    const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
-    if (selectedBrake) {
-        const text = selectedBrake.querySelector('p')?.innerText.trim();
-        updateConfig('brake', text, selectedBrake);
+    if (!isBuildApplied) {
+        const selectedBrake = document.querySelector('.brake-thumb-wrapper[data-selected="true"]');
+        if (selectedBrake) {
+            const text = selectedBrake.querySelector('p')?.innerText.trim();
+            updateConfig90('brake', text, selectedBrake);
+        }
     }
 });
 
@@ -594,26 +596,28 @@ function goToSlide(index) {
 
 window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
-    const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
-    if (defaultColorEl) {
-        selectColor(defaultColorEl, 'Borasco Grey');
-    }
-
+    if (!isBuildApplied) {
+        // Default Exterior Color
+        const defaultColorEl = document.querySelector('[title="Borasco Grey"]');
+        if (defaultColorEl) {
+            selectColor90(defaultColorEl, 'Borasco Grey');
+        } 
     const defaultFinishBtn = document.querySelector('.finish-btn');
     if (defaultFinishBtn) {
-        selectFinish(defaultFinishBtn, 'Gloss Finish');
-    }
-
-    selectTrim('semi-aniline');
-
+        selectFinish90(defaultFinishBtn, 'Gloss Finish');
+}
+   
+      selectTrim90('semi-aniline');
+  
+  
     const defaultInteriorEl = document.querySelector('[onclick*="burnt_sienna"]');
     if (defaultInteriorEl) {
-        selectInteriorOption(defaultInteriorEl, 'burnt_sienna');
-    }
+        selectInteriorOption90(defaultInteriorEl, 'burnt_sienna');}
+    } 
 
-    updateInteriorImage();
+    updateInteriorImage90();
 
-    const defaultButton = document.getElementById("btn-defender-octa");
+    const defaultButton = document.getElementById('defender90Btn');
 if (defaultButton) {
     defaultButton.click();
 }
@@ -646,17 +650,17 @@ if (defaultButton) {
             .some(section => visibilityMap[section] > 0.1);
 
         if (showSlide0 && currentSlideIndex !== 0) {
-            goToSlide(0);
+            goToSlide90(0);
             currentSlideIndex = 0;
         } else if (
             (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
             (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
-            goToSlide(5);
+            goToSlide90(5);
             currentSlideIndex = 5;
         } else if (visibilityMap.wheels > 0.1 && currentSlideIndex !== 2) {
-            goToSlide(2);
+            goToSlide90(2);
             currentSlideIndex = 2;
         }
     }, {
