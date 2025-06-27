@@ -1,6 +1,3 @@
-let isBuildApplied = false;
-
-
 function resetSaveState110() {
     isBuildSaved = false;
     updateSaveButtonUI110(false);
@@ -111,7 +108,7 @@ card.querySelector('ul').addEventListener('click', () => {
     console.log("defender 110", model)
     let targetUrl = "/build_your_own"; // default fallback
 
-    if (model === "Defender 110") targetUrl = "/build_defender_110";
+    if (model === "Defender 90") targetUrl = "/build_defender_90";
     else if (model === "Defender 110") targetUrl = "/build_defender_110";
     else if (model === "Defender 130") targetUrl = "/build_defender_130";
 
@@ -196,9 +193,13 @@ function toggleBuildsModal110() {
     }
 }
 
-function applyBuild110(build) {
 
+let isBuildApplied = false; 
+
+function applyBuild110(build) {
+    isBuildApplied = true;
     // 1. Apply Exterior Color
+    console.log("Bug Applying  Exterior color:", build.color);
     const colorEl = document.querySelector(`[title="${build.color}"]`);
     if (colorEl) {
         selectColor110(colorEl, build.color);
@@ -234,27 +235,42 @@ function applyBuild110(build) {
     }
 
     // 5. Apply Trim (this controls which interior options are visible)
+    console.log("Bug Applying   trim:", build.trim);
     selectTrim110(build.trim);
 
     // 6. Apply Interior and Headlining after DOM updates from trim
     setTimeout(() => {
-        // Interior
+        console.log("Bug Applying interior:", build.interior);
         const interiorOption = [...document.querySelectorAll('.interior-option')]
-            .find(opt => opt.getAttribute('onclick')?.includes(build.interior));
-        if (interiorOption) {
-            selectInteriorOption110(interiorOption, build.interior);
-        } else {
-            console.warn("Interior option not found:", build.interior);
-        }
+            .find(opt => {
+                const onclick = opt.getAttribute('onclick');
+                const match = onclick?.includes(build.interior);
+                console.log("Bug Checking interior option:", onclick, "match:", match);
+                return match;
+            });
+            
+            if (interiorOption) {
+                console.log("Bug Found interior element for:", build.interior);
+                selectInteriorOption110(interiorOption, build.interior);
+            } else {
+                console.warn("Interior option NOT found for:", build.interior);
+            }
 
         // Headlining
-        const headliningOption = [...document.querySelectorAll('.headlining-option')]
-            .find(opt => opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase()));
-        if (headliningOption) {
-            headliningOption.click();
-        } else {
-            console.warn("Headlining not found:", build.headlining);
-        }
+        console.log("Bug Applying headlining:", build.headlining);
+    const headliningOption = [...document.querySelectorAll('.headlining-option')]
+        .find(opt => {
+            const match = opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase());
+            console.log("Bug Checking headlining option:", opt.textContent, "match:", match);
+            return match;
+        });
+
+    if (headliningOption) {
+        console.log("Bug Found headlining:", build.headlining);
+        headliningOption.click();
+    } else {
+        console.warn("Headlining option NOT found:", build.headlining);
+    }
 
         updateMappedImages110();
         updateInteriorImage110();
@@ -333,11 +349,13 @@ function prevSlide110() {
     updateSlider110();
 }
 
+
 let selectedColor = 'Borasco Grey';
 let selectedFinish = 'Gloss Finish';
 function selectColor110(el, colorName) {
-    selectedColor = colorName;
 
+    selectedColor = colorName;
+console.log("Bug Color selected via function:", colorName, el);
    
     document.querySelectorAll(".color-circle div").forEach(dot => {
         dot.classList.remove("border-black");
@@ -491,7 +509,9 @@ if (defaultBrake) {
     updateConfig110('brake', selectedBrakeCalipers, defaultBrake);
 }
 });
+
 function selectInteriorOption110(el, value) {
+    console.log("Bug selectInteriorOption110 called with:", value, el);
     document.querySelectorAll('.interior-option').forEach(option => {
         option.classList.remove('border-black');
         option.classList.add('border-gray-300');
@@ -501,8 +521,8 @@ function selectInteriorOption110(el, value) {
     el.classList.add('border-black');
 
     selectedInterior = value; // <-- store current selection globally
-    console.log("selectedInterior: ",selectedInterior)
-    console.log("Interior selected:", value);
+    console.log("Bug selectedInterior: ",selectedInterior)
+    console.log("Bug Interior selected:", value);
     updateInteriorImage110();
     resetSaveState110();
 }
@@ -621,7 +641,7 @@ function goToSlide110(index) {
         console.warn(`Invalid slide index: ${index}`);
     }
 }
- 
+
 window.addEventListener("DOMContentLoaded", () => {
     // 1. Apply default selections
     if (!isBuildApplied) {
