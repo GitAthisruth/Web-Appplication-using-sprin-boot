@@ -70,77 +70,86 @@ try {
 
 
 function renderBuilds110(builds) {
-const container = document.getElementById('builds-list');
-container.innerHTML = '';
+    const container = document.getElementById('builds-list');
+    container.innerHTML = '';
 
-builds.forEach((build, index) => {
-    const card = document.createElement('div');
-    card.className = 'p-4 border border-gray-300 rounded-lg shadow hover:shadow-md transition bg-white relative';
+    builds.forEach((build, index) => {
+        const card = document.createElement('div');
+        card.className = 'p-4 border border-gray-300 rounded-lg shadow hover:shadow-md transition bg-white relative';
 
-    card.innerHTML = `
-        <button class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-lg font-bold delete-btn" title="Delete Build">&times;</button>
-        <h4 class="text-sm font-bold mb-2 cursor-pointer">Build ${index + 1}</h4>
-        <ul class="text-xs text-gray-700 leading-tight space-y-1 cursor-pointer">
-            <li><strong>Model:</strong> ${build.model}</li>
-            <li><strong>Color:</strong> ${build.color}</li>
-            <li><strong>Finish:</strong> ${build.finish}</li>
-            <li><strong>Wheel:</strong> ${build.wheel}</li>
-            <li><strong>Trim:</strong> ${build.trim}</li>
-            <li><strong>Interior:</strong> ${build.interior}</li>
-            <li><strong>Headlining:</strong> ${build.headlining}</li>
-            <li><strong>Brake Calipers:</strong> ${build.brakeCalipers || 'N/A'}</li>
-        </ul>
-    `;
+        card.innerHTML = `
+            <button class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-lg font-bold delete-btn" title="Delete Build">&times;</button>
+            <h4 class="text-sm font-bold mb-2 cursor-pointer">Build ${index + 1}</h4>
+            <ul class="text-xs text-gray-700 leading-tight space-y-1 cursor-pointer">
+                <li><strong>Model:</strong> ${build.model}</li>
+                <li><strong>Color:</strong> ${build.color}</li>
+                <li><strong>Finish:</strong> ${build.finish}</li>
+                <li><strong>Wheel:</strong> ${build.wheel}</li>
+                <li><strong>Trim:</strong> ${build.trim}</li>
+                <li><strong>Interior:</strong> ${build.interior}</li>
+                <li><strong>Headlining:</strong> ${build.headlining}</li>
+                <li><strong>Brake Calipers:</strong> ${build.brakeCalipers || 'N/A'}</li>
+            </ul>
+        `;
 
-    const handleBuildClick = () => {
-localStorage.setItem('selectedBuild', JSON.stringify(build));
-toggleBuildsModal110(); // close modal
-applyBuild110(build);   // apply immediately without reload
-};
+        // Apply the build without reload
+        const handleBuildClick = () => {
+            localStorage.setItem('selectedBuild', JSON.stringify(build));
+            toggleBuildsModal110();
+            applyBuild110(build);
+        };
 
-card.querySelector('h4').addEventListener('click', handleBuildClick);
-card.querySelector('ul').addEventListener('click', handleBuildClick);
+        // Clicking heading applies without reload
+        card.querySelector('h4').addEventListener('click', handleBuildClick);
 
-    card.querySelector('ul').addEventListener('click', () => {
-        localStorage.setItem('selectedBuild', JSON.stringify(build));
-        window.location.href = "/build_your_own";
-    });
+        card.querySelector('ul').addEventListener('click', () => {
+            localStorage.setItem('selectedBuild', JSON.stringify(build));
+        
+            const model = build.model
+            console.log("defender 110", model)
+            let targetUrl = "/build_your_own"; // default fallback
+        
+            if (model === "Defender 90") targetUrl = "/build_defender_90";
+            else if (model === "Defender 110") targetUrl = "/build_defender_110";
+            else if (model === "Defender 130") targetUrl = "/build_defender_130";
+        
+            window.location.href = targetUrl;
+        });
 
-    // Delete button
-    const deleteBtn = card.querySelector('.delete-btn');
-    deleteBtn.addEventListener('click', async (e) => {
-        e.stopPropagation(); // prevent card click
+        // Delete logic
+        const deleteBtn = card.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (!confirm("Are you sure you want to delete this build?")) return;
 
-        if (!confirm("Are you sure you want to delete this build?")) return;
+            try {
+                const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
 
-        try {
-            const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-            const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+                const response = await fetch('/test/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify(build)
+                });
 
-            const response = await fetch('/test/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeader]: csrfToken
-                },
-                body: JSON.stringify(build)
-            });
-
-            if (response.ok) {
-                console.log("Build deleted successfully");
-                // Re-fetch builds after delete
-                fetchSavedBuilds();
-            } else {
-                console.error("Failed to delete build");
+                if (response.ok) {
+                    console.log("Build deleted successfully");
+                    fetchSavedBuilds110();
+                } else {
+                    console.error("Failed to delete build");
+                }
+            } catch (err) {
+                console.error("Error deleting build:", err);
             }
-        } catch (err) {
-            console.error("Error deleting build:", err);
-        }
-    });
+        });
 
-    container.appendChild(card);
-});
+        container.appendChild(card);
+    });
 }
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -148,7 +157,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             const build = JSON.parse(saved);
-            applyBuild110(build); // This function should apply the customizations
+            if (build.model === "Defender 110") {
+                applyBuild110(build);
+            } // This function should apply the customizations
             localStorage.removeItem('selectedBuild');
         } catch (e) {
             console.error("Invalid build format from storage", e);
@@ -182,8 +193,11 @@ function toggleBuildsModal110() {
 
 function applyBuild110(build) {
     // Apply color
-    const colorEl = document.querySelector(`[title="${build.color}"]`);
-    if (colorEl) selectColor110(colorEl, build.color);
+    const colorEl = [...document.querySelectorAll('[title]')]
+    .find(el => el.getAttribute('title').toLowerCase() === build.color.toLowerCase());
+if (colorEl) selectColor110(colorEl, build.color);
+else console.warn("No matching color found for:", build.color);
+
 
     // Apply finish
     const finishBtn = [...document.querySelectorAll('.finish-btn')]
@@ -212,16 +226,22 @@ if (wheelEl) {
     }
 
     // Apply trim
+    console.log("Applying trim:", build.trim);
     selectTrim110(build.trim);
 
     // Apply interior and headlining after short delay
     setTimeout(() => {
-        const interiorOption = document.querySelector(`[onclick*="${build.interior}"]`);
-        if (interiorOption) selectInteriorOption110(interiorOption, build.interior);
+        const interiorOption = [...document.querySelectorAll('[onclick]')]
+    .find(opt => opt.getAttribute('onclick')?.toLowerCase().includes(build.interior.toLowerCase()));
+if (interiorOption) selectInteriorOption90(interiorOption, build.interior);
+else console.warn("No matching interior for:", build.interior);
 
-        const headliningOption = [...document.querySelectorAll('.headlining-option')]
-            .find(opt => opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase()));
-        if (headliningOption) headliningOption.click();
+
+const headliningOption = [...document.querySelectorAll('.headlining-option')]
+.find(opt => opt.textContent.toLowerCase().includes(build.headlining.replace(/_/g, ' ').toLowerCase()));
+if (headliningOption) headliningOption.click();
+else console.warn("No matching headlining for:", build.headlining);
+
 
         updateInteriorImage110();
     }, 50);
@@ -452,6 +472,7 @@ if (defaultBrake) {
     updateConfig110('brake', selectedBrakeCalipers, defaultBrake);
 }
 });
+
 function selectInteriorOption110(el, value) {
     document.querySelectorAll('.interior-option').forEach(option => {
         option.classList.remove('border-black');

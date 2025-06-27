@@ -272,12 +272,12 @@ function changeModel(button, imageFileName, modelName) {
 }
 
 // Optional: Set default selection on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const defaultButton = document.querySelector('.model-button');
-    if (defaultButton) {
-        defaultButton.click();
-    }
-});
+// window.addEventListener('DOMContentLoaded', () => {
+//     const defaultButton = document.querySelector('.model-button');
+//     if (defaultButton) {
+//         defaultButton.click();
+//     }
+// });
 
 
 

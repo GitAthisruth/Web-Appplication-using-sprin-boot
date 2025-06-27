@@ -93,18 +93,26 @@ builds.forEach((build, index) => {
     `;
 
     const handleBuildClick = () => {
-localStorage.setItem('selectedBuild', JSON.stringify(build));
-toggleBuildsModal(); // close modal
-applyBuild(build);   // apply immediately without reload
-};
-
-card.querySelector('h4').addEventListener('click', handleBuildClick);
-card.querySelector('ul').addEventListener('click', handleBuildClick);
-
-    card.querySelector('ul').addEventListener('click', () => {
         localStorage.setItem('selectedBuild', JSON.stringify(build));
-        window.location.href = "/build_your_own";
-    });
+        toggleBuildsModal(); // close modal
+        applyBuild(build);   // apply immediately without reload
+        };
+        
+        card.querySelector('h4').addEventListener('click', handleBuildClick);
+        card.querySelector('ul').addEventListener('click', () => {
+            localStorage.setItem('selectedBuild', JSON.stringify(build));
+        
+            // Redirect based on model
+            const model = build.model
+            console.log("defender OCTA", model)
+            let targetUrl = "/build_your_own"; // default fallback
+        
+            if (model === "Defender 90") targetUrl = "/build_defender_90";
+            else if (model === "Defender 110") targetUrl = "/build_defender_110";
+            else if (model === "Defender 130") targetUrl = "/build_defender_130";
+        
+            window.location.href = targetUrl;
+        });
 
     // Delete button
     const deleteBtn = card.querySelector('.delete-btn');
@@ -618,7 +626,7 @@ if (defaultButton) {
         exterior: 0,
         wheels: 0,
         interior: 0,
-        handling: 0,
+        headlining: 0,
         headlining: 0
     };
 
@@ -641,8 +649,8 @@ if (defaultButton) {
             goToSlide(0);
             currentSlideIndex = 0;
         } else if (
-            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.handling > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
-            (visibilityMap.interior > 0.1 || visibilityMap.handling > 0.1 || visibilityMap.headlining > 0.1) &&
+            (visibilityMap.interior > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels || visibilityMap.headlining > visibilityMap.wheels) &&
+            (visibilityMap.interior > 0.1 || visibilityMap.headlining > 0.1 || visibilityMap.headlining > 0.1) &&
             currentSlideIndex !== 5
         ) {
             goToSlide(5);

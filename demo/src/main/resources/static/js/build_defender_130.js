@@ -99,12 +99,19 @@ applyBuild130(build);   // apply immediately without reload
 };
 
 card.querySelector('h4').addEventListener('click', handleBuildClick);
-card.querySelector('ul').addEventListener('click', handleBuildClick);
+card.querySelector('ul').addEventListener('click', () => {
+    localStorage.setItem('selectedBuild', JSON.stringify(build));
 
-    card.querySelector('ul').addEventListener('click', () => {
-        localStorage.setItem('selectedBuild', JSON.stringify(build));
-        window.location.href = "/build_your_own";
-    });
+    const model = build.model
+    console.log("defender 130", model)
+    let targetUrl = "/build_your_own"; // default fallback
+
+    if (model === "Defender 90") targetUrl = "/build_defender_90";
+    else if (model === "Defender 110") targetUrl = "/build_defender_110";
+    else if (model === "Defender 130") targetUrl = "/build_defender_130";
+
+    window.location.href = targetUrl;
+});
 
     // Delete button
     const deleteBtn = card.querySelector('.delete-btn');
@@ -148,7 +155,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             const build = JSON.parse(saved);
-            applyBuild130(build); // This function should apply the customizations
+            if (build.model === "Defender 130") {
+                applyBuild130(build);
+            } // This function should apply the customizations
             localStorage.removeItem('selectedBuild');
         } catch (e) {
             console.error("Invalid build format from storage", e);
