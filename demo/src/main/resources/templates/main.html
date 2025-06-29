@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>Defender</title>
 
     <!-- Google Fonts -->
@@ -56,19 +58,6 @@
                 <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
                 <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
-
-                <!-- Modal Window for Saved Builds -->
-                <div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
-                  <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
-                      <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
-                      <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
-                      <button onclick="toggleBuildsModal()"
-                              class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
-                          ✕
-                      </button>
-                  </div>
-                </div>
-      
                 <!-- Logout Button -->
                 <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -118,7 +107,18 @@
       </div>
     </div>
   </main>
-  
+   <!-- Modal Window for Saved Builds -->
+   <div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+        <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+        <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+        <button onclick="toggleBuildsModal()"
+                class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+            ✕
+        </button>
+    </div>
+  </div>
+
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">CHANGE MARKET</a> |
