@@ -17,6 +17,8 @@
     <script th:src="@{/js/dropdown.js}"></script>
     <script th:src="@{/js/configurator.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/build_your_own.js}"></script>
+
 <style>
     .model-option {
         font-weight: 600;
@@ -84,7 +86,10 @@
           <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
           <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
           <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+          <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+
+         
+
 
           <!-- Logout Button -->
           <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
@@ -116,7 +121,17 @@
         </nav>
     </div>
 </section>
-
+ <!-- Modal Window for Saved Builds -->
+ <div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+      <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+      <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+      <button onclick="toggleBuildsModal()"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+          ✕
+      </button>
+  </div>
+</div>
 <section class="w-full bg-[#0a0a0a] py-10 px-4 md:px-10 lg:px-20 text-white">
     <div class="w-full max-w-screen-2xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
       <h3 class="text-2xl md:text-4xl font-semibold text-center leading-snug tracking-wide">

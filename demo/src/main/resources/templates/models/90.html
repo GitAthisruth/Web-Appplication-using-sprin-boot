@@ -17,6 +17,8 @@
     <script th:src="@{/js/dropdown.js}"></script>
     <script th:src="@{/js/configurator.js}"></script>
     <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/build_your_own.js}"></script>
+
     <style>
     .slider-section-90 {
     padding: 0;
@@ -129,8 +131,8 @@
 
   <!-- Centered "Defender" Text -->
   <h1 class="text-white font-bold uppercase tracking-tight text-[1.125rem] md:text-[1.375rem] leading-none mt-[-2px]" style="font-family: 'Orbitron', sans-serif;">
-    DEFENDER
-  </h1>
+      DEFENDER
+    </h1>
 
   <!-- Logo (top-right) -->
   <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
@@ -150,7 +152,9 @@
           <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
           <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
           <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
-          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+          <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+
+
 
           <!-- Logout Button -->
           <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
@@ -186,6 +190,17 @@
         </nav>
     </div>
 </section>
+<!-- Modal Window for Saved Builds -->
+<div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+      <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+      <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+      <button onclick="toggleBuildsModal()"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+          ✕
+      </button>
+  </div>
+</div>
 
 <section id="start" class="slider-section-90 mt-10">
   <div class="slider-container-90">
@@ -711,17 +726,6 @@ document.addEventListener('DOMContentLoaded', () => {
   showSlide90(currentSlide90);
   updateImages90();
 });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const menuButton = document.getElementById("menu-button");
-    const menuDropdown = document.getElementById("menu-dropdown");
-
-    menuButton.addEventListener("click", () => {
-      menuDropdown.classList.toggle("hidden");
-    });
-  });
-
-
 </script>
 
 </html>

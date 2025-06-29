@@ -62,7 +62,7 @@
                 <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
                 <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+                <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
       
                 <!-- Logout Button -->
                 <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
