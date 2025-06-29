@@ -733,8 +733,8 @@ const imageMap = {
         'Borasco Grey': {
             'Gloss Finish': {
                 'Wheel1': {
-                   'slide1': `/images/octa/build/130_front_1.jpg`,
-                    'slide2': `/images/octa/build/130_side_1.png`,
+                   'slide1': `/images/130/defender_130_1.jpeg`,
+                    'slide2': `/images/130/defender_130_2.jpeg`,
                     'slide3': `/images/octa/build/130_back_1.jpg`,
                     'slide4': `/images/octa/build/octa_top_blue_1.jpg`
                 },
