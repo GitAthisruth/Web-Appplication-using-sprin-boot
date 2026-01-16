@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>Defender 110</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/configurator.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/build_your_own.js}"></script>
+
+<style>
+    .model-option {
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      
+      .selected-model {
+        background-color: white;
+        color: black;
+      }
+      
+      html {
+        scroll-behavior: smooth; /* for smooth scrolling */
+      }
+
+      .model-section {
+    display: none;
+  }
+  .model-section.active {
+    display: block;
+  }
+  .model-option.selected-model {
+    background-color: white;
+    color: black;
+  }
+</style>
+    
+</head>
+
+<body class="defender-body bg-black text-white font-sans" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <div class="back-button-container absolute top-[75px] left-6 z-50">
+        <a href="javascript:history.back()" aria-label="Back"
+           class="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white hover:text-black transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
+
+<!-- Header -->
+<header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-center">
+
+  <!-- Centered "Defender" Text -->
+  <h1 class="text-white font-bold uppercase tracking-tight text-[1.125rem] md:text-[1.375rem] leading-none mt-[-2px]" style="font-family: 'Orbitron', sans-serif;">
+    DEFENDER
+  </h1>
+
+  <!-- Logo (top-right) -->
+  <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+      <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+  </div>
+
+  <!-- Right Menu Button -->
+  <div class="absolute top-1/2 left-10 transform -translate-y-1/2 z-10">
+      <button id="menu-button"
+              class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+          Menu
+      </button>
+
+      <!-- Menu Dropdown -->
+      <div id="menu-dropdown"
+           class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+          <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+          <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
+          <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+
+         
+
+
+          <!-- Logout Button -->
+          <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <button type="submit"
+                      class="w-full text-left text-sm text-red-400 hover:bg-gray-700">
+                  Logout
+              </button>
+          </form>
+      </div>
+  </div>
+</header>
+<!-- Hero Section -->
+<section class="relative h-[90vh] bg-cover bg-center" th:style="'background-image: url(' + @{/images/110/110_1.webp} + ')'">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+        <h1 class="text-5xl font-bold">DEFENDER 110</h1>
+        <p class="mt-4 text-xl max-w-2xl">LOAD UP, GO ANYWHERE.</p>
+        <a th:href="@{/build_defender_110}" class="mt-6 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+            BUILD YOUR OWN
+        </a>
+        <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
+            <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
+                <a href="#capability" class="hover:text-gray-300">CAPABILITY</a>
+                <a href="#desigh" class="hover:text-gray-300">DESIGN</a>
+                <a href="#technology" class="hover:text-gray-300">TECHNOLOGY</a>
+                <a href="#performance" class="hover:text-gray-300">PERFORMANCE</a>
+                <a href="#models" class="hover:text-gray-300">MODELS</a>
+            </div>
+        </nav>
+    </div>
+</section>
+ <!-- Modal Window for Saved Builds -->
+ <div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+      <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+      <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+      <button onclick="toggleBuildsModal()"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+          ✕
+      </button>
+  </div>
+</div>
+<section class="w-full bg-[#0a0a0a] py-10 px-4 md:px-10 lg:px-20 text-white">
+    <div class="w-full max-w-screen-2xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
+      <h3 class="text-2xl md:text-4xl font-semibold text-center leading-snug tracking-wide">
+        Load up. Go anywhere. Share the adventure with space for up to seven.
+      </h3>
+    </div>
+  </section>
+
+  
+<!-- DESIGN SECTION -->
+<section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">SERIOUSLY CAPABLE</h3>
+    </div>
+  
+    <div class="text-center mt-16">
+        <!-- Image -->
+        <div class="relative max-w-6xl mx-auto">
+          <div class="overflow-hidden rounded-lg">
+            <img
+              id="designImage2"
+              src="/images/octa/performance_0.webp"
+              alt="Design Detail"
+              class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+            />
+          </div>
+      
+          <!-- Dot Navigation -->
+          <div class="flex justify-center mt-6 space-x-4">
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-100" onclick="setDesignDetailSlide(0)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(1)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(2)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(3)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(4)"></button>
+            <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignDetailSlide(5)"></button>
+          </div>
+        </div>
+      
+        <!-- Title + Description with consistent space -->
+        <div class="mt-10 max-w-3xl mx-auto min-h-[180px]">
+          <h3 id="designDetailTitle" class="text-3xl font-semibold mb-4">
+            UNSTOPPABLE. ANYWHERE.
+          </h3>
+          <p id="designDetailDesc" class="text-lg">
+            Go from road, to mud, to snow, to anywhere. Terrain Response 2 automatically adjusts Defender’s settings for optimum power and traction. Adaptive Off-Road Cruise Control keeps the pace on any surface.
+          </p>
+        </div>
+      </div>
+      
+  </div>
+</section>
+
+<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">TOUGH. INSIDE AND OUT.</h3>
+  
+      <!-- Toggle Buttons -->
+      <div class="flex justify-center space-x-4 mt-6">
+        <button id="exteriorBtn" class="px-4 py-2 bg-white text-black rounded-md font-semibold" onclick="switchSlideType('exterior')">
+          Exterior
+        </button>
+        <button id="interiorBtn" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold" onclick="switchSlideType('interior')">
+          Interior
+        </button>
+      </div>
+    </div>
+  
+    <div class="text-center mt-16">
+      <!-- Image with arrows only -->
+      <div class="relative max-w-6xl mx-auto">
+        <div class="overflow-hidden rounded-lg relative">
+          <!-- Prev Arrow -->
+          <button
+            onclick="prevCapabilitySlide()"
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white text-black px-3 py-2 rounded-full z-10 hover:bg-gray-300"
+          >
+            ‹
+          </button>
+  
+          <!-- Image -->
+          <img
+            id="designImage2cap"
+            src=""
+            alt="Design Detail"
+            class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+          />
+  
+          <!-- Next Arrow -->
+          <button
+            onclick="nextCapabilitySlide()"
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black px-3 py-2 rounded-full z-10 hover:bg-gray-300"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+  
+      <!-- Title + Description -->
+      <div class="mt-10 max-w-3xl mx-auto min-h-[180px]">
+        <h3 id="designDetailTitlecap" class="text-3xl font-semibold mb-4"></h3>
+        <p id="designDetailDesccap" class="text-lg"></p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="technology" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">PROTECTED. CONNECTED.</h3>
+    </div>
+  
+    <!-- Image -->
+    <div class="relative max-w-6xl mx-auto mb-10">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="techImage"
+          src="/images/octa/tech_secure.webp"
+          alt="Technology Feature"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- Options -->
+    <div class="max-w-5xl mx-auto text-center mb-10 flex flex-wrap justify-center gap-4">
+      <button onclick="setTechSlide(0)" id="techBtn0" class="px-4 py-2 bg-white text-black rounded-md font-semibold">SECURE</button>
+      <button onclick="setTechSlide(1)" id="techBtn1" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">INTUITIVE</button>
+      <button onclick="setTechSlide(2)" id="techBtn2" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">INFORMED</button>
+      <button onclick="setTechSlide(3)" id="techBtn3" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">IMMERSED</button>
+      <button onclick="setTechSlide(4)" id="techBtn4" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">FOCUSED</button>
+    </div>
+  
+    <!-- Title + Description -->
+    <div class="text-center max-w-3xl mx-auto min-h-[180px]">
+      <h3 id="techTitle" class="text-2xl font-semibold mb-4">SECURE</h3>
+      <p id="techDesc" class="text-lg">
+        Peace of mind in your pocket. With Guardian Mode, Defender’s InControl App will alert you and our Vehicle Tracking Centre to any unauthorised interactions. You can also track and control your vehicle from anywhere.6
+      </p>
+    </div>
+  </section>
+
+  <section id="performance" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header + Option Buttons -->
+    <div class="max-w-4xl mx-auto text-center mb-8">
+      <h3 class="text-4xl font-bold mb-4">PERFORMANCE</h3>
+  
+      <!-- Performance Options -->
+      <div class="flex justify-center flex-wrap gap-4 mt-6">
+        <button onclick="setPerformanceSlide(0)" id="perfBtn0" class="px-4 py-2 bg-white text-black rounded-md font-semibold">ELECTRIC HYBRID</button>
+        <button onclick="setPerformanceSlide(1)" id="perfBtn1" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">OCTA</button>
+        <button onclick="setPerformanceSlide(2)" id="perfBtn2" class="px-4 py-2 bg-gray-700 text-white rounded-md font-semibold">V8</button>
+      </div>
+    </div>
+  
+    <!-- Image -->
+    <div class="relative max-w-6xl mx-auto mb-10">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="perfImage"
+          src="/images/octa/perf_hybrid.webp"
+          alt="Performance Image"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+
+<div class="text-center max-w-6xl mx-auto flex flex-col md:flex-row gap-10 min-h-[220px] px-4">
+  <!-- Left: Specs -->
+  <div id="perfSpecs" class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+    <!-- Injected via JS -->
+  </div>
+
+  <!-- Right: Description -->
+  <div class="flex-1 text-left">
+    <h3 id="perfTitle" class="text-2xl font-semibold mb-4">DEFENDER 110 ELECTRIC HYBRID</h3>
+    <p id="perfDesc" class="text-lg">
+      Refuse to compromise.<br />300 PS engine detailed.
+    </p>
+  </div>
+</div>
+<!-- Highlighted OCTA Section -->
+<div class="mt-20 text-center">
+    <h2 class="text-4xl md:text-5xl font-bold mb-10">THE MASTER OF EXTREME PERFORMANCE</h2>
+  
+    <!-- Image -->
+    <div class="max-w-6xl mx-auto overflow-hidden rounded-lg mb-8">
+      <img
+        src="/images/octa/octa_master.webp"
+        alt="Defender OCTA"
+        class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+      />
+    </div>
+  
+    <!-- Title + Description -->
+    <div class="max-w-3xl mx-auto text-center mb-6">
+      <h3 class="text-3xl font-semibold mb-4">DEFENDER OCTA</h3>
+      <p class="text-lg">
+        An unstoppable force on any terrain with a 635PS V8 engine, cutting-edge air suspension and enhanced one meter wading depth. This is the most powerful Defender ever made.
+      </p>
+    </div>
+  
+    <!-- CTA Link -->
+    <a href="/models/octa" class="inline-block mt-4 px-6 py-3 bg-white text-black text-lg font-semibold rounded-md hover:bg-gray-200 transition">
+      EXPLORE DEFENDER OCTA
+    </a>
+  </div>
+  
+  </section>
+
+  
+  
+
+  <section id="build-order-selector">
+    <h2 class="section-title">BUILD AND ORDER</h2>
+    <p>Choose from our distinct models to begin your journey</p>
+  
+    <div class="model-selectors mb-6 flex gap-4 justify-center">
+      <div class="model-option selected-model cursor-pointer px-6 py-3 rounded-lg border border-white text-white bg-[#222]" onclick="toggleModel('110')">
+        DEFENDER 110
+      </div>
+      <div class="model-option cursor-pointer px-6 py-3 rounded-lg border border-white text-white hover:bg-white hover:text-black transition" onclick="toggleModel('octa')">
+        DEFENDER OCTA
+      </div>
+    </div>
+  </section>
+  
+  <!-- Defender 110 Section -->
+  <section id="models-110" class="model-section active">
+    <div class="configurator">
+      <!-- Left: Image Slider -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider-110">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-1" src="/images/110/grey/110_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-2" src="/images/110/grey/110_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-110-3" src="/images/110/grey/110_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide110()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide110()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior-110" src="/images/110/interior/interior_black.avif" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels-110" src="/images/110/grey/110_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Configurator Options -->
+    <div class="configurator-options">
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab110('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab110('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab110('wheels')">Wheels</span>
+      </div>
+  
+      <div class="tab-content active" id="tab-exterior-110">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateExterior110('Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateExterior110('Santorini Black Metallic')"></div>
+        </div>
+        <p id="exterior-name-110">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <div class="tab-content" id="tab-interior-110">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateInterior110('Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateInterior110('Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name-110">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <div class="tab-content" id="tab-wheels-110">
+        <div class="palette-row">
+          <img src="/images/110/wheels/wheel_1.png" alt="48.26 cm (19) Style 6010 wheels" class="wheel-thumb" onclick="updateWheels110('wheel_1')">
+          <img src="/images/110/wheels/wheel_2.png" alt="48.26 cm (19) Style 6010, Gloss Black wheels" class="wheel-thumb" onclick="updateWheels110('wheel_2')">
+        </div>
+        <p id="wheels-name-110">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Defender OCTA Section -->
+  <section id="models-octa"  class="model-section">  
+    <div class="configurator">
+      <!-- Left + Right Image Columns -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-1" src="/images/130/grey/defender130_grey_side.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-2" src="/images/130/grey/defender130_grey_front.jpg" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-3" src="/images/130/grey/defender130_grey_back.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior" src="/images/130/interior/interior_black.jpg" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels" src="/images/130/grey/defender130_grey_side.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Column: Options -->
+    <div class="configurator-options">
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab('wheels')">Wheels</span>
+      </div>
+  
+      <!-- Exterior Options -->
+      <div class="tab-content active" id="tab-exterior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateConfig('exterior', 'Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateConfig('exterior', 'Santorini Black Metallic')"></div>
+          <div class="box-swatch" style="background-color:#7B7B7B" onclick="updateConfig('exterior', 'Borasco Grey Metallic')"></div>
+          <div class="box-swatch" style="background-color:#8B6F4E" onclick="updateConfig('exterior', 'Gondwana Stone Metallic')"></div>
+          <div class="box-swatch" style="background-color:#912F27" onclick="updateConfig('exterior', 'Sedona Red Metallic')"></div>
+          <div class="box-swatch" style="background-color:#4D6952" onclick="updateConfig('exterior', 'Woolstone Green Metallic')"></div>
+        </div>
+        <p id="exterior-name">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <!-- Interior Options -->
+      <div class="tab-content" id="tab-interior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateConfig('interior', 'Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#3a3a3a" onclick="updateConfig('interior', 'Ebony Resist seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateConfig('interior', 'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+          <div class="box-swatch" style="background-color:#a67c52" onclick="updateConfig('interior', 'Caraway Windsor leather seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#e5e5e5" onclick="updateConfig('interior', 'Light Cloud perforated Windsor leather seats with Light Cloud interior')"></div>
+          <div class="box-swatch" style="background-color:#2f2f2f" onclick="updateConfig('interior', 'Ebony Windsor leather and Kvadrat™ seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#6b4e31" onclick="updateConfig('interior', 'Caraway/Ebony Windsor leather and Kvadrat™ seats with Caraway/Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#f0f0f0" onclick="updateConfig('interior', 'Light Cloud/Lunar Ultrafabrics™ seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <!-- Wheels Options -->
+      <div class="tab-content" id="tab-wheels">
+        <div class="palette-row">
+          <img src="/images/130/wheels/wheel_1.png" alt="Alloy 1" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010 wheels')">
+          <img src="/images/130/wheels/wheel_2.png" alt="Alloy 2" class="wheel-thumb" onclick="updateConfig('wheels', '48.26 cm (19) Style 6010, Gloss Black wheels')">
+          <img src="/images/130/wheels/wheel_3.png" alt="Alloy 3" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5094, Satin Dark Grey wheels')">
+          <img src="/images/130/wheels/wheel_4.png" alt="Alloy 4" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5095, Diamond Turned wheels with Gloss Dark Grey contrast')">
+          <img src="/images/130/wheels/wheel_5.png" alt="Alloy 5" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098 wheels')">
+          <img src="/images/130/wheels/wheel_6.png" alt="Alloy 6" class="wheel-thumb" onclick="updateConfig('wheels', '50.80 cm (20) Style 5098, Satin Dark Grey wheels')">
+        </div>
+        <p id="wheels-name">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
+  
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="#">CHANGE MARKET</a> |
+            <a href="#">TERMS & CONDITIONS</a> |
+            <a href="#">CONTACT US</a> |
+            <a href="#">COOKIES & PRIVACY</a>
+        </div>
+
+        <p class="legal-note">© JAGUAR LAND ROVER LIMITED 2025</p>
+
+        <p class="legal-description">
+            Jaguar Land Rover Limited: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
+        </p>
+
+        <p class="legal-description">
+            Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
+        </p>
+
+        <p class="legal-description">
+            Smart Settings is intended to be released as part of a future wireless software update. Software development and releases are subject to movements in planning and programming, and dates may be subject to change.
+        </p>
+
+        <p class="legal-description">
+            There is currently a global shortage of semi-conductor components. Jaguar Land Rover India Limited (JLRIL) is affected by this shortage and as a result, certain Jaguar and Land Rover products may not be available and delivery timelines for some products may be extended by authorised Jaguar Land Rover Retailers. Please contact your authorised Jaguar Land Rover Retailer for further updates.
+        </p>
+
+        <p class="legal-description">
+            Accessories/features shown may not be part of standard equipment. iPod is a registered trademark of Apple Inc., registered in the US and other countries. Meridian is a registered trademark of Meridian Audio Ltd. Please note not all features set out above are available as standard for all Land Rover models. Some features are available as a cost option only. Please refer to the Owners Handbook for Navigation Terms and Conditions. The Information and specification shown are not binding and are subject to change without prior notice. These are indicative specifications for reference only.
+        </p>
+
+        <p class="legal-description">
+            The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. A vehicle's actual fuel consumption may differ from that achieved in such tests and these figures are for comparative purposes only.
+        </p>
+
+        <p class="legal-description">
+            From 30 September 2019 Spotify will no longer be supporting the InControl Apps access. As the dominant preferred access by customers it will be available to customers via Smartphone Pack where installed.
+        </p>
+
+        <p class="legal-description">
+            Important note on imagery & specification. The global shortage of semiconductors is currently affecting vehicle build specifications, option availability, and build timings. This is a very dynamic situation, and as a result imagery used within the website at present may not fully reflect current specifications for features, options, trim and colour schemes. Please consult your authorised Retailer who will be able to confirm any current restrictions with you in order to allow an informed choice.
+        </p>
+
+        <p class="legal-description">
+            Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local retailer for local availability and prices.
+        </p>
+
+        <p class="legal-description">
+            <strong>COLOURS:</strong> Image colours reproduced here are provided for illustrative purposes only. Colours are reproduced on-screen and may therefore vary compared to the actual finish. The company reserves the right to alter or withdraw any colour finish without notice. Some of these colours may not be obtainable in your country. Please check availability of colours and current specifications with your Jaguar Retailer. Distributors and Retailers are not agents of Jaguar Land Rover Limited and have absolutely no authority to bind Jaguar Land Rover Limited to any express or implied undertaking or representation.
+        </p>
+
+        <p class="legal-description">
+            The mapping on this website is provided by external mapping providers and is for general information purposes only.
+        </p>
+
+        <p class="legal-description">
+            *The prices mentioned are ex-showroom and are subject to change without notice. The ex-showroom price does not include any optional items (such as accessories and other specialised items), which are at your discretion. The ex-showroom price is inclusive of GST (including compensation cess) and road service assistance (for breakdowns only) but excludes Vehicle Registration Tax, Tax Collected at Source (TCS) and Insurance Premium. For your information, the sale transaction will be directly between yourself and an independent Jaguar Land Rover India Limited (“JLRIL”) authorised retailer. Accessories/features/colours and other equipment shown may not be available on vehicles sold in India. Please contact your local Authorised Retailer for any information including the availability of vehicles, features, options, pricing etc. Jaguar Land Rover India Limited (“JLRIL”) is not involved in the sale transaction or the Assured Buy Back offer / campaign. The Assured Buy Back offer / campaign is at the sole discretion of a JLRIL authorised retailer. Please contact your nearest JLRIL authorised retailer for any information.
+        </p>
+    </footer>
+</div>
+
+</body>
+<script>
+    const formSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/performance_1.webp",
+      "/images/octa/performance_2.webp",
+      "/images/octa/performance_3.webp",
+      "/images/octa/performance_4.webp",
+      "/images/octa/performance_5.webp"
+    ];
+  
+    const slideTitles = [
+      "UNSTOPPABLE. ANYWHERE.",
+      "CONFIDENCE AT EVERY TURN",
+      "LEAVE NOTHING BEHIND",
+      "SPACE UPON SPACE",
+      "WADE INTO ADVENTURE",
+      "MOVE MOUNTAINS"
+    ];
+  
+    const slideDescriptions = [
+      "Go from road, to mud, to snow, to anywhere. Terrain Response 2 automatically adjusts Defender’s settings for optimum power and traction. Adaptive Off-Road Cruise Control keeps the pace on any surface.",
+      "Stay focused on long drives with the Driver Attention Monitor. A camera monitors drowsiness and alerts drivers for peace of mind on longer adventures.",
+      "Pack everything with a loadspace of up to 2 277 litres✦. Even with the bags piled high, the ClearSight rearview mirror1 gives you a full view behind.",
+      "Bring even more, with the 168 kg2 dynamic roof load. Once you’re parked up, the 300 kg2 static load means your adventure can continue overnight with the optional Rooftop Tent.",
+      "Find the optimum entry and exit points3 using the live 360 video feed from Defender’s 3D Surround Camera, while sensors monitor the water’s depth4.",
+      "Haul everything from trailers to horse boxes, up to 3 500 kg — Advanced Tow Assist takes care of the counter steer. Pull through any challenge with the ability to winch up to 4 536 kg.5"
+    ];
+  
+    let formIndex = 0;
+  
+    function setDesignDetailSlide(index) {
+      const img = document.getElementById("designImage2");
+      const dots = document.querySelectorAll(".dot-btn-form");
+      const title = document.getElementById("designDetailTitle");
+      const desc = document.getElementById("designDetailDesc");
+  
+      img.src = formSlides[index];
+      formIndex = index;
+  
+      title.textContent = slideTitles[index];
+      desc.textContent = slideDescriptions[index];
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+    setInterval(() => {
+      formIndex = (formIndex + 1) % formSlides.length;
+      setDesignDetailSlide(formIndex);
+    }, 5000);
+
+
+  const slideData = {
+    exterior: {
+      slides: [
+        "/images/octa/performance_0.webp",
+        "/images/octa/performance_1.webp",
+        "/images/octa/performance_2.webp",
+        "/images/octa/performance_3.webp",
+        "/images/octa/performance_4.webp"
+      ],
+      titles: [
+        "UNSTOPPABLE",
+        "BUILT TO ENDURE",
+        "SURE FOOTED",
+        "DESIGNED WITH PURPOSE",
+        "TESTED TO THE EXTREME"
+      ],
+      descriptions: [
+        "All-Terrain tyres are standard equipment. With an increased side-wall depth, they are less prone to puncture. But the unlikely can still happen, so Defender carries a full-sized spare tyre to ensure you can complete any journey.",
+        "Designed to withstand the most punishing terrain. Defender’s tough suspension systems distribute impact more effectively, helping reduce wear and maintaining stability over rugged surfaces.",
+        "Wheels for any terrain. Available in a range of alloys and finishes from 45.72 cm (18) to 55.88 cm (22)†.",
+        "The broad stance and angular design cut an unmistakable silhouette whilst providing improved stability. The raised sculpted bonnet means the engine can be mounted higher for even greater ground clearance and protection.",
+        "Defender’s unique monocoque chassis and reinforced steel subframe offer a perfect blend of lightweight rigidity and unmatched durability. Undergoing 62 000 tests simulating some of the most extreme conditions, this is the strongest Defender yet."
+      ]
+    },
+    interior: {
+      slides: [
+        "/images/octa/interior_0.webp",
+        "/images/octa/interior_1.webp",
+        "/images/octa/interior_2.webp",
+        "/images/octa/interior_3.webp",
+        "/images/octa/interior_4.webp"
+      ],
+      titles: [
+        "ROOM FOR EVERYONE",
+        "A CUT ABOVE",
+        "MADE TO LAST",
+        "RINSE AND REPEAT",
+        "A NEW LIGHT"
+      ],
+      descriptions: [
+        "Ultimate versatility. Create a seven-seat set-up with an optional third row. Or make space up front with the addition of a jump seat.",
+        "Navigate with confidence and comfort from an unrivalled view of the road.",
+        "A masterful blend of durability and style. Choose from a range of hard-wearing leather and non-leather seats, available in a variety of colourways.",
+        "Defender’s durable rubber mats, loadspace liner and flush door seals simplify clean-up.",
+        "In touch with your surroundings. The Alpine lights pay homage to the original Defender design, while filling the cabin with natural light."
+      ]
+    }
+  };
+
+  let currentSlideType = "exterior";
+  let currentSlideIndex = 0;
+
+  function setCapabilitySlide(index) {
+    const img = document.getElementById("designImage2cap");
+    const title = document.getElementById("designDetailTitlecap");
+    const desc = document.getElementById("designDetailDesccap");
+
+    const current = slideData[currentSlideType];
+
+    if (index < 0) index = current.slides.length - 1;
+    if (index >= current.slides.length) index = 0;
+
+    currentSlideIndex = index;
+
+    img.src = current.slides[index];
+    title.textContent = current.titles[index];
+    desc.textContent = current.descriptions[index];
+  }
+
+  function nextCapabilitySlide() {
+    setCapabilitySlide(currentSlideIndex + 1);
+  }
+
+  function prevCapabilitySlide() {
+    setCapabilitySlide(currentSlideIndex - 1);
+  }
+
+  function switchSlideType(type) {
+    currentSlideType = type;
+    currentSlideIndex = 0;
+    setCapabilitySlide(0);
+
+    // Update toggle button styles
+    document.getElementById("exteriorBtn").classList.toggle("bg-white", type === "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("bg-gray-700", type !== "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("text-black", type === "exterior");
+    document.getElementById("exteriorBtn").classList.toggle("text-white", type !== "exterior");
+
+    document.getElementById("interiorBtn").classList.toggle("bg-white", type === "interior");
+    document.getElementById("interiorBtn").classList.toggle("bg-gray-700", type !== "interior");
+    document.getElementById("interiorBtn").classList.toggle("text-black", type === "interior");
+    document.getElementById("interiorBtn").classList.toggle("text-white", type !== "interior");
+  }
+
+
+  window.onload = () => {
+    switchSlideType("exterior");
+  };
+
+  const techSlides = {
+    images: [
+      "/images/octa/tech_secure.webp",
+      "/images/octa/tech_intuitive.webp",
+      "/images/octa/tech_informed.webp",
+      "/images/octa/tech_immersed.webp",
+      "/images/octa/tech_focused.webp"
+    ],
+    titles: [
+      "SECURE",
+      "INTUITIVE",
+      "INFORMED",
+      "IMMERSED",
+      "FOCUSED"
+    ],
+    descriptions: [
+      "Peace of mind in your pocket. With Guardian Mode, Defender’s InControl App will alert you and our Vehicle Tracking Centre to any unauthorised interactions. You can also track and control your vehicle from anywhere.6",
+      "Control at your fingertips. Complete up to 90% of tasks in just two-taps of the award-winning Pivi Pro6 infotainment system’s 33.27 cm (13.1) Touchscreen.",
+      "Placing vehicle, navigation, and driving information in your eyeline. The 31.24 cm (12.3) Interactive Driver Display and optional Head-up Display keep you informed while you focus on the path ahead.7",
+      "The cinematic soundtrack to your adventure. The Meridian™ system creates powerful, lifelike sound.",
+      "Take a deep breath. CO₂ Management enhances wellbeing and alertness. Nanoe™X technology filters odours and bacteria.8"
+    ]
+  };
+
+  let techCurrentIndex = 0;
+
+  function setTechSlide(index) {
+    const img = document.getElementById("techImage");
+    const title = document.getElementById("techTitle");
+    const desc = document.getElementById("techDesc");
+
+    img.src = techSlides.images[index];
+    title.textContent = techSlides.titles[index];
+    desc.textContent = techSlides.descriptions[index];
+
+    // Button highlighting
+    for (let i = 0; i < techSlides.titles.length; i++) {
+      const btn = document.getElementById(`techBtn${i}`);
+      btn.classList.toggle("bg-white", i === index);
+      btn.classList.toggle("text-black", i === index);
+      btn.classList.toggle("bg-gray-700", i !== index);
+      btn.classList.toggle("text-white", i !== index);
+    }
+
+    techCurrentIndex = index;
+  }
+
+  // Default selection on load
+  window.addEventListener("DOMContentLoaded", () => {
+    setTechSlide(0);
+  });
+
+ 
+  const performanceData = {
+    images: [
+      "/images/octa/perf_hybrid.webp",
+      "/images/octa/perf_octa.webp",
+      "/images/octa/perf_v8.webp"
+    ],
+    titles: [
+      "DEFENDER 110 ELECTRIC HYBRID",
+      "DEFENDER OCTA",
+      "DEFENDER V8"
+    ],
+    descriptions: [
+      "Refuse to compromise.<br />300 PS engine detailed.",
+      "The most powerful Defender ever.<br />P635 engine detailed.",
+      "Embrace real power.<br />P525 engine detailed."
+    ],
+    specs: [
+      [
+        { label: "ELECTRIC RANGE (UP TO)", value: "48 KM" },
+        { label: "0-100 KM/H (FROM)", value: "7.6 SEC" },
+        { label: "PUBLIC CHARGING (FROM)", value: "30 MINUTES ‡" },
+        { label: "TOWING CAPACITY (FROM)", value: "3 000 KG" }
+      ],
+      [
+        { label: "0-100 KM/H", value: "4.0 SEC" },
+        { label: "MAXIMUM POWER", value: "467 kW" },
+        { label: "MAXIMUM TORQUE", value: "5 855 rpm" },
+        { label: "TOP SPEED", value: "250 KM/H*" }
+      ],
+      [
+        { label: "0-100 KM/H", value: "5.4 SEC" },
+        { label: "MAXIMUM POWER", value: "386 kW" },
+        { label: "MAXIMUM TORQUE", value: "5 500 rpm" },
+        { label: "TOP SPEED", value: "240 KM/H**" }
+      ]
+    ]
+  };
+
+  function setPerformanceSlide(index) {
+    const img = document.getElementById("perfImage");
+    const title = document.getElementById("perfTitle");
+    const desc = document.getElementById("perfDesc");
+    const specs = document.getElementById("perfSpecs");
+
+    // Update image, title, and description
+    img.src = performanceData.images[index];
+    title.textContent = performanceData.titles[index];
+    desc.innerHTML = performanceData.descriptions[index];
+
+    // Inject specs
+    const currentSpecs = performanceData.specs[index];
+    specs.innerHTML = `
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left px-4">
+        ${currentSpecs.map(s => `
+          <div>
+            <h4 class="text-sm uppercase opacity-70">${s.label}</h4>
+            <p class="text-xl font-bold">${s.value}</p>
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    // Button highlight logic
+    for (let i = 0; i < performanceData.images.length; i++) {
+      const btn = document.getElementById(`perfBtn${i}`);
+      btn.classList.toggle("bg-white", i === index);
+      btn.classList.toggle("text-black", i === index);
+      btn.classList.toggle("bg-gray-700", i !== index);
+      btn.classList.toggle("text-white", i !== index);
+    }
+  }
+
+  // Default selection on load
+  window.addEventListener("DOMContentLoaded", () => {
+    setPerformanceSlide(0);
+  });
+
+//customisation
+let currentExterior110 = 'Carpathian Grey Premium Metallic';
+let currentWheelKey110 = 'wheel_1';
+let currentSlide110 = 0;
+
+function switchTab110(tab) {
+  document.querySelectorAll('#models-110 .tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('#models-110 .tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelector(`#models-110 .tab-btn[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById(`tab-${tab}-110`).classList.add('active');
+}
+
+function updateExterior110(name) {
+  currentExterior110 = name;
+  document.getElementById('exterior-name-110').innerText = name;
+  updateImages110();
+}
+
+function updateInterior110(name) {
+  document.getElementById('interior-name-110').innerText = name;
+  const interiorImages110 = {
+    'Ebony Windsor leather seats with Ebony interior': '/images/110/interior/interior_black.avif',
+    'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior': '/images/110/interior/interior_lightcloud.avif'
+  };
+  if (interiorImages110[name]) {
+    document.getElementById('vehicle-interior-110').src = interiorImages110[name];
+  }
+}
+
+function updateWheels110(wheelKey) {
+  currentWheelKey110 = wheelKey;
+  const wheelNames110 = {
+    'wheel_1': '48.26 cm (19) Style 6010 wheels',
+    'wheel_2': '48.26 cm (19) Style 6010, Gloss Black wheels'
+  };
+  document.getElementById('wheels-name-110').innerText = wheelNames110[wheelKey];
+  updateImages110();
+}
+
+function updateImages110() {
+  const imageMap110 = {
+    'Carpathian Grey Premium Metallic': {
+      'wheel_1': {
+        side: '/images/110/grey/110_grey_side_1.jpg',
+        front: '/images/110/grey/110_grey_front_1.webp',
+        back: '/images/110/grey/110_grey_back_1.jpg'
+      },
+      'wheel_2': {
+        side: '/images/110/grey/110_grey_side_2.jpg',
+        front: '/images/110/grey/110_grey_front_2.webp',
+        back: '/images/110/grey/110_grey_back_2.jpg'
+      }
+    },
+    'Santorini Black Metallic': {
+      'wheel_1': {
+        side: '/images/110/black/110_black_side_1.jpg',
+        front: '/images/110/black/110_black_front_1.webp',
+        back: '/images/110/black/110_black_back_1.jpg'
+      },
+      'wheel_2': {
+        side: '/images/110/black/110_black_side_2.jpg',
+        front: '/images/110/black/110_black_front_2.webp',
+        back: '/images/110/black/110_black_back_2.jpg'
+      }
+    }
+  };
+  const selectedSet110 = imageMap110[currentExterior110]?.[currentWheelKey110];
+  if (selectedSet110) {
+    document.getElementById('slider-img-110-1').src = selectedSet110.side;
+    document.getElementById('slider-img-110-2').src = selectedSet110.front;
+    document.getElementById('slider-img-110-3').src = selectedSet110.back;
+    document.getElementById('vehicle-wheels-110').src = selectedSet110.side;
+  }
+}
+
+function showSlide110(index) {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === index);
+  });
+}
+
+function nextSlide110() {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  currentSlide110 = (currentSlide110 + 1) % slides.length;
+  showSlide110(currentSlide110);
+}
+
+function prevSlide110() {
+  const slides = document.querySelectorAll('#vehicle-slider-110 .vehicle-slide');
+  currentSlide110 = (currentSlide110 - 1 + slides.length) % slides.length;
+  showSlide110(currentSlide110);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  switchTab110('exterior');
+  showSlide110(currentSlide110);
+  updateImages110();
+});
+
+function toggleModel(model) {
+    // Hide all model sections
+    document.querySelectorAll('.model-section').forEach(section => {
+      section.classList.remove('active');
+    });
+
+    // Remove selected state from all buttons
+    document.querySelectorAll('.model-option').forEach(button => {
+      button.classList.remove('selected-model');
+    });
+
+    // Show the selected section
+    document.getElementById(`models-${model}`).classList.add('active');
+
+    // Highlight the selected button
+    const selectedBtn = document.querySelector(`.model-option[onclick="toggleModel('${model}')"]`);
+    if (selectedBtn) selectedBtn.classList.add('selected-model');
+  }
+
+  // Optional: Ensure Defender 110 is shown by default on load
+  document.addEventListener("DOMContentLoaded", function () {
+    toggleModel('110');
+  });
+  </script>
+  
+</html>

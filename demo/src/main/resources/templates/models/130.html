@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>Defender 130</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts (Optional if used globally) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/configurator.js}"></script>
+    <script th:src="@{/js/build_your_own.js}"></script>
+
+<style>
+   .slider-section-130 {
+    padding: 0; /* remove padding for full-width */
+    background-color: #000;
+    color: #fff;
+    position: relative;
+    scroll-margin-top: 120px;
+}
+
+.slider-container-130 {
+    position: relative;
+    width: 100%; /* changed from max-width: 1200px */
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slider-130 {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide-130 {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide-content-130 {
+    position: relative;
+    width: 100%;
+}
+
+.slide-image-130,
+.slide-image {
+    width: 100%;
+    height: 100vh; /* full viewport height; adjust as needed */
+    object-fit: cover;
+    border-radius: 0; /* remove rounding if you want edge-to-edge image */
+    display: block;
+}
+
+/* Optional: if you want to keep border-radius inside, wrap image inside another div with padding/margin */
+.overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.overlay-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.overlay-text {
+    font-size: 1.2rem;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: #fff;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.hidden {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+</style>
+
+</head>
+
+<body class="defender-body bg-black text-white font-sans" style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <div class="back-button-container absolute top-[75px] left-6 z-50">
+        <a href="javascript:history.back()" aria-label="Back"
+           class="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white hover:text-black transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
+<!-- Header (Navigation) -->
+<header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-center">
+
+  <!-- Centered "Defender" Text -->
+  <h1 class="text-white font-bold uppercase tracking-tight text-[1.125rem] md:text-[1.375rem] leading-none mt-[-2px]" style="font-family: 'Orbitron', sans-serif;">
+    DEFENDER
+  </h1>
+
+  <!-- Logo (top-right) -->
+  <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+      <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+  </div>
+
+  <!-- Right Menu Button -->
+  <div class="absolute top-1/2 left-10 transform -translate-y-1/2 z-10">
+      <button id="menu-button"
+              class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+          Menu
+      </button>
+
+      <!-- Menu Dropdown -->
+      <div id="menu-dropdown"
+           class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+          <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+          <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+          <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
+          <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+
+         
+
+          <!-- Logout Button -->
+          <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <button type="submit"
+                      class="w-full text-left text-sm text-red-400 hover:bg-gray-700">
+                  Logout
+              </button>
+          </form>
+      </div>
+  </div>
+</header>
+<!-- Hero Section -->
+<section class="relative h-[90vh] bg-cover bg-center" th:style="'background-image: url(' + @{/images/130/130_1.jpg} + ')'">
+    <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+        <h1 class="text-5xl font-bold">DEFENDER 130</h1>
+        <p class="mt-4 text-xl max-w-2xl">SPACE FOR SHARED EPIC ADVENTURE.</p>
+        <a th:href="@{/build_defender_130}" class="mt-6 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+            BUILD YOUR OWN
+        </a>
+        <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
+            <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
+                <a href="#design" class="hover:text-gray-300">DESIGN</a>
+                <a href="#capability" class="hover:text-gray-300">CAPABILITY</a>
+                <a href="#models" class="hover:text-gray-300">MODELS</a>
+                <a href="#personalisation" class="hover:text-gray-300">PERSONALISATION</a>
+            </div>
+        </nav>
+    </div>
+</section>
+ <!-- Modal Window for Saved Builds -->
+ <div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+      <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+      <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+      <button onclick="toggleBuildsModal()"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+          ✕
+      </button>
+  </div>
+</div>
+<!-- START SECTION -->
+<section id="start" class="slider-section-130 mt-10">
+    <div class="slider-container-130">
+      <div class="slider-130" id="slider-130">
+        <div class="slide-130">
+          <div class="slide-content-130">
+            <img th:src="@{/images/130/defender_130_1.jpeg}" th:alt="'DEFENDER JOURNEYS'" class="slide-image-130 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+              <h3 class="overlay-title">DEFENDER 130</h3>
+              <p class="overlay-text">Comfort in capability.</p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="slide-130">
+          <div class="slide-content-130">
+            <img th:src="@{/images/130/defender_130_2.jpeg}" th:alt="'DEFENDER 130'" class="slide-image-130 w-full h-[90vh] object-cover" />
+            <div class="overlay">
+                <h3 class="overlay-title">DEFENDER JOURNEYS</h3>
+                <p class="overlay-text">Experience India like never before behind the wheels of the iconic Defender.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Navigation Buttons -->
+      <button class="nav-btn prev-btn" onclick="slide130(-1)">&#10094;</button>
+      <button class="nav-btn next-btn" onclick="slide130(1)">&#10095;</button>
+    </div>
+  </section>
+  
+  <!-- HIGHLIGHT BANNER -->
+  <section class="w-full bg-[#0a0a0a] py-10 px-4 md:px-10 lg:px-20 text-white">
+    <div class="w-full max-w-screen-2xl mx-auto border border-white border-opacity-20 rounded-lg p-6 md:p-10 bg-opacity-30 backdrop-blur-sm bg-black bg-gradient-to-r from-[#1a1a1a] via-[#111] to-[#1a1a1a]">
+      <h3 class="text-2xl md:text-4xl font-semibold text-center leading-snug tracking-wide">
+        All in adventure. With eight seats and best-in-class space.
+      </h3>
+    </div>
+  </section>
+  
+
+  
+<!-- DESIGN SECTION -->
+<section id="design" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Header -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
+      <p class="text-lg">
+        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+      </p>
+    </div>
+  
+    <!-- Image Slider 1 -->
+    <div class="relative max-w-6xl mx-auto">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          id="designImage"
+          src="/images/octa/performance_0.webp"
+          alt="Defender"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+  
+      <!-- Dot Navigation -->
+      <div class="flex justify-center mt-6 space-x-4">
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-100" onclick="setDesignSlide(0)"></button>
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignSlide(1)"></button>
+        <button class="dot-btn w-4 h-4 rounded-full bg-white opacity-50" onclick="setDesignSlide(2)"></button>
+      </div>
+    </div>
+  
+    <!-- Second Image Slider -->
+    <div class="text-center mt-16">
+      <h3 class="text-3xl font-semibold mb-8">
+        Combining form with function, it's a design that demands attention.
+      </h3>
+  
+      <div class="relative max-w-6xl mx-auto">
+        <div class="overflow-hidden rounded-lg">
+          <img
+            id="designImage2"
+            src="/images/octa/performance_0.webp"
+            alt="Design Detail"
+            class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+          />
+        </div>
+  
+        <!-- Dot Navigation -->
+        <div class="flex justify-center mt-6 space-x-4">
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-100" onclick="setFormSlide(0)"></button>
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setFormSlide(1)"></button>
+          <button class="dot-btn-form w-4 h-4 rounded-full bg-white opacity-50" onclick="setFormSlide(2)"></button>
+        </div>
+      </div>
+  
+      <p class="text-lg mt-6 max-w-3xl mx-auto">
+        Explore in comfort, with three rows of seats, options like the Signature Interior Pack and new heated and cooled Captain Chairs.
+      </p>
+    </div>
+  </section>
+  
+ <!-- CAPABILITY SECTION -->
+<section id="capability" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">COMMANDING PRESENCE</h3>
+      <p class="text-lg">
+        Composed on any surface.
+      </p>
+    </div>
+  
+    <!-- Full Width Matching Image -->
+    <div class="relative w-full mx-auto mb-8">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/performance_1.webp"
+          alt="Capability"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-lg">
+        The imposing five-door Defender 130 takes you and your passengers where you want to go.
+      </p>
+    </div>
+  </section>
+  
+  <!-- BALANCED POWER SECTION -->
+  <section id="balanced-power" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">BALANCED POWER</h3>
+      <p class="text-lg">
+        With a top speed of 240 km/h†, Defender 130 petrol V8 delivers unrivalled agility and an engaging drive.
+      </p>
+    </div>
+  
+    <!-- Full Width Matching Image -->
+    <div class="relative w-full mx-auto mb-8">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/exhaust.jpg"
+          alt="Balanced Power"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- V8 Engine Description -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <p class="text-lg font-semibold">DEFENDER 130 V8</p>
+      <p class="text-lg">
+        Embrace real power with the 386 kW supercharged V8 engine.
+      </p>
+    </div>
+  
+    <!-- Performance Specs -->
+    <div class="performance-specs grid grid-cols-2 md:grid-cols-4 gap-6 text-center max-w-5xl mx-auto">
+      <div class="spec-item">
+        <div class="spec-label">PASSENGERS (UP TO)</div>
+        <div class="spec-value text-3xl font-bold">8</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">LOADSPACE CAPACITY</div>
+        <div class="spec-value text-3xl font-bold">2 516 <span class="unit">L*</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">0-100 KM/H</div>
+        <div class="spec-value text-3xl font-bold">5.7 <span class="unit">SEC†</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">GROUND CLEARANCE</div>
+        <div class="spec-value text-3xl font-bold">293 <span class="unit">MM</span></div>
+      </div>
+    </div>
+  </section>
+  
+
+  <section id="models">
+    <h2 class="section-title">BUILD AND ORDER</h2>
+    <p>Choose from our distinct models to begin your journey</p>
+  
+    <div class="configurator">
+      <!-- Left + Right Image Columns -->
+      <div class="primary-image-container">
+        <div class="vehicle-slider" id="vehicle-slider">
+          <!-- Slide 1 -->
+          <div class="vehicle-slide active">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-1" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 2 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-2" src="/images/octa/grey/octa_grey_front_1.webp" alt="Front View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Slide 3 -->
+          <div class="vehicle-slide">
+            <div class="vehicle-slide-content">
+              <img id="slider-img-3" src="/images/octa/grey/octa_grey_back_1.jpg" alt="Rear View" class="vehicle-slide-image" />
+            </div>
+          </div>
+  
+          <!-- Arrows -->
+          <button class="vehicle-slider-arrow left" onclick="prevSlide130()">❮</button>
+          <button class="vehicle-slider-arrow right" onclick="nextSlide130()">❯</button>
+        </div>
+      </div>
+  
+      <!-- Right: Side Images -->
+      <div class="secondary-images-container">
+        <div class="secondary-image">
+          <img id="vehicle-interior" src="/images/octa/interior/interior_black.avif" alt="Interior" class="config-image" />
+        </div>
+        <div class="secondary-image">
+          <img id="vehicle-wheels" src="/images/octa/grey/octa_grey_side_1.jpg" alt="Side_View_Full" class="config-image" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Right Column: Options -->
+    <div class="configurator-options">
+      <!-- Tabs -->
+      <div class="tab-buttons">
+        <span class="tab-btn active" onclick="switchTab130('exterior')">Exterior</span>
+        <span class="tab-btn" onclick="switchTab130('interior')">Interior</span>
+        <span class="tab-btn" onclick="switchTab130('wheels')">Wheels</span>
+      </div>
+  
+      <!-- Exterior Options -->
+      <div class="tab-content active" id="tab-exterior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#4F4F4F" onclick="updateExterior130('Carpathian Grey Premium Metallic')"></div>
+          <div class="box-swatch" style="background-color:black" onclick="updateExterior130('Santorini Black Metallic')"></div>
+        </div>
+        <p id="exterior-name">Carpathian Grey Premium Metallic</p>
+      </div>
+  
+      <!-- Interior Options -->
+      <div class="tab-content" id="tab-interior">
+        <div class="palette-row">
+          <div class="box-swatch" style="background-color:#1a1a1a" onclick="updateInterior130('Ebony Windsor leather seats with Ebony interior')"></div>
+          <div class="box-swatch" style="background-color:#cccccc" onclick="updateInterior130('Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior')"></div>
+        </div>
+        <p id="interior-name">Ebony Windsor leather seats with Ebony interior</p>
+      </div>
+  
+      <!-- Wheels Options -->
+      <div class="tab-content" id="tab-wheels">
+        <div class="palette-row">
+          <img src="/images/130/wheels/wheel_1.png" alt="48.26 cm (19) Style 6010 wheels" class="wheel-thumb" onclick="updateWheels130('wheel_1')">
+          <img src="/images/130/wheels/wheel_2.png" alt="48.26 cm (19) Style 6010, Gloss Black wheels" class="wheel-thumb" onclick="updateWheels130('wheel_2')">
+        </div>
+        <p id="wheels-name">48.26 cm (19) Style 6010 wheels</p>
+      </div>
+    </div>
+  </section>
+  
+  <section id="personalisation" class="bg-black text-white py-16" style="margin-inline: 50px;">
+    <!-- Section Heading -->
+    <div class="max-w-4xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold mb-4">ALL-ROUND PERSONALISATION</h3>
+    </div>
+  
+    <!-- Full Width Image -->
+    <div class="relative w-full mx-auto mb-12">
+      <div class="overflow-hidden rounded-lg">
+        <img
+          src="/images/octa/performance_1.webp"
+          alt="Capability"
+          class="w-full h-[50vh] md:h-[90vh] object-cover transition duration-500 ease-in-out"
+        />
+      </div>
+    </div>
+  
+    <!-- Subheading and Description -->
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-semibold mb-4">BOUNDLESS POSSIBILITIES</h3>
+      <p class="text-lg">
+        From exterior options to preconfigured accessory packs, equip your Defender 130 to match your lifestyle.
+      </p>
+    </div>
+  </section>
+  
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="#">CHANGE MARKET</a> |
+            <a href="#">TERMS & CONDITIONS</a> |
+            <a href="#">CONTACT US</a> |
+            <a href="#">COOKIES & PRIVACY</a>
+        </div>
+
+        <p class="legal-note">© JAGUAR LAND ROVER LIMITED 2025</p>
+
+        <p class="legal-description">
+            Jaguar Land Rover Limited: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
+        </p>
+
+        <p class="legal-description">
+            Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
+        </p>
+
+        <p class="legal-description">
+            Smart Settings is intended to be released as part of a future wireless software update. Software development and releases are subject to movements in planning and programming, and dates may be subject to change.
+        </p>
+
+        <p class="legal-description">
+            There is currently a global shortage of semi-conductor components. Jaguar Land Rover India Limited (JLRIL) is affected by this shortage and as a result, certain Jaguar and Land Rover products may not be available and delivery timelines for some products may be extended by authorised Jaguar Land Rover Retailers. Please contact your authorised Jaguar Land Rover Retailer for further updates.
+        </p>
+
+        <p class="legal-description">
+            Accessories/features shown may not be part of standard equipment. iPod is a registered trademark of Apple Inc., registered in the US and other countries. Meridian is a registered trademark of Meridian Audio Ltd. Please note not all features set out above are available as standard for all Land Rover models. Some features are available as a cost option only. Please refer to the Owners Handbook for Navigation Terms and Conditions. The Information and specification shown are not binding and are subject to change without prior notice. These are indicative specifications for reference only.
+        </p>
+
+        <p class="legal-description">
+            The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. A vehicle's actual fuel consumption may differ from that achieved in such tests and these figures are for comparative purposes only.
+        </p>
+
+        <p class="legal-description">
+            From 30 September 2019 Spotify will no longer be supporting the InControl Apps access. As the dominant preferred access by customers it will be available to customers via Smartphone Pack where installed.
+        </p>
+
+        <p class="legal-description">
+            Important note on imagery & specification. The global shortage of semiconductors is currently affecting vehicle build specifications, option availability, and build timings. This is a very dynamic situation, and as a result imagery used within the website at present may not fully reflect current specifications for features, options, trim and colour schemes. Please consult your authorised Retailer who will be able to confirm any current restrictions with you in order to allow an informed choice.
+        </p>
+
+        <p class="legal-description">
+            Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local retailer for local availability and prices.
+        </p>
+
+        <p class="legal-description">
+            <strong>COLOURS:</strong> Image colours reproduced here are provided for illustrative purposes only. Colours are reproduced on-screen and may therefore vary compared to the actual finish. The company reserves the right to alter or withdraw any colour finish without notice. Some of these colours may not be obtainable in your country. Please check availability of colours and current specifications with your Jaguar Retailer. Distributors and Retailers are not agents of Jaguar Land Rover Limited and have absolutely no authority to bind Jaguar Land Rover Limited to any express or implied undertaking or representation.
+        </p>
+
+        <p class="legal-description">
+            The mapping on this website is provided by external mapping providers and is for general information purposes only.
+        </p>
+
+        <p class="legal-description">
+            *The prices mentioned are ex-showroom and are subject to change without notice. The ex-showroom price does not include any optional items (such as accessories and other specialised items), which are at your discretion. The ex-showroom price is inclusive of GST (including compensation cess) and road service assistance (for breakdowns only) but excludes Vehicle Registration Tax, Tax Collected at Source (TCS) and Insurance Premium. For your information, the sale transaction will be directly between yourself and an independent Jaguar Land Rover India Limited (“JLRIL”) authorised retailer. Accessories/features/colours and other equipment shown may not be available on vehicles sold in India. Please contact your local Authorised Retailer for any information including the availability of vehicles, features, options, pricing etc. Jaguar Land Rover India Limited (“JLRIL”) is not involved in the sale transaction or the Assured Buy Back offer / campaign. The Assured Buy Back offer / campaign is at the sole discretion of a JLRIL authorised retailer. Please contact your nearest JLRIL authorised retailer for any information.
+        </p>
+    </footer>
+</div>
+</body>
+<script>
+
+  let currentMainSlide130 = 0;
+
+  function displayMainSlide130(index) {
+    const slides = document.querySelectorAll('.slider-130 .slide-130');
+    if (slides.length === 0) return;
+
+    currentMainSlide130 = (index + slides.length) % slides.length;
+
+    slides.forEach(slide => {
+      slide.style.display = 'none';
+    });
+
+    slides[currentMainSlide130].style.display = 'block';
+  }
+
+  function slide130(direction) {
+    displayMainSlide130(currentMainSlide130 + direction);
+  }
+
+  // Initialize the main slider on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    displayMainSlide130(currentMainSlide130);
+  });
+
+    const designSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/octa_tail_0.jpg",
+      "/images/octa/performance_2.webp"
+    ];
+  
+    const formSlides = [
+      "/images/octa/performance_0.webp",
+      "/images/octa/octa_tail_0.jpg",
+      "/images/octa/performance_2.webp"
+    ];
+  
+    let designIndex = 0;
+    let formIndex = 0;
+  
+    function setDesignSlide(index) {
+      const img = document.getElementById("designImage");
+      const dots = document.querySelectorAll(".dot-btn");
+  
+      img.src = designSlides[index];
+      designIndex = index;
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+
+    function setFormSlide(index) {
+      const img = document.getElementById("designImage2");
+      const dots = document.querySelectorAll(".dot-btn-form");
+  
+      img.src = formSlides[index];
+      formIndex = index;
+  
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("opacity-100", i === index);
+        dot.classList.toggle("opacity-50", i !== index);
+      });
+    }
+  
+    // Auto-slide every 5 seconds
+    setInterval(() => {
+      designIndex = (designIndex + 1) % designSlides.length;
+      setDesignSlide(designIndex);
+    }, 5000);
+  
+    setInterval(() => {
+      formIndex = (formIndex + 1) % formSlides.length;
+      setFormSlide(formIndex);
+    }, 5000);
+
+   
+
+  let currentExterior130 = 'Carpathian Grey Premium Metallic';
+  let currentWheelKey130 = 'wheel_1';
+
+  function switchTab130(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+  }
+
+  function updateExterior130(name) {
+    currentExterior130 = name;
+    document.getElementById('exterior-name').innerText = name;
+    updateImages130();
+  }
+
+  function updateInterior130(name) {
+    document.getElementById('interior-name').innerText = name;
+    const interiorImages130 = {
+      'Ebony Windsor leather seats with Ebony interior': '/images/octa/interior/interior_black.avif',
+      'Light Cloud/Lunar Resist seats with Light Cloud/Lunar interior': '/images/octa/interior/interior_lightcloud.avif'
+    };
+    if (interiorImages130[name]) {
+      document.getElementById('vehicle-interior').src = interiorImages130[name];
+    }
+  }
+
+  function updateWheels130(wheelKey) {
+    currentWheelKey130 = wheelKey;
+    const wheelNames130 = {
+      'wheel_1': '48.26 cm (19) Style 6010 wheels',
+      'wheel_2': '48.26 cm (19) Style 6010, Gloss Black wheels'
+    };
+    document.getElementById('wheels-name').innerText = wheelNames130[wheelKey];
+    updateImages130();
+  }
+
+  function updateImages130() {
+    const imageMap130 = {
+      'Carpathian Grey Premium Metallic': {
+        'wheel_1': {
+          side: '/images/octa/grey/octa_grey_side_1.jpg',
+          front: '/images/octa/grey/octa_grey_front_1.webp',
+          back: '/images/octa/grey/octa_grey_back_1.jpg'
+        },
+        'wheel_2': {
+          side: '/images/octa/grey/octa_grey_side_2.jpg',
+          front: '/images/octa/grey/octa_grey_front_2.webp',
+          back: '/images/octa/grey/octa_grey_back_2.jpg'
+        }
+      },
+      'Santorini Black Metallic': {
+        'wheel_1': {
+          side: '/images/octa/black/octa_black_side_1.jpg',
+          front: '/images/octa/black/octa_black_front_1.webp',
+          back: '/images/octa/black/octa_black_back_1.jpg'
+        },
+        'wheel_2': {
+          side: '/images/octa/black/octa_black_side_2.jpg',
+          front: '/images/octa/black/octa_black_front_2.webp',
+          back: '/images/octa/black/octa_black_back_2.jpg'
+        }
+      }
+    };
+    const selectedSet130 = imageMap130[currentExterior130]?.[currentWheelKey130];
+    if (selectedSet130) {
+      document.getElementById('slider-img-1').src = selectedSet130.side;
+      document.getElementById('slider-img-2').src = selectedSet130.front;
+      document.getElementById('slider-img-3').src = selectedSet130.back;
+      document.getElementById('vehicle-wheels').src = selectedSet130.side;
+    }
+  }
+
+  function showSlide130(index) {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextSlide130() {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    currentSlide130 = (currentSlide130 + 1) % slides.length;
+    showSlide130(currentSlide130);
+  }
+
+  function prevSlide130() {
+    const slides = document.querySelectorAll('#vehicle-slider .vehicle-slide');
+    currentSlide130 = (currentSlide130 - 1 + slides.length) % slides.length;
+    showSlide130(currentSlide130);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    switchTab130('exterior');
+    showSlide130(currentSlide130);
+    updateImages130();
+  });
+  </script>
+  
+</html>

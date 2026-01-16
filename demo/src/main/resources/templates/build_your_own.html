@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Defender</title>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Local Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <!-- <script th:src="@{/js/configurator.js}"></script> -->
+    <script th:src="@{/js/build_your_own.js}"></script>
+    <style>
+        #imageSlider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            flex: 0 0 100%;
+        }
+    </style>
+</head>
+
+<body class="font-sans " style="font-family: 'Space Grotesk', 'Noto Sans', sans-serif; margin: 0;">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <!-- BODY STYLE IMAGE & OPTIONS -->
+    <!-- HEADER -->
+    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-center">
+
+        <!-- Centered "Defender" Text -->
+        <h1 class="text-white font-bold uppercase tracking-tight text-[1.125rem] md:text-[1.375rem] leading-none mt-[-2px]" style="font-family: 'Orbitron', sans-serif;">
+            DEFENDER
+          </h1>
+      
+        <!-- Logo (top-right) -->
+        <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+            <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+        </div>
+      
+        <!-- Right Menu Button -->
+        <div class="absolute top-1/2 left-10 transform -translate-y-1/2 z-10">
+            <button id="menu-button"
+                    class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+                Menu
+            </button>
+      
+            <!-- Menu Dropdown -->
+            <div id="menu-dropdown"
+                 class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Shop Now</a>
+                <a href="javascript:void(0);" onclick="toggleBuildsModal()" class="block px-4 py-2 text-sm hover:bg-gray-700">Builds</a>
+      
+                <!-- Logout Button -->
+                <form id="logoutForm" action="/logout" method="post" th:action="@{/logout}" th:method="post" class="px-4 py-2">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit"
+                            class="w-full text-left text-sm text-red-400 hover:bg-gray-700">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+      </header>
+
+    <!-- NAVIGATION SECTION (NO height, normal flow) -->
+    <section class="relative bg-white bg-cover bg-center">
+        <!-- Back Button -->
+        <div class="absolute top-4 left-4 z-50">
+            <a href="javascript:history.back()" aria-label="Back" class="build-back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+        </div>
+ <!-- BUILDS Button -->
+<div class="absolute top-4 right-4 z-50">
+    <a href="javascript:void(0)" onclick="toggleBuildsModal()"
+       aria-label="Builds"
+       class="px-4 py-1.5 bg-white text-black border border-black rounded-md text-sm font-bold uppercase tracking-wide shadow-md hover:bg-black hover:text-white transition-all duration-200">
+        BUILDS
+    </a>
+</div>
+
+<!-- Modal Window for Saved Builds -->
+<div id="savedBuildsModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden flex justify-center items-start pt-20">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-auto p-6 relative">
+        <h2 class="text-lg font-bold mb-4">Your Saved Builds</h2>
+        <div id="builds-list" class="space-y-4 max-h-96 overflow-y-auto"></div>
+        <button onclick="toggleBuildsModal()"
+                class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">
+            ✕
+        </button>
+    </div>
+</div>
+
+        
+        <!-- Main content -->
+        <div class="flex flex-col items-center text-center px-4 pt-16 md:pt-12">
+            <nav class="bg-transparent text-gray-400 pt-2 pb-3 w-full">
+                <div class="flex justify-center gap-6 text-xs md:text-sm font-semibold uppercase tracking-wide flex-wrap">
+                    <a href="#bodystyle" class="hover:text-gray-600">BODYSTYLE</a>
+                    <a href="#model" class="hover:text-gray-600">MODEL</a>
+                    <a href="#engine" class="hover:text-gray-600">ENGINE</a>
+                    <a href="#exterior" class="hover:text-gray-600">EXTERIOR</a>
+                    <a href="#wheels" class="hover:text-gray-600">WHEELS</a>
+                    <a href="#interior" class="hover:text-gray-600">INTERIOR</a>
+                    <a href="#headlining" class="hover:text-gray-600">HEADLINING</a>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <!-- BODY STYLE IMAGE & OPTIONS -->
+    <section class="flex flex-col md:flex-row h-screen bg-white border-t border-gray-200">
+        <!-- Left: Image Slider (2/3) -->
+        <div class="slider-container sticky top-0 w-full md:w-2/3 max-h-screen overflow-hidden bg-white z-0 flex items-center justify-center">
+            <button id="saveBuildBtn"
+                    class="save-build-btn absolute top-4 right-4 bg-white text-black border border-black rounded-full px-4 py-1 md:px-5 md:py-2 text-sm md:text-base font-medium hover:bg-black hover:text-white transition z-10"
+                    data-selected="false"
+                    onclick="saveBuild()">
+                Save Build
+            </button>
+            <!-- Slider -->
+            <div id="imageSlider"
+                 class="slider flex transition-transform duration-1000 ease-in-out h-full">
+
+                <!-- Slides -->
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_grey_front_1.webp}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 1" />
+                </div>
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_grey_side_1.jpg}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 2" />
+                </div>
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_grey_back_1.jpg}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 3" />
+                </div>
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_grey_top_1.jpg}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 4" />
+                </div>
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_dashboard_trim_1.jpg}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 5" />
+                </div>
+                <div class="slide flex-[0_0_100%] flex items-center justify-center h-full">
+                    <img th:src="@{/images/octa/build/octa_interior_trim_1.jpg}"
+                         class="w-full max-h-[600px] object-contain rounded-xl shadow-md"
+                         alt="Slide 6" />
+                </div>
+            </div>
+
+            <!-- Arrows -->
+            <button onclick="prevSlide()"
+                    class="nav-btn absolute left-4 top-1/2 transform -translate-y-1/2 bg-white text-black border border-black rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-black hover:text-white transition z-10">
+                &#10094;
+            </button>
+            <button onclick="nextSlide()"
+                    class="nav-btn absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-black border border-black rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-black hover:text-white transition z-10">
+                &#10095;
+            </button>
+        </div>
+
+        <!-- Right: Body Style Options -->
+        <div  id="scrollable-panel" class="w-full md:w-1/3 overflow-y-auto h-screen p-3 md:p-6 flex flex-col gap-3 md:gap-6 bg-gray-50 border-l border-gray-200 z-10">
+            <h2 id="bodystyle" class="text-lg md:text-xl font-bold mb-2 md:mb-4 text-gray-800 uppercase">Bodystyle</h2>
+            <div id="modelButtons" class="space-y-2 md:space-y-3">
+                <button id="btn-defender-octa"
+                        onclick="changeModel(this, 'defender_octa.jpg', 'Defender OCTA')"
+                        class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                    DEFENDER OCTA
+                </button>
+            
+                <a 
+                   href="/build_defender_90"
+                   class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                    DEFENDER 90
+                </a>
+            
+                <a 
+                   href="/build_defender_110"
+                   class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                    DEFENDER 110
+                </a>
+            
+                <a 
+                   href="/build_defender_130"
+                   class="model-button block w-full text-sm md:text-base bg-white text-black border border-black px-3 md:px-6 py-2 md:py-3 rounded-xl text-center font-medium hover:bg-black hover:text-white transition">
+                    DEFENDER 130
+                </a>
+            </div>
+            
+            <h2 id="model" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Model</h2>
+
+            <!-- Model Details Card -->
+            <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-1">Defender OCTA</h3>
+                <p class="text-sm text-gray-600 mb-3">Petrol</p>
+                <p class="text-sm text-gray-700 mb-2 font-medium">Includes:</p>
+                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                    <li>55.88 cm (22) Style 7026, Gloss Black wheels</li>
+                    <li>Sliding panoramic roof</li>
+                    <li>Meridian™ Surround Sound System</li>
+                    <li>Semi-Aniline leather seats</li>
+                    <li>14-way heated and cooled electric memory performed front seats</li>
+                    <li>Body and Soul Seat</li>
+                </ul>
+                <p class="mt-3 text-sm text-gray-600">Available with 5 seats.</p>
+            </div>
+            <!-- Engine Header -->
+            <h2 id="engine" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Engine</h2>
+
+            <!-- Engine Details Card -->
+            <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-2">P635 Petrol V8 Mild Hybrid</h3>
+                <div class="text-sm text-gray-700 space-y-2">
+                    <p><span class="font-medium">Displacement:</span> 4.0</p>
+                    <p><span class="font-medium">Maximum Power:</span> 467 kW @ 5,855–7,000 rpm</p>
+                    <p><span class="font-medium">Acceleration (0–100 km/h):</span></p>
+                </div>
+            </div>
+
+            <!-- Exterior Header -->
+            <h2 id="exterior" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Exterior</h2>
+
+            <!-- Exterior Color Section -->
+            <div class="mb-6">
+                <!-- Section Title -->
+                <p class="text-sm font-medium text-gray-700 mb-2">Select Exterior Colour:</p>
+
+                <!-- Metallic -->
+                <p class="text-sm font-semibold text-gray-600 mb-1">Metallic</p>
+                <div class="flex gap-3 mb-4">
+                    <div onclick="selectColor(this, 'Borasco Grey')" title="Borasco Grey"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400 transition-all"
+                             style="background-color: #4B4B4B;"></div>
+                        <p class="text-xs text-center text-gray-700 mt-1">Borasco Grey</p>
+                    </div>
+                </div>
+
+                <!-- Premium Metallic -->
+                <p class="text-sm font-semibold text-gray-600 mb-1">Premium Metallic</p>
+                <div class="flex flex-wrap gap-3">
+                    <div onclick="selectColor(this, 'Charente Grey')" title="Charente Grey"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400 transition-all"
+                             style="background-color: #A0A3A8;"></div>
+                    </div>
+                    <div onclick="selectColor(this, 'Sargasso Blue')" title="Sargasso Blue"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400 transition-all"
+                             style="background-color: #1A334C;"></div>
+                    </div>
+                    <div onclick="selectColor(this, 'Petra Copper')" title="Petra Copper"
+                         class="color-circle cursor-pointer flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full border-2 border-gray-400 transition-all"
+                             style="background-color: #924C2E;"></div>
+                    </div>
+                </div>
+
+                <!-- Shared Selected Color Name (Premium only) -->
+                <div class="mt-2 min-h-[1.5rem]">
+                    <p id="selected-color-name" class="text-sm text-gray-700"></p>
+                </div>
+            </div>
+
+            <!-- Finish Type Section -->
+            <div class="mb-6">
+                <p class="text-sm font-medium text-gray-700 mb-2">Finish Type:</p>
+                <div class="flex gap-3">
+                    <button onclick="selectFinish(this, 'Gloss Finish')" class="finish-btn px-4 py-2 text-sm font-medium border border-gray-400 rounded-lg text-gray-800 hover:bg-black hover:text-white transition" >
+                        Gloss Finish
+                    </button>
+                    <button onclick="selectFinish(this, 'Matte Protective Film')" class="finish-btn px-4 py-2 text-sm font-medium border border-gray-400 rounded-lg text-gray-800 hover:bg-black hover:text-white transition">
+                        Matte Protective Film
+                    </button>
+                </div>
+
+                <span id="selected-finish-type" style="display: none;">Gloss Finish</span>
+
+
+                <h2 id="wheels" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Wheels</h2>
+
+                <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                    <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Choose Your Wheel</h3>
+
+                        <!-- Wheel Options -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <!-- Alloy 1 - Default selected -->
+                            <div data-wheel="Wheel1" onclick="updateConfig('wheels', 'Wheel1', this)"
+                                 class="wheel-thumb-wrapper border-2 border-gray-300 rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_1.png}" alt="Alloy 1"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                   Wheel1
+                                </p>
+                            </div>
+
+                            <!-- Alloy 2 -->
+                            <div data-wheel="Wheel2" onclick="updateConfig('wheels', 'Wheel2', this)"
+                                 class="wheel-thumb-wrapper border-2 border-gray-300 rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_2.png}" alt="Alloy 2"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                    Wheel2
+                                </p>
+                            </div>
+
+                            <!-- Alloy 3 -->
+                            <div  data-wheel="Wheel3" onclick="updateConfig('wheels', 'Wheel3', this)"
+                                  class="wheel-thumb-wrapper border-2 border-gray-300 rounded-xl p-2 cursor-pointer hover:shadow-lg transition flex flex-col items-center justify-between h-36">
+                                <img th:src="@{/images/octa/wheel/octa_alloy_3.png}" alt="Alloy 3"
+                                     class="wheel-thumb w-full h-16 object-contain">
+                                <p class="text-[11px] text-center font-medium leading-tight">
+                                    Wheel3
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Selected Wheel Name -->
+                        <div class="mt-4 min-h-[3rem]">
+                            <p id="wheels-name" class="text-sm text-gray-600">
+                                wheel1
+                            </p>
+                        </div>
+                    </div>
+                    <!-- BRAKE CALIPERS -->
+                    <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md mt-6">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Brake Calipers</h3>
+                        <div onclick="updateConfig('brake', 'Phosphor Bronze front brake calipers', this)"
+                             class="brake-thumb-wrapper border-2 border-black rounded-xl p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center justify-center"
+                             data-selected="true">
+                            <img th:src="@{/images/octa/brake.jpg}" alt="Brake Caliper"
+                                 class="w-32 h-20 object-contain mb-2">
+                            <p class="text-sm text-center font-medium text-gray-700">
+                                Phosphor Bronze front brake calipers
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- INTERIOR -->
+                <h2 id="interior" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Interior</h2>
+
+                <!-- TRIM OPTIONS -->
+                <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Choose Your Trim</h3>
+
+                    <!-- Trim Type Toggle -->
+                    <div class="flex gap-4 mb-4">
+                        <button onclick="selectTrim('semi-aniline')" id="trim-semi-aniline"
+                                class="trim-btn px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
+                            Semi-Aniline Leather
+                        </button>
+                        <button onclick="selectTrim('ultrafabric')" id="trim-ultrafabric"
+                                class="trim-btn px-4 py-2 text-sm font-medium border rounded-lg transition border-gray-400 text-gray-800 hover:bg-black hover:text-white">
+                            Ultrafabric
+                        </button>
+                    </div>
+
+                    <!-- SEMI-ANILINE OPTIONS -->
+                    <div id="trim-options-semi-aniline" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div onclick="selectInteriorOption(this, 'burnt_sienna')"
+                             class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/burnt_sienna.png}" alt="Burnt Sienna"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-sm font-medium text-gray-800">Burnt Sienna / Ebony</p>
+                            <p class="text-xs text-gray-500 leading-tight">Perforated Semi-Aniline leather</p>
+                        </div>
+
+                        <div onclick="selectInteriorOption(this,'kvadrat_ebony')"
+                             class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/ebony_head.jpg}" alt="Ebony Kvadrat"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-sm font-medium text-gray-800">Ebony Kvadrat™</p>
+                            <p class="text-xs text-gray-500 leading-tight">Ebony perforated Semi-Aniline leather</p>
+                        </div>
+                    </div>
+
+                    <!-- ULTRAFABRIC OPTIONS -->
+                    <div id="trim-options-ultrafabric" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hidden">
+                        <div onclick="selectInteriorOption(this, 'cloud_lunar')"
+                             class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/cloud.png}" alt="Light Cloud"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-sm font-medium text-gray-800">Light Cloud / Lunar</p>
+                            <p class="text-xs text-gray-500 leading-tight">Perforated Ultrafabrics™ seats</p>
+                        </div>
+
+                        <div onclick="selectInteriorOption(this, 'khaki_ebony')"
+                             class="interior-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/khaky.png}" alt="Khaki Ebony"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-sm font-medium text-gray-800">Khaki / Ebony</p>
+                            <p class="text-xs text-gray-500 leading-tight">Perforated Ultrafabrics™ seats</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEADLINING -->
+                <h2 id="headlining" class="text-lg md:text-xl font-bold mt-6 mb-2 md:mb-4 text-gray-800 uppercase">Headlining</h2>
+
+                <div class="bg-white border border-gray-300 rounded-xl p-4 shadow-md mb-6">
+                    <h3 class="text-base md:text-lg font-semibold text-gray-800 mb-4">Choose Your Headlining</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Ebony -->
+                        <div onclick="selectHeadliningOption(this, 'Ebony suedecloth headlining')"
+                             class="headlining-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/ebony.png}" alt="Ebony Headlining"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-xs text-gray-500 leading-tight">Ebony Suedecloth headlining</p>
+                        </div>
+
+                        <!-- Light Cloud -->
+                        <div onclick="selectHeadliningOption(this, 'Light Cloud suedecloth headlining')"
+                             class="headlining-option border-2 border-gray-300 rounded-lg p-3 cursor-pointer hover:shadow-md transition flex flex-col items-center text-center h-[150px]">
+                            <img th:src="@{/images/octa/build/light_cloud.jpg}" alt="Light Cloud Headlining"
+                                 class="w-20 h-16 object-cover mb-2 rounded">
+                            <p class="text-xs text-gray-500 leading-tight">Light Cloud Suedecloth headlining</p>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Selected Features Summary -->
+                <div class="text-right mt-4">
+                    <button
+                            class="save-build-btn bg-white text-black border border-black rounded-full px-4 py-1 md:px-5 md:py-2 text-sm md:text-base font-medium hover:bg-black hover:text-white transition z-10"
+                            data-selected="false"
+                            onclick="saveBuild()">
+                        Save Build
+                    </button>
+                </div>
+
+    </section>
+    <footer class="site-footer text-sm px-6 py-8 bg-gray-100 text-black">
+        <div class="footer-links flex space-x-6 mb-4">
+            <p>PRIVACY POLICY</p>
+            <p>TERMS AND CONDITIONS</p>
+            <p>CONTACT US</p>
+            <p>SELECT A COUNTRY</p>
+        </div>
+
+        <p class="legal-note font-semibold mb-4">
+            © Jaguar Land Rover Limited 2025: Registered office: Abbey Road, Whitley, Coventry CV3 4LF. Registered in England No: 1672070
+        </p>
+
+        <div class="legal-description space-y-4 text-justify">
+            <p>
+                <strong>Important note on imagery & specification:</strong> We are living through exceptional times. Due to the Covid pandemic we have been prevented or delayed in the creation of new images of current model years. Now the global impact of micro-chip shortages is further affecting build specifications, options and launch timings. Until this unique event settles, please note that many images cannot be updated to 22/23 model year specifications. Features, options, trim and colour schemes may differ from many images. Customers are urged to consult their local Retailer for detailed 22/23 model year specifications and to not base an order on marketing imagery and specification alone.
+            </p>
+
+            <p>
+                Jaguar Land Rover Limited is constantly seeking ways to improve the specification, design and production of its vehicles, parts and accessories and alterations take place continually, and we reserve the right to change without notice. Some features may vary between optional and standard for different model years. The information, specification, engines and colours on this website are based on European specification and may vary from market to market and are subject to change without notice. Some vehicles are shown with optional equipment and retailer-fit accessories that may not be available in all markets. Please contact your local Retailer for local availability and prices.
+            </p>
+
+            <p>
+                *Plug In Hybrid models are only available with 5 seats, due to battery geometry in loadspace.
+            </p>
+
+            <p>**Market dependent availability.</p>
+
+            <p>
+                ††The figures provided are as a result of official manufacturer's tests in accordance with EU legislation. PHEV with a fully charged battery. For comparison purposes only. Real world figures may differ. CO2, fuel economy, PHEV eAER, energy consumption and range figures may vary according to factors such as driving styles, environmental conditions, load, wheel fitment, accessories fitted, actual route and battery condition. Range figures are based upon production vehicle over a standardised route. V8 P635 figures provided are manufacturer’s estimates and will be replaced with the official EU test figures as soon as they are available
+            </p>
+
+            <p>‡Max speed is 209km/h when fitted with 22" wheels.</p>
+            <p>⬨Max speed is 191km/h when fitted with 20" wheels.</p>
+            <p>‡‡When combined with electric motor.</p>
+            <p>△Includes a 75kg driver, full fluids and 90% fuel.</p>
+            <p>▲Includes full fluids and 90% fuel.</p>
+            <p>◇Dynamic roof load allows for up to 118kg/168kg (90/110 and 130) when fitted with Off-road tyres and Expedition Roof Rack. Static roof load allows for up to 300kg.</p>
+            <p>⬧Behind row 1 figures for Hard Top relates to behind loadspace partition.</p>
+            <p>✧Dry: Volume as measured with VDA-compliant solid blocks (200mm x 50mm x 100mm). Hard Top models: Includes underfloor stowage, excludes jack and tools.</p>
+            <p>✦Wet: Volume as measured by simulating the loadspace filled with liquid. Hard Top models: Includes underfloor stowage, excludes jack and tools.</p>
+            <p>▼Defender V8 models have no dynamic roof loading capacity. Static roof load allows for up to 300kg.</p>
+            <p>▽With towing eye cover removed.</p>
+            <p>▼▼100kg (22" Wheels with All Season Tyres) / 168kg (20" Wheels with All-Terrain or Advanced All-Terrain Tyres). Roof load is 0kg when OCTA mode is activated.</p>
+
+            <p>
+                Weights stated reflect vehicle standard specification. Accessories and other items fitted after the point of manufacture will affect payload. Ensure Gross Vehicle Weight and Maximum Axle Loads are not exceeded when loading the vehicle with accessories, occupants, fluids and fuels, and payload.
+            </p>
+
+            <p>
+                Optional features and their availability may differ by vehicle specification (model and powertrain), or require the installation of other features in order to be fitted. Please contact your local Retailer for more details, or configure your vehicle online.
+            </p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

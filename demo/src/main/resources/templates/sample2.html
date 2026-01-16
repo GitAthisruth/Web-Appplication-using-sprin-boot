@@ -1,0 +1,198 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Defender Octa</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700" rel="stylesheet" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+
+</head>
+
+<body class="defender-body bg-black text-white font-sans">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+    <div class="back-button-container absolute top-[75px] left-6 z-50">
+        <a href="javascript:history.back()" aria-label="Back"
+           class="flex items-center justify-center w-10 h-10 rounded-full border border-white hover:bg-white hover:text-black transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+    </div>
+    <!-- Header (Navigation) -->
+    <header class="relative w-full px-10 py-3 bg-black text-white flex items-center justify-between">
+
+        <!-- Logo (top-right) -->
+        <div class="absolute top-1/2 right-10 transform -translate-y-1/2">
+            <img th:src="@{/images/lr_logo.png}" alt="Land Rover Logo" class="w-24 h-24 object-contain" />
+        </div>
+
+        <!-- Centered User Button -->
+        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="relative">
+                <button id="user-button"
+                        class="flex h-10 px-2.5 gap-2 bg-transparent rounded-full items-center font-bold text-white text-sm border border-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                         viewBox="0 0 256 256" style="color: white;">
+                        <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown -->
+                <div id="user-dropdown"
+                     class="hidden absolute left-1/2 -translate-x-1/2 mt-2 w-40 bg-black border border-white rounded shadow-lg z-50 text-white">
+                    <a href="/profile" class="block px-4 py-2 text-sm hover:bg-gray-700">Profile</a>
+                    <form id="logoutForm" action="/logout" method="post" style="display:none;" th:action="@{/logout}" th:method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
+
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();"
+                       class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Menu Button -->
+        <div class="relative z-10">
+            <button id="menu-button"
+                    class="min-w-[84px] max-w-[480px] h-10 px-4 bg-transparent text-white font-bold rounded-full border border-white">
+                Menu
+            </button>
+            <div id="menu-dropdown"
+                 class="hidden absolute left-0 mt-2 w-52 bg-black border border-white rounded shadow-lg z-50 text-white">
+                <a th:href="@{/main}" class="block px-4 py-2 text-sm hover:bg-gray-700">Home</a>
+                <a th:href="@{/models}" class="block px-4 py-2 text-sm hover:bg-gray-700">Models</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Ownership</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Dealership</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Museum</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">Store</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-700">My Defender</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-[90vh] bg-cover bg-center mb-0 pb-0" th:style="'background-image: url(' + @{/images/octa/octa_front.jpg} + ')'">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+            <h1 class="text-5xl font-bold">DEFENDER OCTA</h1>
+            <p class="mt-4 text-xl max-w-2xl">Master of extreme performance.</p>
+            <a th:href="@{/build}" class="mt-4 px-6 py-3 text-lg font-semibold border border-white rounded hover:bg-white hover:text-black transition">
+                BUILD YOUR OWN
+            </a>
+            <!-- Navigation Bar (inside section) -->
+            <nav class="mt-10 bg-transparent text-white pt-2 pb-3 w-full">
+                <div class="flex justify-center gap-10 text-xs md:text-sm font-semibold uppercase tracking-wide">
+                    <a href="#overview" class="hover:text-gray-300">EXTERIOR</a>
+                    <a href="#performance" class="hover:text-gray-300">PERFORMANCE</a>
+                    <a href="#design" class="hover:text-gray-300">DURABILITY AND CAPABILITY</a>
+                    <a href="#technology" class="hover:text-gray-300">INTERIOR</a>
+                    <a href="#specifications" class="hover:text-gray-300">BUILD AND ORDER</a>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <section id="overview" class="bg-black text-white py-16 px-4 md:px-16">
+        <h2 class="text-4xl font-bold mb-10 text-left md:text-center">BOLD PRESENCE</h2>
+
+        <!-- Slider Wrapper -->
+        <div class="relative overflow-hidden">
+            <!-- Slide Container -->
+            <div id="slider" class="flex transition-transform duration-500 ease-in-out w-full">
+
+                <!-- Slide 1 -->
+                <div class="min-w-full flex-shrink-0 text-center px-4">
+                    <img src="/images/octa/octa_0.jpg" alt="Purposeful Design" class="w-full h-64 object-cover rounded-xl" />
+                    <h3 class="text-2xl font-bold mt-4">PURPOSEFUL DESIGN</h3>
+                    <p class="text-gray-300 mt-2 max-w-xl mx-auto">
+                        Enjoy extreme performance and unmatched capability. Defender OCTA’s raised ride height and wider stance are not just for show.
+                    </p>
+                </div>
+                <div class="min-w-full flex-shrink-0 text-center px-4">
+                    <img src="/images/octa/octa_2.jpg" alt="Tougher Than Ever" class="w-full h-64 object-cover rounded-xl" />
+                    <h3 class="text-2xl font-bold mt-4">TOUGHER THAN EVER</h3>
+                    <p class="text-gray-300 mt-2 max-w-xl mx-auto">
+                        The purposeful new bumper and grille designs amplify Defender’s rugged character and improve cooling for the uprated V8 engine.
+                    </p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="min-w-full flex-shrink-0 text-center px-4">
+                    <img src="/images/octa/octa_1.jpg" alt="Durable and Technical" class="w-full h-64 object-cover rounded-xl" />
+                    <h3 class="text-2xl font-bold mt-4">DURABLE AND TECHNICAL</h3>
+                    <p class="text-gray-300 mt-2 max-w-xl mx-auto">
+                        Tough from every angle - Defender OCTA is fitted with a hard-wearing Graphite Front Undershield, protecting the underside from rugged terrain.
+                    </p>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="min-w-full flex-shrink-0 text-center px-4">
+                    <img src="/images/octa/octa_tyre.jpg" alt="Exclusive Finishes" class="w-full h-64 object-cover rounded-xl" />
+                    <h3 class="text-2xl font-bold mt-4">EXCLUSIVE FINISHES</h3>
+                    <p class="text-gray-300 mt-2 max-w-xl mx-auto">
+                        The exclusive 50.80 cm (20) multi-spoke wheels utilise Diamond Turned Face Dark Tint finish with Satin Black contrast to create a unique visual.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Left Arrow -->
+            <button id="prevBtn" class="absolute top-1/2 left-2 -translate-y-1/2 text-white text-3xl hover:text-gray-400 transition">
+                &#10094;
+            </button>
+
+            <!-- Right Arrow -->
+            <button id="nextBtn" class="absolute top-1/2 right-2 -translate-y-1/2 text-white text-3xl hover:text-gray-400 transition">
+                &#10095;
+            </button>
+        </div>
+    </section>
+
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('slider');
+        const slides = slider.querySelectorAll('div.min-w-full');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        let currentIndex = 0;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateSlider();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        updateSlider(); // initialize
+    });
+</script>
+
+</body>
+</html>
